@@ -8,20 +8,20 @@ public class Player : MonoBehaviour
     [Tooltip("maximum speed that the player can run")]
     public float maxRunSpeed;
 
-    [Tooltip("current speed that the player is running at")]
-    public float currentRunSpeed = 0;
+    // current speed that the player is running at
+    private float currentRunSpeed = 0;
 
-    [Tooltip("the player gains this much speed per second when accelerating")]
-    public float accelerationFactor;
+    [Tooltip("how fast the player will accelerate")]
+    public float acceleration;
 
-    [Tooltip("the player loses this much speed per second when deccelerating")]
-    public float deccelerationFactor;
+    [Tooltip("how fast the player will decelerate")]
+    public float deceleration;
 
-    [Tooltip("the player comes to a stop when they are moving slower than this speed")]
+    [Tooltip("the player stops when they are moving slower than this speed")]
     public float movementCutoff;
 
-    [Tooltip("current movement direction")]
-    public Vector2 movement = new Vector2(0, 0);
+    // current movement direction
+    private Vector2 movement = new Vector2(0, 0);
 
     // gravity
     [Tooltip("power of gravity")]
@@ -35,12 +35,12 @@ public class Player : MonoBehaviour
         // no input
         if(xAxis == 0 && currentRunSpeed != 0)
         {
-            // deccelerate to 0
-            currentRunSpeed -= Mathf.Sign(currentRunSpeed) * deccelerationFactor * Time.deltaTime;
+            // decelerate to 0
+            currentRunSpeed -= Mathf.Sign(currentRunSpeed) * deceleration * Time.deltaTime;
         }
         else
         {
-            currentRunSpeed += xAxis * accelerationFactor;
+            currentRunSpeed += xAxis * acceleration;
             if(Mathf.Abs(currentRunSpeed) > maxRunSpeed)
             {
                 currentRunSpeed = maxRunSpeed * Mathf.Sign(currentRunSpeed);
