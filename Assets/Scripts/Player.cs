@@ -16,12 +16,20 @@ public struct MovementSettings
 
     [Tooltip("force to apply for jumps")]
     public float jumpForce;
+
+    [Tooltip("extra force to apply for held jumps")]
+    public float extraJumpForce;
+
+    [Tooltip("extra time for held jumps")]
+    public float extraJumpTime;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
+
+    private float extraJumpTimer;
 
     // movement
     public MovementSettings movementSettings;
@@ -45,11 +53,25 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
 
-        // jump
-        if(Input.GetAxisRaw("Fire1") == 1 && isGrounded())
+        // reset extra jump timer when grounded
+        if(isGrounded())
         {
-            Debug.Log("jumped");
-            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            extraJumpTimer = movementSettings.extraJumpTime;
+        }
+
+        // jump
+        if(Input.GetAxisRaw("Fire1") == 1)
+        {
+            if(isGrounded())
+            {
+                Debug.Log("jumped");
+                rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            }
+            else if(extraJumpTimer > 0.0f && rb.velocity.y > 0)
+            {
+                rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
+                extraJumpTimer -= Time.fixedDeltaTime;
+            }
         }
 
         // cut off movement
