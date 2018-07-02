@@ -66,6 +66,11 @@ public class Player : MonoBehaviour
         {
             extraJumpTimer = movementSettings.extraJumpTime;
         }
+        // apply fake drag
+        else
+        {
+            rb.velocity -= Vector2.ClampMagnitude(rb.velocity, 1) * rb.drag * Time.fixedDeltaTime;
+        }
 
         // if the jump button is pressed
         if(Input.GetAxisRaw("Fire1") == 1)
