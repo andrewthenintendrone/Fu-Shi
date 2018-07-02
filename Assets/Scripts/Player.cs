@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+[System.Serializable]
+public struct MovementSettings
 {
-    // movement
     [Tooltip("maximum speed that the player can run")]
     public float maxRunSpeed;
-
-    // current speed that the player is running at
-    private float currentRunSpeed = 0;
 
     [Tooltip("how fast the player will accelerate")]
     public float acceleration;
@@ -19,42 +16,37 @@ public class Player : MonoBehaviour
 
     [Tooltip("the player stops when they are moving slower than this speed")]
     public float movementCutoff;
+}
 
-    // current movement direction
-    private Vector2 movement = new Vector2(0, 0);
+[RequireComponent(typeof(Rigidbody2D))]
+public class Player : MonoBehaviour
+{
+    private Rigidbody2D rb;
 
-    // gravity
-    [Tooltip("power of gravity")]
-    public float gravity = -9.81f;
+    // movement
+    public MovementSettings movementSettings;
 
-	void Update ()
+    private void Start()
+    {
+        // store RigidBody
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void FixedUpdate ()
     {
         // check the Horizontal input
         float xAxis = Input.GetAxisRaw("Horizontal");
 
-        // no input
-        if(xAxis == 0 && currentRunSpeed != 0)
+        // accelerate
+        if(Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
-            // decelerate to 0
-            currentRunSpeed -= Mathf.Sign(currentRunSpeed) * deceleration * Time.deltaTime;
-        }
-        else
-        {
-            currentRunSpeed += xAxis * acceleration;
-            if(Mathf.Abs(currentRunSpeed) > maxRunSpeed)
-            {
-                currentRunSpeed = maxRunSpeed * Mathf.Sign(currentRunSpeed);
-            }
+            rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
 
         // cut off movement
-        if(Mathf.Abs(currentRunSpeed) < movementCutoff)
+        if (Mathf.Abs(rb.velocity.x) < movementSettings.movementCutoff)
         {
-            currentRunSpeed = 0;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
-
-        movement.Set(currentRunSpeed, 0);
-
-        transform.Translate(movement * Time.deltaTime);
 	}
 }
