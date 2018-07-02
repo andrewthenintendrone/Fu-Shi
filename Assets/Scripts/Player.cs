@@ -11,11 +11,11 @@ public struct MovementSettings
     [Tooltip("how fast the player will accelerate")]
     public float acceleration;
 
-    [Tooltip("how fast the player will decelerate")]
-    public float deceleration;
-
     [Tooltip("the player stops when they are moving slower than this speed")]
     public float movementCutoff;
+
+    [Tooltip("force to apply for jumps")]
+    public float jumpForce;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Utils.Init();
+
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
     }
@@ -43,10 +45,42 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
 
+        // jump
+        if(Input.GetAxisRaw("Fire1") == 1 && isGrounded())
+        {
+            Debug.Log("jumped");
+            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+        }
+
         // cut off movement
         if (Mathf.Abs(rb.velocity.x) < movementSettings.movementCutoff)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
-	}
+    }
+
+    private void Update()
+    {
+        Debug.DrawRay(transform.position + Vector3.down * 0.5f, Vector3.down * 0.1f, Color.red);
+    }
+
+    // is the player on the ground
+    public bool isGrounded()
+    {
+        // just raycast for now
+        int layerMask = ~(1 << 8);
+        return Physics2D.Raycast(transform.position + Vector3.down * 0.5f, Vector3.down, 0.1f, layerMask);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "checkpoint")
+        {
+            Utils.updateCheckpoint(collision.gameObject.transform.position);
+        }
+        if(collision.tag == "reset")
+        {
+            Utils.resetPlayer();
+        }
+    }
 }
