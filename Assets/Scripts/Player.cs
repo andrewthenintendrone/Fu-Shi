@@ -27,54 +27,77 @@ public struct MovementSettings
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    // stored RigidBody 2D
     private Rigidbody2D rb;
 
+    // timer for extra jump height
     private float extraJumpTimer;
 
-    // movement
+    // is the jump axis being held
+    private bool jumpHeld;
+
+    // movement settings
     public MovementSettings movementSettings;
 
     private void Start()
     {
+        // initialise Utils
         Utils.Init();
 
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
     }
 
+    // physics step
     void FixedUpdate ()
     {
-        // check the Horizontal input
+        // read the Horizontal input
         float xAxis = Input.GetAxisRaw("Horizontal");
 
-        // accelerate
+        // if absolute x velocity is lower than the maximum run speed
         if(Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
+            // add force in the direction of movement
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
 
-        // reset extra jump timer when grounded
+        // if we are on the ground reset the extra jump timer
         if(isGrounded())
         {
             extraJumpTimer = movementSettings.extraJumpTime;
         }
 
-        // jump
+        // if the jump button is pressed
         if(Input.GetAxisRaw("Fire1") == 1)
         {
-            if(isGrounded())
+            // if we are on the ground
+            // don't jump multiple times for a hold
+            // ensure y velocity is 0 to prevent "super jump"
+            if(isGrounded() && !jumpHeld && rb.velocity.y == 0)
             {
-                Debug.Log("jumped");
+                jumpHeld = true;
+                // add initial impulse jump force
                 rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
             }
+            // if we are in the air and still have extra jump time
+            // don't allow extra jump when falling
             else if(extraJumpTimer > 0.0f && rb.velocity.y > 0)
             {
+                // add extra jump force
                 rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
+
+                // decrement extra jump timer
                 extraJumpTimer -= Time.fixedDeltaTime;
             }
         }
 
-        // cut off movement
+        // if the jump axis is 0 a hold is over
+        if(Input.GetAxisRaw("Fire1") == 0)
+        {
+            jumpHeld = false;
+        }
+
+        // cut off movement when it gets too slow
         if (Mathf.Abs(rb.velocity.x) < movementSettings.movementCutoff)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -83,23 +106,42 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawRay(transform.position + Vector3.down * 0.5f, Vector3.down * 0.1f, Color.red);
+
     }
 
-    // is the player on the ground
+    // check if the player is currently on the ground
     public bool isGrounded()
     {
-        // just raycast for now
+        Debug.Log("Current velocity is " + rb.velocity);
+
         int layerMask = ~(1 << 8);
-        return Physics2D.Raycast(transform.position + Vector3.down * 0.5f, Vector3.down, 0.1f, layerMask);
+
+        // calculate corners of rectangle
+        Vector3 bottomLeft = transform.position + Vector3.left * transform.localScale.x / 2 + Vector3.down * transform.localScale.y / 2;
+        Vector3 bottomRight = transform.position + Vector3.right * transform.localScale.x / 2 + Vector3.down * transform.localScale.y / 2;
+
+        // draw in red or green based on whether we are grounded
+        if(Physics2D.OverlapArea(bottomLeft, bottomRight, layerMask))
+        {
+            Debug.DrawLine(bottomLeft, bottomRight, Color.green);
+            return true;
+        }
+        else
+        {
+            Debug.DrawLine(bottomLeft, bottomRight, Color.red);
+            return false;
+        }
     }
 
+    // called by unity when this object enters a trigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // tell Utils to update the checkpoint
         if(collision.tag == "checkpoint")
         {
             Utils.updateCheckpoint(collision.gameObject.transform.position);
         }
+        // sell Utils to reset the player to the last checkpoint
         if(collision.tag == "reset")
         {
             Utils.resetPlayer();

@@ -191,12 +191,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSettings:
-    maxRunSpeed: 10
-    acceleration: 10
+    maxRunSpeed: 20
+    acceleration: 20
     movementCutoff: 0.1
-    jumpForce: 4
-    extraJumpForce: 4
-    extraJumpTime: 4
+    jumpForce: 15
+    extraJumpForce: 5
+    extraJumpTime: 5
 --- !u!61 &125860034
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -234,9 +234,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
