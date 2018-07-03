@@ -8,6 +8,9 @@ public struct MovementSettings
     [Tooltip("maximum speed that the player can run")]
     public float maxRunSpeed;
 
+    [Tooltip("friction while running")]
+    public float runFriction;
+
     [Tooltip("how fast the player will accelerate")]
     public float acceleration;
 
@@ -31,6 +34,12 @@ public struct MovementSettings
 
     [Tooltip("dash force")]
     public float dashForce;
+
+    [Tooltip("friction while dashing")]
+    public float dashFriction;
+
+    [Tooltip("how long to use dash friction for after dashing")]
+    public float dashTime;
 
     [Tooltip("dash cooldown")]
     public float dashCooldown;
@@ -72,7 +81,6 @@ public class Player : MonoBehaviour
         // if absolute x velocity is lower than the maximum run speed
         if(Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
-            // add force in the direction of movement
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
 
@@ -86,7 +94,7 @@ public class Player : MonoBehaviour
         if (!isGrounded())
         {
             // apply fake drag
-            rb.velocity -= Vector2.ClampMagnitude(rb.velocity, 1) * rb.drag * Time.fixedDeltaTime;
+            rb.velocity -= new Vector2(Mathf.Clamp(rb.velocity.x, -1, 1) * Mathf.Sign(rb.velocity.x) * rb.drag * Time.fixedDeltaTime, 0);
         }
 
         // jump if the jump button is pressed
@@ -101,6 +109,11 @@ public class Player : MonoBehaviour
         {
             // reset dash cooldown timer
             dashCooldownTimer = movementSettings.dashCooldown;
+
+            // set dash friction
+            rb.drag = movementSettings.dashFriction;
+
+            Invoke("setRunFriction", movementSettings.dashTime);
 
             Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
 
@@ -271,6 +284,11 @@ public class Player : MonoBehaviour
             // draw wall jump angle line
             Debug.DrawLine(transform.position, transform.position + wallJumpForce, Color.magenta);
         }
+    }
+
+    void setRunFriction()
+    {
+        rb.drag = movementSettings.runFriction;
     }
 
     // called by unity when this object enters a trigger
