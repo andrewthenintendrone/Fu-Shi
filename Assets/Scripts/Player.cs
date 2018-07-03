@@ -64,42 +64,22 @@ public class Player : MonoBehaviour
         // if we are on the ground reset the extra jump timer
         if(isGrounded())
         {
-            extraJumpTimer = movementSettings.extraJumpTime;
-
             // if the jump axis is 0 a hold is over
             if (Input.GetAxisRaw("Fire1") == 0)
             {
                 jumpHeld = false;
             }
         }
-        // apply fake drag
         else
         {
+            // apply fake drag
             rb.velocity -= Vector2.ClampMagnitude(rb.velocity, 1) * rb.drag * Time.fixedDeltaTime;
         }
 
-        // if the jump button is pressed
-        if(Input.GetAxisRaw("Fire1") == 1)
+        // jump if the jump button is pressed
+        if (Input.GetAxisRaw("Fire1") == 1)
         {
-            // if we are on the ground
-            // don't jump multiple times for a hold
-            // ensure y velocity is 0 to prevent "super jump"
-            if(isGrounded() && !jumpHeld && rb.velocity.y == 0)
-            {
-                jumpHeld = true;
-                // add initial impulse jump force
-                rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
-            }
-            // if we are in the air and still have extra jump time
-            // don't allow extra jump when falling
-            else if(extraJumpTimer > 0.0f && rb.velocity.y > 0)
-            {
-                // add extra jump force
-                rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
-
-                // decrement extra jump timer
-                extraJumpTimer -= Time.fixedDeltaTime;
-            }
+            Jump();
         }
 
         // cut off movement when it gets too slow
@@ -111,14 +91,50 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-
+        // change color to match state
+        if(isGrounded())
+        {
+            setColor(Color.red);
+        }
+        else if(isTouchingWall())
+        {
+            setColor(Color.yellow);
+        }
+        else
+        {
+            setColor(Color.white);
+        }
     }
 
     // check if the player is currently on the ground
     public bool isGrounded()
     {
-        Debug.Log("Current velocity is " + rb.velocity);
+        int layerMask = ~(1 << 8);
 
+        // calculate corners of rectangle
+        Vector3 bottomLeft = GetComponent<BoxCollider2D>().bounds.min + Vector3.right * 0.1f;
+        Vector3 bottomRight = GetComponent<BoxCollider2D>().bounds.max + Vector3.left * 0.1f;
+        bottomRight.y = bottomLeft.y;
+
+        // draw in red or green based on whether we are grounded
+        if(Physics2D.OverlapArea(bottomLeft, bottomRight, layerMask))
+        {
+            Debug.DrawLine(bottomLeft, bottomRight, Color.green);
+
+            // reset extra jump timer
+            extraJumpTimer = movementSettings.extraJumpTime;
+            return true;
+        }
+        else
+        {
+            Debug.DrawLine(bottomLeft, bottomRight, Color.red);
+            return false;
+        }
+    }
+
+    // checks if the player is touching a wall
+    public bool isTouchingWall()
+    {
         int layerMask = ~(1 << 8);
 
         // calculate corners of rectangle
@@ -126,16 +142,61 @@ public class Player : MonoBehaviour
         Vector3 bottomRight = GetComponent<BoxCollider2D>().bounds.max;
         bottomRight.y = bottomLeft.y;
 
-        // draw in red or green based on whether we are grounded
-        if(Physics2D.OverlapArea(bottomLeft, bottomRight, layerMask))
+        // height of collider
+        float height = GetComponent<BoxCollider2D>().bounds.size.y;
+
+        bool collision = false;
+
+        // left side collision
+        if(Physics2D.OverlapArea(bottomLeft, bottomLeft + Vector3.up * height, layerMask))
         {
-            Debug.DrawLine(bottomLeft, bottomRight, Color.green);
-            return true;
+            Debug.DrawLine(bottomLeft, bottomLeft + Vector3.up * height, Color.green);
+            collision = true;
         }
         else
         {
-            Debug.DrawLine(bottomLeft, bottomRight, Color.red);
-            return false;
+            Debug.DrawLine(bottomLeft, bottomLeft + Vector3.up * height, Color.red);
+        }
+
+        // right side collision
+        if(Physics2D.OverlapArea(bottomRight, bottomRight + Vector3.up * height, layerMask))
+        {
+            Debug.DrawLine(bottomRight, bottomRight + Vector3.up * height, Color.green);
+            collision = true;
+        }
+        else
+        {
+            Debug.DrawLine(bottomRight, bottomRight + Vector3.up * height, Color.red);
+        }
+
+        return collision;
+    }
+
+    // handle jumping
+    void Jump()
+    {
+        // to make a jump the following conditions must be met
+        // the player must be on the ground
+        // the player must not be holding the jump button from a previous jump
+        // the players y velocity must be 0 (to prevent "super jumps")
+        if (isGrounded() && !jumpHeld && rb.velocity.y == 0)
+        {
+            // jump is now being held
+            jumpHeld = true;
+
+            // add the initial impulse jump force
+            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+        }
+
+        // if a jump can't be started it may be because a jump is already in progress
+        // in this case extra jump height should be applied until extra jump timer reaches 0
+        else if (extraJumpTimer > 0.0f && rb.velocity.y > 0)
+        {
+            // add extra jump force
+            rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
+
+            // decrement extra jump timer
+            extraJumpTimer -= Time.fixedDeltaTime;
         }
     }
 
@@ -152,5 +213,11 @@ public class Player : MonoBehaviour
         {
             Utils.resetPlayer();
         }
+    }
+
+    // shortcut for setting material color
+    void setColor(Color color)
+    {
+        GetComponent<MeshRenderer>().material.color = color;
     }
 }
