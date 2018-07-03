@@ -65,6 +65,12 @@ public class Player : MonoBehaviour
         if(isGrounded())
         {
             extraJumpTimer = movementSettings.extraJumpTime;
+
+            // if the jump axis is 0 a hold is over
+            if (Input.GetAxisRaw("Fire1") == 0)
+            {
+                jumpHeld = false;
+            }
         }
         // apply fake drag
         else
@@ -96,12 +102,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        // if the jump axis is 0 a hold is over
-        if(Input.GetAxisRaw("Fire1") == 0)
-        {
-            jumpHeld = false;
-        }
-
         // cut off movement when it gets too slow
         if (Mathf.Abs(rb.velocity.x) < movementSettings.movementCutoff)
         {
@@ -122,8 +122,9 @@ public class Player : MonoBehaviour
         int layerMask = ~(1 << 8);
 
         // calculate corners of rectangle
-        Vector3 bottomLeft = transform.position + Vector3.left * transform.localScale.x / 2 + Vector3.down * transform.localScale.y / 2;
-        Vector3 bottomRight = transform.position + Vector3.right * transform.localScale.x / 2 + Vector3.down * transform.localScale.y / 2;
+        Vector3 bottomLeft = GetComponent<BoxCollider2D>().bounds.min;
+        Vector3 bottomRight = GetComponent<BoxCollider2D>().bounds.max;
+        bottomRight.y = bottomLeft.y;
 
         // draw in red or green based on whether we are grounded
         if(Physics2D.OverlapArea(bottomLeft, bottomRight, layerMask))
