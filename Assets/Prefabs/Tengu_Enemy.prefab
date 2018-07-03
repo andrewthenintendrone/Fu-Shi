@@ -80,6 +80,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4849262877192700}
   - component: {fileID: 95515404268665376}
+  - component: {fileID: 114333880351555288}
+  - component: {fileID: 114023902252314764}
   m_Layer: 0
   m_Name: Tengu_Enemy
   m_TagString: Untagged
@@ -529,7 +531,7 @@ Transform:
   m_GameObject: {fileID: 1158305179570430}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -43.23939, y: 1.454494, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4525123659944506}
   - {fileID: 4825947192358968}
@@ -580,6 +582,36 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114023902252314764
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1158305179570430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64df695edf8941f4d8744741f1b369e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  damageAmt: 0
+--- !u!114 &114333880351555288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1158305179570430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd28a42556ea784ea8cf73d5206656d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  willPatrol: 0
+  moveSpd: 0
+  hangtime: 1
 --- !u!137 &137957849609779820
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
