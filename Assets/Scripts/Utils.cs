@@ -19,7 +19,10 @@ public class Utils
 
     public static void resetPlayer()
     {
-        GameObject.FindGameObjectWithTag("Player").transform.position = resetPos;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.transform.position = resetPos;
+        player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+
     }
 
     public static void updateCheckpoint(Vector3 position)
