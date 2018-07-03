@@ -6,7 +6,7 @@ public class patrolmove : MonoBehaviour
 {
     public Transform[] patrolPoints = new Transform[2];
     [Tooltip("wether the unit will patrol or not")]
-    public bool willPatrol;
+    public bool willPatrol = false;
 
    
     [Tooltip("speed of the unit as it moves on patrol")]
@@ -23,15 +23,20 @@ public class patrolmove : MonoBehaviour
     void Start()
     {
         hangcount = hangtime;
+        if (willPatrol && patrolPoints[0] == null)
+        {
+            Debug.Log("this object wants to move but has not enough patrol points");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (willPatrol)
+        if (willPatrol && patrolPoints[0])
         {
             patrol();
         }
+        
         
         countdown();
     }
