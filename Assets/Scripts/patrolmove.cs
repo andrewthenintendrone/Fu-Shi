@@ -28,7 +28,11 @@ public class patrolmove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        patrol();
+        if (willPatrol)
+        {
+            patrol();
+        }
+        
         countdown();
     }
 
