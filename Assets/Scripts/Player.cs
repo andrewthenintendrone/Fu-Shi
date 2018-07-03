@@ -92,6 +92,16 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
+
+        // flip model to match direction
+        if(rb.velocity.x > 0)
+        {
+            transform.eulerAngles = Vector3.up * 180;
+        }
+        else if(rb.velocity.x < 0)
+        {
+            transform.eulerAngles = Vector3.zero;
+        }
     }
 
     private void Update()
