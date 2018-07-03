@@ -1,9 +1,26 @@
 ﻿Shader "Unlit/ToonShader"
 {
+	// unity properties
 	Properties
 	{
-		_MainTex ("Texture", 2D) = "white" {}
+		_MainTex ("MainTex", 2D) = "white" {} // Diffuse texture
+		_Color("Color", Color) = (1, 1, 1, 1) // tint color
+		_ColorMask("ColorMask", 2D) = "black" {} // mask for tinting color
+		_Shadow("Shadow", Range(0, 1)) = 0.4 // shadow instensity
+		_outline_width("outline_width", Float) = 0.2 // outline width
+		_outline_color("outline_color", Color) = (0.5,0.5,0.5,1) // outline color
+		_BumpMap("BumpMap", 2D) = "bump" {} // bump map
+		_Cutoff("Alpha cutoff", Range(0,1)) = 0.5 // alpha cutoff
+
+												  // Blending state
+		[HideInInspector] _Mode("__mode", Float) = 0.0
+		[HideInInspector] _OutlineMode("__outline_mode", Float) = 0.0
+		[HideInInspector] _SrcBlend("__src", Float) = 1.0
+		[HideInInspector] _DstBlend("__dst", Float) = 0.0
+		[HideInInspector] _ZWrite("__zw", Float) = 1.0
 	}
+
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
@@ -11,13 +28,18 @@
 
 		Pass
 		{
+			// use forward lighting
+			Name "FORWARD"
+			Tags{ "LightMode" = "ForwardBase" }
+
+			// write to z buffer
+			Blend[_SrcBlend][_DstBlend]
+			ZWrite[_ZWrite]
+
 			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
-			
-			#include "UnityCG.cginc"
+
+			// include base toon lighting
+			#include "ToonCore.cginc"
 
 			struct appdata
 			{
