@@ -67,16 +67,14 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
 
-        // if we are on the ground reset the extra jump timer
-        if(isGrounded())
+        // if the jump axis is 0 a hold is over
+        if (Input.GetAxisRaw("Fire1") == 0)
         {
-            // if the jump axis is 0 a hold is over
-            if (Input.GetAxisRaw("Fire1") == 0)
-            {
-                jumpHeld = false;
-            }
+            jumpHeld = false;
         }
-        else
+
+        // if we are on the ground reset the extra jump timer
+        if (!isGrounded())
         {
             // apply fake drag
             rb.velocity -= Vector2.ClampMagnitude(rb.velocity, 1) * rb.drag * Time.fixedDeltaTime;
@@ -220,7 +218,7 @@ public class Player : MonoBehaviour
         // to make a wall jump the following conditions must be met
         // the player must be on the wall
         // the player must not be holding the jump button from a previous jump
-        if (wallCheck() != 0 && rb.velocity.x == 0)
+        if (wallCheck() != 0 && !jumpHeld && rb.velocity.x == 0)
         {
             // jump is now being held
             jumpHeld = true;
