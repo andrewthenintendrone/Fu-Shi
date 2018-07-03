@@ -23,6 +23,9 @@ public struct MovementSettings
     [Tooltip("extra time for held jumps")]
     public float extraJumpTime;
 
+    [Tooltip("force to apply for wall jumps")]
+    public float wallJumpForce;
+
     [Tooltip("angle for wall jumps")]
     public float wallJumpAngle;
 }
@@ -216,6 +219,7 @@ public class Player : MonoBehaviour
     {
         // to make a wall jump the following conditions must be met
         // the player must be on the wall
+        // the player must not be holding the jump button from a previous jump
         if (wallCheck() != 0 && rb.velocity.x == 0)
         {
             // jump is now being held
@@ -231,7 +235,7 @@ public class Player : MonoBehaviour
             }
 
             // add the initial impulse jump force
-            rb.AddForce(wallJumpForce * movementSettings.jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(wallJumpForce * movementSettings.wallJumpForce, ForceMode2D.Impulse);
 
             // draw wall jump angle line
             Debug.DrawLine(transform.position, transform.position + wallJumpForce, Color.magenta);
