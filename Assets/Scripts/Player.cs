@@ -22,6 +22,9 @@ public struct MovementSettings
 
     [Tooltip("extra time for held jumps")]
     public float extraJumpTime;
+
+    [Tooltip("angle for wall jumps")]
+    public float wallJumpAngle;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -80,6 +83,7 @@ public class Player : MonoBehaviour
         if (Input.GetAxisRaw("Fire1") == 1)
         {
             Jump();
+            wallJump();
         }
 
         // cut off movement when it gets too slow
@@ -96,7 +100,7 @@ public class Player : MonoBehaviour
         {
             setColor(Color.red);
         }
-        else if(isTouchingWall())
+        else if(wallCheck() != 0)
         {
             setColor(Color.yellow);
         }
@@ -133,36 +137,43 @@ public class Player : MonoBehaviour
     }
 
     // checks if the player is touching a wall
-    public bool isTouchingWall()
+    // no wall = 0
+    // left wall = 1
+    // right wall = 2
+    public int wallCheck()
     {
         int layerMask = ~(1 << 8);
 
-        // calculate corners of rectangle
-        Vector3 bottomLeft = GetComponent<BoxCollider2D>().bounds.min;
+        // calculate bottom corners of rectangle (move up to avoid detecting floor)
+        Vector3 bottomLeft = GetComponent<BoxCollider2D>().bounds.min + Vector3.up * 0.1f;
         Vector3 bottomRight = GetComponent<BoxCollider2D>().bounds.max;
         bottomRight.y = bottomLeft.y;
+
+        // offset the corners outwards (we want to detect walls that we arn't inside)
+        bottomLeft.x -= 0.1f;
+        bottomRight.x += 0.1f;
 
         // height of collider
         float height = GetComponent<BoxCollider2D>().bounds.size.y;
 
-        bool collision = false;
+        int collision = 0;
 
-        // left side collision
+        // left collision
         if(Physics2D.OverlapArea(bottomLeft, bottomLeft + Vector3.up * height, layerMask))
         {
             Debug.DrawLine(bottomLeft, bottomLeft + Vector3.up * height, Color.green);
-            collision = true;
+            collision = 1;
         }
         else
         {
             Debug.DrawLine(bottomLeft, bottomLeft + Vector3.up * height, Color.red);
         }
 
-        // right side collision
-        if(Physics2D.OverlapArea(bottomRight, bottomRight + Vector3.up * height, layerMask))
+        // right collision
+        if (Physics2D.OverlapArea(bottomRight, bottomRight + Vector3.up * height, layerMask))
         {
             Debug.DrawLine(bottomRight, bottomRight + Vector3.up * height, Color.green);
-            collision = true;
+            collision = 2;
         }
         else
         {
@@ -197,6 +208,33 @@ public class Player : MonoBehaviour
 
             // decrement extra jump timer
             extraJumpTimer -= Time.fixedDeltaTime;
+        }
+    }
+
+    // handle wall jump
+    void wallJump()
+    {
+        // to make a wall jump the following conditions must be met
+        // the player must be on the wall
+        if (wallCheck() != 0 && rb.velocity.x == 0)
+        {
+            // jump is now being held
+            jumpHeld = true;
+
+            // calculate impulse force using wall jump angle
+            Vector3 wallJumpForce = new Vector3(Mathf.Sin(-movementSettings.wallJumpAngle * Mathf.Rad2Deg), Mathf.Cos(-movementSettings.wallJumpAngle * Mathf.Deg2Rad), 0).normalized;
+
+            // if the wall is to the left flip the x
+            if(wallCheck() == 1)
+            {
+                wallJumpForce.x = -wallJumpForce.x;
+            }
+
+            // add the initial impulse jump force
+            rb.AddForce(wallJumpForce * movementSettings.jumpForce, ForceMode2D.Impulse);
+
+            // draw wall jump angle line
+            Debug.DrawLine(transform.position, transform.position + wallJumpForce, Color.magenta);
         }
     }
 
