@@ -28,6 +28,12 @@ public struct MovementSettings
 
     [Tooltip("angle for wall jumps")]
     public float wallJumpAngle;
+
+    [Tooltip("dash force")]
+    public float dashForce;
+
+    [Tooltip("dash cooldown")]
+    public float dashCooldown;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -38,6 +44,9 @@ public class Player : MonoBehaviour
 
     // timer for extra jump height
     private float extraJumpTimer;
+
+    // dash cooldown timer
+    private float dashCooldownTimer;
 
     // is the jump axis being held
     private bool jumpHeld;
@@ -87,6 +96,17 @@ public class Player : MonoBehaviour
             wallJump();
         }
 
+        // Dash if the dash button is pressed and the dash cooldown is 0
+        if(Input.GetAxisRaw("Fire2") == 1 && dashCooldownTimer == 0)
+        {
+            // reset dash cooldown timer
+            dashCooldownTimer = movementSettings.dashCooldown;
+
+            Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
+
+            rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
+        }
+
         // cut off movement when it gets too slow
         if (Mathf.Abs(rb.velocity.x) < movementSettings.movementCutoff)
         {
@@ -119,6 +139,9 @@ public class Player : MonoBehaviour
         {
             setColor(Color.white);
         }
+
+        // decrement dash cooldown timer to 0
+        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
     }
 
     // check if the player is currently on the ground
