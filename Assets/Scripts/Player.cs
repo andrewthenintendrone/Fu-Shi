@@ -43,6 +43,12 @@ public struct MovementSettings
 
     [Tooltip("dash cooldown")]
     public float dashCooldown;
+
+    [Tooltip("how much enemies will knock the player back")]
+    public float knockbackFromEnemies;
+
+    [Tooltip("How much knockback will be done to enemies")]
+    public float knockbackToEnemies;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -59,6 +65,12 @@ public class Player : MonoBehaviour
 
     // is the jump axis being held
     private bool jumpHeld;
+
+    [Tooltip("maximum health that the player can have")]
+    public int maxHealth;
+
+    [Tooltip("current health of the player")]
+    public int currentHealth;
 
     // movement settings
     public MovementSettings movementSettings;
@@ -303,6 +315,40 @@ public class Player : MonoBehaviour
         if(collision.tag == "reset")
         {
             Utils.resetPlayer();
+        }
+        // enemy
+        if (collision.name == "Tengu_Enemy")
+        {
+            // dashing
+            if(dashCooldownTimer > 0)
+            {
+                collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.ClampMagnitude(rb.velocity, 1.0f) * 10.0f, ForceMode2D.Impulse);
+
+                // damage enemy
+                collision.GetComponent<Enemy>().health--;
+
+                // enemy dies if health hits 0
+                collision.GetComponent<Enemy>().checkDead();
+            }
+            else
+            {
+                setColor(Color.blue);
+
+                // take damage
+                currentHealth--;
+
+                // knockback
+                rb.AddForce(new Vector2(-Mathf.Sign(rb.velocity.x) * movementSettings.knockbackFromEnemies, 0), ForceMode2D.Impulse);
+
+                // are we dead
+                if (currentHealth <= 0)
+                {
+                    // reset health and respawn
+                    currentHealth = maxHealth;
+                    Utils.resetPlayer();
+                }
+            }
         }
     }
 
