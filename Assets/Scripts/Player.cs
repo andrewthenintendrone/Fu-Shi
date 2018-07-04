@@ -43,6 +43,12 @@ public struct MovementSettings
 
     [Tooltip("dash cooldown")]
     public float dashCooldown;
+
+    [Tooltip("how much enemies will knock the player back")]
+    public float knockbackFromEnemies;
+
+    [Tooltip("How much knockback will be done to enemies")]
+    public float knockbackToEnemies;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -316,6 +322,9 @@ public class Player : MonoBehaviour
             // dashing
             if(dashCooldownTimer > 0)
             {
+                collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.ClampMagnitude(rb.velocity, 1.0f) * 10.0f, ForceMode2D.Impulse);
+
                 // damage enemy
                 collision.GetComponent<Enemy>().health--;
 
@@ -330,7 +339,7 @@ public class Player : MonoBehaviour
                 currentHealth--;
 
                 // knockback
-                rb.AddForce(new Vector2(-Mathf.Sign(rb.velocity.x) * 10, 0), ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(-Mathf.Sign(rb.velocity.x) * movementSettings.knockbackFromEnemies, 0), ForceMode2D.Impulse);
 
                 // are we dead
                 if (currentHealth <= 0)
