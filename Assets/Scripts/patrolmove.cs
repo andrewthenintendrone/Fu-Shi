@@ -25,7 +25,8 @@ public class patrolmove : MonoBehaviour
         hangcount = hangtime;
         if (willPatrol && patrolPoints[0] == null)
         {
-            Debug.Log("this object wants to move but has not enough patrol points");
+            
+            Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
         }
     }
 
