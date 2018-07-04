@@ -60,6 +60,12 @@ public class Player : MonoBehaviour
     // is the jump axis being held
     private bool jumpHeld;
 
+    [Tooltip("maximum health that the player can have")]
+    public int maxHealth;
+
+    [Tooltip("current health of the player")]
+    public int currentHealth;
+
     // movement settings
     public MovementSettings movementSettings;
 
@@ -303,6 +309,37 @@ public class Player : MonoBehaviour
         if(collision.tag == "reset")
         {
             Utils.resetPlayer();
+        }
+        // enemy
+        if (collision.name == "Tengu_Enemy")
+        {
+            // dashing
+            if(dashCooldownTimer > 0)
+            {
+                // damage enemy
+                collision.GetComponent<Enemy>().health--;
+
+                // enemy dies if health hits 0
+                collision.GetComponent<Enemy>().checkDead();
+            }
+            else
+            {
+                setColor(Color.blue);
+
+                // take damage
+                currentHealth--;
+
+                // knockback
+                rb.AddForce(new Vector2(-Mathf.Sign(rb.velocity.x) * 10, 0), ForceMode2D.Impulse);
+
+                // are we dead
+                if (currentHealth <= 0)
+                {
+                    // reset health and respawn
+                    currentHealth = maxHealth;
+                    Utils.resetPlayer();
+                }
+            }
         }
     }
 
