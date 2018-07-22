@@ -32,5 +32,13 @@ public class Enemy : MonoBehaviour {
         
 	}
 
+    public void checkDead()
+    {
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
 
 }
