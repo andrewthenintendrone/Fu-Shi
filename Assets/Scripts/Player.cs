@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
 
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
-        rb.drag = movementSettings.dashFriction;
+        rb.drag = movementSettings.runFriction;
     }
 
     // physics step
