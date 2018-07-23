@@ -49,7 +49,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4606991402194180}
-  - component: {fileID: 114060938913266370}
   m_Layer: 0
   m_Name: tail_dummy
   m_TagString: Untagged
@@ -130,6 +129,7 @@ GameObject:
   - component: {fileID: 50799063817762642}
   - component: {fileID: 61609759173875348}
   - component: {fileID: 114761031683056786}
+  - component: {fileID: 114751568284938548}
   m_Layer: 8
   m_Name: dummy_player
   m_TagString: Player
@@ -287,7 +287,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566868169494092}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.104, y: 1.977, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4606991402194180}
@@ -423,42 +423,54 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1565799, y: 0.72714925}
   m_EdgeRadius: 0
---- !u!114 &114060938913266370
+--- !u!114 &114751568284938548
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1204544550863430}
+  m_GameObject: {fileID: 1566868169494092}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9ac8d30c6a0d9642a11e5be4c440740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Root: {fileID: 4606991402194180}
+  m_Root: {fileID: 4253368245018722}
   m_UpdateRate: 60
   m_UpdateMode: 0
-  m_Damping: 0.1
+  m_Damping: 0.72
   m_DampingDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Elasticity: 0.1
+  m_Elasticity: 0.3
   m_ElasticityDistrib:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0.0041656494
+      value: 0.88750076
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.99993896
+      value: 0.085941315
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_Stiffness: 0.1
+    m_RotationOrder: 0
+  m_Stiffness: 0.47
   m_StiffnessDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Inert: 0
+  m_Inert: 0.67
   m_InertDistrib:
     serializedVersion: 2
     m_Curve: []
@@ -475,7 +487,7 @@ MonoBehaviour:
   m_EndLength: 0
   m_EndOffset: {x: 0, y: 0, z: 0}
   m_Gravity: {x: 0, y: 0, z: 0}
-  m_Force: {x: 0, y: 0, z: 0}
+  m_Force: {x: 0, y: -0.004, z: 0}
   m_Colliders: []
   m_Exclusions: []
   m_FreezeAxis: 0
