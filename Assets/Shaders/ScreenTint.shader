@@ -44,6 +44,8 @@
 			float4 _OuterColor;
 			float _camX;
 			float _camY;
+
+			float4 convertToGreyscale(float4 color);
 			
 			v2f vert (appdata v)
 			{
@@ -65,7 +67,13 @@
 				float distanceFromCenter = length(i.uv - center);
 
 				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
-				return canvasBlend * color;
+				return convertToGreyscale(canvasBlend) * color;
+			}
+
+			float4 convertToGreyscale(float4 color)
+			{
+				float average = (color.r + color.g + color.b) / 3.0;
+				return float4(average, average, average, 1.0);
 			}
 			ENDCG
 		}
