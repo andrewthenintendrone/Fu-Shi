@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
 
+        currentHealth = maxHealth;
         currentJumps = movementSettings.jumpCount;
     }
 
@@ -198,6 +199,7 @@ public class Player : MonoBehaviour
     }
 
     // handle jumping
+    [ContextMenu("Jump")]
     void Jump()
     {
         // to make a jump the following conditions must be met
@@ -261,10 +263,13 @@ public class Player : MonoBehaviour
             }
             else
             {
-                setColor(Color.blue);
+                if(enableDebug)
+                {
+                    setColor(Color.blue);
+                }
 
-                // take damage
-                currentHealth--;
+                // take damage from enemy
+                currentHealth -= collision.GetComponent<Enemy>().damageAmt;
 
                 // knockback
                 rb.AddForce(new Vector2(-Mathf.Sign(rb.velocity.x) * movementSettings.knockbackFromEnemies, 0), ForceMode2D.Impulse);
