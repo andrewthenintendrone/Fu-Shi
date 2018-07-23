@@ -14,9 +14,6 @@ public struct MovementSettings
     [Tooltip("how fast the player will accelerate")]
     public float acceleration;
 
-    [Tooltip("the player stops when they are moving slower than this speed")]
-    public float movementCutoff;
-
     [Tooltip("force to apply for jumps")]
     public float jumpForce;
 
@@ -82,6 +79,7 @@ public class Player : MonoBehaviour
 
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
+        rb.drag = movementSettings.dashFriction;
     }
 
     // physics step
@@ -103,6 +101,7 @@ public class Player : MonoBehaviour
         }
 
         // if we are on the ground reset the extra jump timer
+        // probably can be improved
         if (!isGrounded())
         {
             // apply fake drag
@@ -130,12 +129,6 @@ public class Player : MonoBehaviour
             Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
 
             rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
-        }
-
-        // cut off movement when it gets too slow
-        if (Mathf.Abs(rb.velocity.x) < movementSettings.movementCutoff)
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
         }
 
         // flip model to match direction
@@ -311,7 +304,7 @@ public class Player : MonoBehaviour
         {
             Utils.updateCheckpoint(collision.gameObject.transform.position);
         }
-        // sell Utils to reset the player to the last checkpoint
+        // tell Utils to reset the player to the last checkpoint
         if(collision.tag == "reset")
         {
             Utils.resetPlayer();
