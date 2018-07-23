@@ -68,6 +68,8 @@ public class Player : MonoBehaviour
     // movement settings
     public MovementSettings movementSettings;
 
+    public bool enableDebug = false;
+
     private void Start()
     {
         // initialise Utils
@@ -128,29 +130,37 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // change color to match state
-        if(isGrounded())
+        if(enableDebug)
         {
-            setColor(Color.red);
+            // change color to match state
+            if (isGrounded())
+            {
+                setColor(Color.red);
+            }
+            else if (wallCheck() != 0)
+            {
+                setColor(Color.yellow);
+            }
+            else
+            {
+                setColor(Color.white);
+            }
+
+            positions.Add(transform.position);
+
+            for (int i = 0; i < positions.Count - 1; i++)
+            {
+                Debug.DrawLine(positions[i], positions[i + 1], Color.red);
+            }
         }
-        else if(wallCheck() != 0)
+
+        if(Input.GetKeyDown(KeyCode.B))
         {
-            setColor(Color.yellow);
-        }
-        else
-        {
-            setColor(Color.white);
+            Debug.Break();
         }
 
         // decrement dash cooldown timer to 0
         dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
-
-        positions.Add(transform.position);
-
-        for(int i = 0; i < positions.Count - 1; i++)
-        {
-            Debug.DrawLine(positions[i], positions[i + 1], Color.red);
-        }
     }
 
     // check if the player is currently on the ground
