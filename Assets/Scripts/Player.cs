@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
         if (!isGrounded())
         {
             // apply fake drag
-            rb.velocity -= new Vector2(Mathf.Clamp(rb.velocity.x, -1, 1) * Mathf.Sign(rb.velocity.x) * rb.drag * Time.fixedDeltaTime, 0);
+            //rb.velocity -= new Vector2(Mathf.Clamp(rb.velocity.x, -1, 1) * Mathf.Sign(rb.velocity.x) * rb.drag * Time.fixedDeltaTime, 0);
         }
 
         // jump if the jump button is pressed
