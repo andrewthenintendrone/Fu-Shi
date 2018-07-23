@@ -6158,11 +6158,36 @@ Prefab:
     - target: {fileID: 114202054928971352, guid: b796bf4afb4fc734b8f0b53c50733145,
         type: 2}
       propertyPath: movementSettings.dashTime
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4198285044314630, guid: b796bf4afb4fc734b8f0b53c50733145, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 50544684782864780, guid: b796bf4afb4fc734b8f0b53c50733145,
+        type: 2}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50544684782864780, guid: b796bf4afb4fc734b8f0b53c50733145,
+        type: 2}
+      propertyPath: m_GravityScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114202054928971352, guid: b796bf4afb4fc734b8f0b53c50733145,
+        type: 2}
+      propertyPath: movementSettings.gravity
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114202054928971352, guid: b796bf4afb4fc734b8f0b53c50733145,
+        type: 2}
+      propertyPath: movementSettings.extraJumpTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114202054928971352, guid: b796bf4afb4fc734b8f0b53c50733145,
+        type: 2}
+      propertyPath: movementSettings.jumpForce
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b796bf4afb4fc734b8f0b53c50733145, type: 2}

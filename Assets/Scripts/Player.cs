@@ -8,10 +8,7 @@ public struct MovementSettings
     [Tooltip("maximum speed that the player can run")]
     public float maxRunSpeed;
 
-    [Tooltip("friction while running")]
-    public float runFriction;
-
-    [Tooltip("how fast the player will accelerate")]
+    [Tooltip("how fast the player will accelerate per second")]
     public float acceleration;
 
     [Tooltip("force to apply for jumps")]
@@ -32,10 +29,7 @@ public struct MovementSettings
     [Tooltip("dash force")]
     public float dashForce;
 
-    [Tooltip("friction while dashing")]
-    public float dashFriction;
-
-    [Tooltip("how long to use dash friction for after dashing")]
+    [Tooltip("how long to dash for")]
     public float dashTime;
 
     [Tooltip("dash cooldown")]
@@ -63,6 +57,8 @@ public class Player : MonoBehaviour
     // is the jump axis being held
     private bool jumpHeld;
 
+    private List<Vector2> positions = new List<Vector2>();
+
     [Tooltip("maximum health that the player can have")]
     public int maxHealth;
 
@@ -79,17 +75,16 @@ public class Player : MonoBehaviour
 
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
-        rb.drag = movementSettings.runFriction;
     }
 
     // physics step
-    void FixedUpdate ()
+    void FixedUpdate()
     {
         // read the Horizontal input
         float xAxis = Input.GetAxisRaw("Horizontal");
 
         // if absolute x velocity is lower than the maximum run speed
-        if(Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
+        if (Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
         }
@@ -98,14 +93,6 @@ public class Player : MonoBehaviour
         if (Input.GetAxisRaw("Fire1") == 0)
         {
             jumpHeld = false;
-        }
-
-        // if we are on the ground reset the extra jump timer
-        // probably can be improved
-        if (!isGrounded())
-        {
-            // apply fake drag
-            //rb.velocity -= new Vector2(Mathf.Clamp(rb.velocity.x, -1, 1) * Mathf.Sign(rb.velocity.x) * rb.drag * Time.fixedDeltaTime, 0);
         }
 
         // jump if the jump button is pressed
@@ -121,10 +108,7 @@ public class Player : MonoBehaviour
             // reset dash cooldown timer
             dashCooldownTimer = movementSettings.dashCooldown;
 
-            // set dash friction
-            rb.drag = movementSettings.dashFriction;
-
-            Invoke("setRunFriction", movementSettings.dashTime);
+            Invoke("cancelDash", movementSettings.dashTime);
 
             Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
 
@@ -160,6 +144,13 @@ public class Player : MonoBehaviour
 
         // decrement dash cooldown timer to 0
         dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
+
+        positions.Add(transform.position);
+
+        for(int i = 0; i < positions.Count - 1; i++)
+        {
+            Debug.DrawLine(positions[i], positions[i + 1], Color.red);
+        }
     }
 
     // check if the player is currently on the ground
@@ -291,11 +282,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    void setRunFriction()
-    {
-        rb.drag = movementSettings.runFriction;
-    }
-
     // called by unity when this object enters a trigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -343,6 +329,12 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    // kill dash by applying an opposite force
+    public void cancelDash()
+    {
+        rb.AddForce(Vector2.right * -rb.velocity.x * movementSettings.dashForce);
     }
 
     // shortcut for setting material color
