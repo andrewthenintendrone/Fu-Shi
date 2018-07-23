@@ -247,7 +247,7 @@ public class Player : MonoBehaviour
             Utils.resetPlayer();
         }
         // enemy
-        if (collision.name == "Tengu_Enemy")
+        if (collision.tag == "enemy")
         {
             // dashing
             if(dashCooldownTimer > 0)
