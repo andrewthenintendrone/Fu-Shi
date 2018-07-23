@@ -20,11 +20,8 @@ public struct MovementSettings
     [Tooltip("extra time for held jumps")]
     public float extraJumpTime;
 
-    [Tooltip("force to apply for wall jumps")]
-    public float wallJumpForce;
-
-    [Tooltip("angle for wall jumps")]
-    public float wallJumpAngle;
+    [Tooltip("number of jumps the player can make before touching the ground")]
+    public int jumpCount;
 
     [Tooltip("dash force")]
     public float dashForce;
@@ -57,6 +54,9 @@ public class Player : MonoBehaviour
     // is the jump axis being held
     private bool jumpHeld;
 
+    // number of jumps the player can still make
+    public int currentJumps;
+
     private List<Vector3> positions = new List<Vector3>();
 
     [Tooltip("maximum health that the player can have")]
@@ -77,6 +77,8 @@ public class Player : MonoBehaviour
 
         // store RigidBody
         rb = GetComponent<Rigidbody2D>();
+
+        currentJumps = movementSettings.jumpCount;
     }
 
     // physics step
@@ -101,7 +103,6 @@ public class Player : MonoBehaviour
         if (Input.GetAxisRaw("Fire1") == 1)
         {
             Jump();
-            wallJump();
         }
 
         // Dash if the dash button is pressed and the dash cooldown is 0
@@ -137,10 +138,6 @@ public class Player : MonoBehaviour
             {
                 setColor(Color.red);
             }
-            else if (wallCheck() != 0)
-            {
-                setColor(Color.yellow);
-            }
             else
             {
                 setColor(Color.white);
@@ -159,6 +156,11 @@ public class Player : MonoBehaviour
             Debug.Break();
         }
 
+        if (isGrounded())
+        {
+            currentJumps = movementSettings.jumpCount;
+        }
+
         // decrement dash cooldown timer to 0
         dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
     }
@@ -166,6 +168,12 @@ public class Player : MonoBehaviour
     // check if the player is currently on the ground
     public bool isGrounded()
     {
+        // we are not grounded if we are moving up
+        if(rb.velocity.y > 0)
+        {
+            return false;
+        }
+
         int layerMask = ~(1 << 8);
 
         // calculate corners of rectangle
@@ -189,67 +197,26 @@ public class Player : MonoBehaviour
         }
     }
 
-    // checks if the player is touching a wall
-    // no wall = 0
-    // left wall = 1
-    // right wall = 2
-    public int wallCheck()
-    {
-        int layerMask = ~(1 << 8);
-
-        // calculate bottom corners of rectangle (move up to avoid detecting floor)
-        Vector3 bottomLeft = GetComponent<BoxCollider2D>().bounds.min + Vector3.up * 0.1f;
-        Vector3 bottomRight = GetComponent<BoxCollider2D>().bounds.max;
-        bottomRight.y = bottomLeft.y;
-
-        // offset the corners outwards (we want to detect walls that we arn't inside)
-        bottomLeft.x -= 0.1f;
-        bottomRight.x += 0.1f;
-
-        // height of collider
-        float height = GetComponent<BoxCollider2D>().bounds.size.y;
-
-        int collision = 0;
-
-        // left collision
-        if(Physics2D.OverlapArea(bottomLeft, bottomLeft + Vector3.up * height, layerMask))
-        {
-            Debug.DrawLine(bottomLeft, bottomLeft + Vector3.up * height, Color.green);
-            collision = 1;
-        }
-        else
-        {
-            Debug.DrawLine(bottomLeft, bottomLeft + Vector3.up * height, Color.red);
-        }
-
-        // right collision
-        if (Physics2D.OverlapArea(bottomRight, bottomRight + Vector3.up * height, layerMask))
-        {
-            Debug.DrawLine(bottomRight, bottomRight + Vector3.up * height, Color.green);
-            collision = 2;
-        }
-        else
-        {
-            Debug.DrawLine(bottomRight, bottomRight + Vector3.up * height, Color.red);
-        }
-
-        return collision;
-    }
-
     // handle jumping
     void Jump()
     {
         // to make a jump the following conditions must be met
-        // the player must be on the ground
+        // the player must have at least 1 jump left
         // the player must not be holding the jump button from a previous jump
-        // the players y velocity must be 0 (to prevent "super jumps")
-        if (isGrounded() && !jumpHeld && rb.velocity.y == 0)
+        // if grounded the players y velocity must be 0 (to prevent "super jumps")
+        if (!jumpHeld)
         {
             // jump is now being held
             jumpHeld = true;
 
-            // add the initial impulse jump force
-            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            if (currentJumps > 0)
+            {
+                // "use" a jump
+                currentJumps--;
+
+                // add the initial impulse jump force
+                rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            }
         }
 
         // if a jump can't be started it may be because a jump is already in progress
@@ -261,34 +228,6 @@ public class Player : MonoBehaviour
 
             // decrement extra jump timer
             extraJumpTimer -= Time.fixedDeltaTime;
-        }
-    }
-
-    // handle wall jump
-    void wallJump()
-    {
-        // to make a wall jump the following conditions must be met
-        // the player must be on the wall
-        // the player must not be holding the jump button from a previous jump
-        if (wallCheck() != 0 && !jumpHeld && rb.velocity.x == 0)
-        {
-            // jump is now being held
-            jumpHeld = true;
-
-            // calculate impulse force using wall jump angle
-            Vector3 wallJumpForce = new Vector3(Mathf.Sin(-movementSettings.wallJumpAngle * Mathf.Rad2Deg), Mathf.Cos(-movementSettings.wallJumpAngle * Mathf.Deg2Rad), 0).normalized;
-
-            // if the wall is to the left flip the x
-            if(wallCheck() == 1)
-            {
-                wallJumpForce.x = -wallJumpForce.x;
-            }
-
-            // add the initial impulse jump force
-            rb.AddForce(wallJumpForce * movementSettings.wallJumpForce, ForceMode2D.Impulse);
-
-            // draw wall jump angle line
-            Debug.DrawLine(transform.position, transform.position + wallJumpForce, Color.magenta);
         }
     }
 
