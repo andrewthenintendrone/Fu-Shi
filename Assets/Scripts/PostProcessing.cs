@@ -19,6 +19,9 @@ public class PostProcessing : MonoBehaviour
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
+        effectMaterial.SetFloat("_camX", transform.position.x);
+        effectMaterial.SetFloat("_camY", transform.position.y);
+
         int width = source.width >> DownRes;
         int height = source.height >> DownRes;
 
