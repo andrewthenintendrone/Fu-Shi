@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     // is the jump axis being held
     private bool jumpHeld;
 
-    private List<Vector2> positions = new List<Vector2>();
+    private List<Vector3> positions = new List<Vector3>();
 
     [Tooltip("maximum health that the player can have")]
     public int maxHealth;
