@@ -70,6 +70,13 @@ public class Player : MonoBehaviour
 
     public bool enableDebug = false;
 
+    public enum animationState
+    {
+        IDLE,
+        RUN,
+        DASH
+    }
+
     private void Start()
     {
         // initialise Utils
