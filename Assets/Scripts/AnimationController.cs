@@ -33,7 +33,7 @@ public class AnimationController : MonoBehaviour {
         {
             player.animationState = Player.AnimationState.IDLE;
             animator.SetTrigger("dash");
-            Debug.Log("dash triggered");
+
         }
     }
 
