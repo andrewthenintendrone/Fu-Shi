@@ -102,12 +102,6 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.right * Input.GetAxisRaw("Horizontal") * movementSettings.acceleration);
         }
 
-        // if the jump axis is 0 a hold is over
-        if (Input.GetAxisRaw("Fire1") == 0)
-        {
-            jumpHeld = false;
-        }
-
         // flip model to match direction
         if (rb.velocity.x > 0.1)
         {
@@ -140,6 +134,12 @@ public class Player : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        // if the jump axis is 0 a hold is over
+        if (Input.GetAxisRaw("Fire1") == 0)
+        {
+            jumpHeld = false;
         }
     }
 
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
     private void Idle()
     {
         // left / right input
-        if(Input.GetAxisRaw("Horizontal") != 0)
+        if(Mathf.Abs(rb.velocity.x) > 0)
         {
             // transition to run state
             animationState = AnimationState.RUN;
@@ -188,8 +188,9 @@ public class Player : MonoBehaviour
         }
 
         // jump input when jumps are more than 0
-        if(Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
+        if(Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0 && rb.velocity.y == 0)
         {
+            Debug.Log("from Idle");
             jumpHeld = true;
 
             // first jump
@@ -225,13 +226,22 @@ public class Player : MonoBehaviour
         // jump input when jumps are more than 0
         if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
         {
+            Debug.Log("from Run");
             jumpHeld = true;
 
             // first jump
             rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
-            animationState = AnimationState.JUMP;
 
             currentJumps--;
+
+            if (currentJumps < movementSettings.jumpCount - 1)
+            {
+                animationState = AnimationState.DOUBLEJUMP;
+            }
+            else
+            {
+                animationState = AnimationState.JUMP;
+            }
         }
 
         // dash input
@@ -271,6 +281,7 @@ public class Player : MonoBehaviour
     {
         if(Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
         {
+            Debug.Log("from Jump");
             // add the double jump force
             rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
             animationState = AnimationState.DOUBLEJUMP;
@@ -317,6 +328,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
         {
+            Debug.Log("from double Jump");
             // add the double jump force
             rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
             animationState = AnimationState.DOUBLEJUMP;
@@ -446,7 +458,7 @@ public class Player : MonoBehaviour
     public void cancelDash()
     {
         rb.AddForce(Vector2.right * -rb.velocity.x * movementSettings.dashForce);
-        animationState = AnimationState.RUN;
+        animationState = AnimationState.IDLE;
     }
 
     // shortcut for setting material color
