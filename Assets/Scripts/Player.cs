@@ -174,6 +174,11 @@ public class Player : MonoBehaviour
         {
             currentJumps = movementSettings.jumpCount;
         }
+
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            Utils.Exit();
+        }
     }
 
     // the player is Idle

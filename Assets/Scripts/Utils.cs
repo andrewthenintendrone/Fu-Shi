@@ -30,5 +30,10 @@ public class Utils
         resetPos = position;
     }
 
+    public static void Exit()
+    {
+        Application.Quit();
+    }
+
 
 }
