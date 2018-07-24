@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class patrolmove : MonoBehaviour
 {
-    //public Transform[] patrolPoints = new Transform[2];
-    public List<Vector2> patrolPoints = new List<Vector2>();
-    //[Tooltip("wether the unit will patrol or not")]
-    //public bool willPatrol = false;
-    private bool willPatrol;
+    public Transform[] patrolPoints = new Transform[2];
+    [Tooltip("wether the unit will patrol or not")]
+    public bool willPatrol = false;
+
    
     [Tooltip("speed of the unit as it moves on patrol")]
     public float moveSpd;
@@ -24,23 +23,9 @@ public class patrolmove : MonoBehaviour
     void Start()
     {
         hangcount = hangtime;
-
-        // attempt to find patrol points (parented to the same object as this)
-        Transform[] children = transform.parent.GetComponentsInChildren<Transform>();
-        foreach (Transform child in children)
+        if (willPatrol && patrolPoints[0] == null)
         {
-            // the platform itself is not a waypoint add it to the list
-            if(child != transform.parent && child != this.transform && child.parent != this.transform)
-            {
-                patrolPoints.Add(child.position);
-            }
-        }
-
-        // the object will patrol if there are patrol points
-        willPatrol = (patrolPoints.Count > 0);
-
-        if (!willPatrol)
-        {
+            
             Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
         }
     }
@@ -48,7 +33,7 @@ public class patrolmove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (willPatrol)
+        if (willPatrol && patrolPoints[0])
         {
             patrol();
         }
@@ -59,19 +44,19 @@ public class patrolmove : MonoBehaviour
 
     private void patrol()
     {
+
         Vector3 target;
         float distanceCutoff = 0.05f;
-
         if (currPatrolPoint == 0)
         {
-            target = patrolPoints[0];
+            target = patrolPoints[0].position;
         }
         else
         {
-            target = patrolPoints[1];
+            target = patrolPoints[1].position;
         }
-
         //check distance to nearest patrol point
+
         float distCheck = (transform.position - target).magnitude;
         if (distCheck <= distanceCutoff)
         {
