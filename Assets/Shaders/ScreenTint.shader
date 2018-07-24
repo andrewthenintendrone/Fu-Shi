@@ -7,6 +7,7 @@
 		_Power("Power", Range(0, 1)) = 0.5
 		_InnerColor("Inner Color", Color) = (1, 1, 1, 1)
 		_OuterColor("Outer Color", Color) = (1, 1, 1, 1)
+		_SplitCount("Split Count", Float) = 1.0
 	}
 	SubShader
 	{
@@ -44,6 +45,7 @@
 			float4 _OuterColor;
 			float _camX;
 			float _camY;
+			float _SplitCount;
 
 			float4 convertToGreyscale(float4 color);
 			
@@ -73,6 +75,22 @@
 			float4 convertToGreyscale(float4 color)
 			{
 				float average = (color.r + color.g + color.b) / 3.0;
+				
+				if (average > 0.6)
+				{
+					average = 1.0;
+				}
+				else if(average < 0.4)
+				{
+					average = 0.0;
+				}
+				else
+				{
+					average = 0.5;
+				}
+
+				average *= 2;
+
 				return float4(average, average, average, 1.0);
 			}
 			ENDCG
