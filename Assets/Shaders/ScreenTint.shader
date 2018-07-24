@@ -76,20 +76,14 @@
 			{
 				float average = (color.r + color.g + color.b) / 3.0;
 				
-				if (average > 0.6)
+				if (average > 0.5)
 				{
 					average = 1.0;
 				}
-				else if(average < 0.4)
+				else
 				{
 					average = 0.0;
 				}
-				else
-				{
-					average = 0.5;
-				}
-
-				average *= 2;
 
 				return float4(average, average, average, 1.0);
 			}

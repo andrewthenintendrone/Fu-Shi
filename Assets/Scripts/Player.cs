@@ -96,13 +96,10 @@ public class Player : MonoBehaviour
     // physics step
     void FixedUpdate()
     {
-        // read the Horizontal input
-        float xAxis = Input.GetAxisRaw("Horizontal");
-
-        // if absolute x velocity is lower than the maximum run speed
+        // acclerate up to the maximum speed
         if (Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
-            rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
+            rb.AddForce(Vector2.right * Input.GetAxisRaw("Horizontal") * movementSettings.acceleration);
         }
 
         // if the jump axis is 0 a hold is over
@@ -111,49 +108,39 @@ public class Player : MonoBehaviour
             jumpHeld = false;
         }
 
-        // jump if the jump button is pressed
-        if (Input.GetAxisRaw("Fire1") == 1)
-        {
-            Jump();
-        }
-
-        // Dash if the dash button is pressed and the dash cooldown is 0
-        if (Input.GetAxisRaw("Fire2") == 1 && dashCooldownTimer == 0)
-        {
-            // reset dash cooldown timer
-            dashCooldownTimer = movementSettings.dashCooldown;
-
-            Invoke("cancelDash", movementSettings.dashTime);
-
-            Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
-
-            rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
-
-            animationState = AnimationState.DASH;
-            //Debug.Break();
-        }
-
         // flip model to match direction
         if (rb.velocity.x > 0.1)
         {
             transform.eulerAngles = Vector3.up * 180;
-            if(animationState != AnimationState.DASH && animationState != AnimationState.JUMP && animationState != AnimationState.DOUBLEJUMP)
-                animationState = AnimationState.RUN;
         }
         else if (rb.velocity.x < -0.1)
         {
             transform.eulerAngles = Vector3.zero;
-            if (animationState != AnimationState.DASH && animationState != AnimationState.JUMP && animationState != AnimationState.DOUBLEJUMP)
-                animationState = AnimationState.RUN;
-        }
-
-        if(rb.velocity.magnitude < 0.1f)
-        {
-            animationState = AnimationState.IDLE;
         }
 
         // decrement dash cooldown timer to 0
-        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.fixedDeltaTime);
+        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
+
+        switch(animationState)
+        {
+            case AnimationState.IDLE:
+                Idle();
+                break;
+            case AnimationState.RUN:
+                Run();
+                break;
+            case AnimationState.DASH:
+                Dash();
+                break;
+            case AnimationState.JUMP:
+                Jump();
+                break;
+            case AnimationState.DOUBLEJUMP:
+                DoubleJump();
+                break;
+            default:
+                break;
+        }
     }
 
     private void Update()
@@ -189,6 +176,188 @@ public class Player : MonoBehaviour
         }
     }
 
+    // the player is Idle
+    private void Idle()
+    {
+        // left / right input
+        if(Input.GetAxisRaw("Horizontal") != 0)
+        {
+            // transition to run state
+            animationState = AnimationState.RUN;
+            return;
+        }
+
+        // jump input when jumps are more than 0
+        if(Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
+        {
+            jumpHeld = true;
+
+            // first jump
+            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            animationState = AnimationState.JUMP;
+
+            currentJumps--;
+        }
+
+        // dash input
+        if(Input.GetAxisRaw("Fire2") == 1)
+        {
+            if(dashCooldownTimer == 0)
+            {
+                animationState = AnimationState.DASH;
+
+                // reset dash cooldown timer
+                dashCooldownTimer = movementSettings.dashCooldown;
+
+                // return from 
+                Invoke("cancelDash", movementSettings.dashTime);
+
+                Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
+
+                rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
+            }
+        }
+    }
+
+    // the player is running
+    private void Run()
+    {
+        // jump input when jumps are more than 0
+        if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
+        {
+            jumpHeld = true;
+
+            // first jump
+            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            animationState = AnimationState.JUMP;
+
+            currentJumps--;
+        }
+
+        // dash input
+        if (Input.GetAxisRaw("Fire2") == 1)
+        {
+            if (dashCooldownTimer == 0)
+            {
+                animationState = AnimationState.DASH;
+
+                // reset dash cooldown timer
+                dashCooldownTimer = movementSettings.dashCooldown;
+
+                // return from 
+                Invoke("cancelDash", movementSettings.dashTime);
+
+                Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
+
+                rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
+            }
+        }
+
+        // transition back to idle when velocity becomes low enough
+        if (Mathf.Abs(rb.velocity.x) < 0.1f)
+        {
+            animationState = AnimationState.IDLE;
+        }
+    }
+
+    // the player is dashing
+    private void Dash()
+    {
+
+    }
+
+    // the player is jumping
+    void Jump()
+    {
+        if(Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
+        {
+            // add the double jump force
+            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            animationState = AnimationState.DOUBLEJUMP;
+            currentJumps--;
+        }
+
+        // apply extra jump force
+        if (extraJumpTimer > 0.0f && rb.velocity.y > 0)
+        {
+            rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
+
+            // decrement extra jump timer
+            extraJumpTimer = Mathf.Max(0.0f, extraJumpTimer - Time.fixedDeltaTime);
+        }
+
+        // dash input
+        if (Input.GetAxisRaw("Fire2") == 1)
+        {
+            if (dashCooldownTimer == 0)
+            {
+                animationState = AnimationState.DASH;
+
+                // reset dash cooldown timer
+                dashCooldownTimer = movementSettings.dashCooldown;
+
+                // return from 
+                Invoke("cancelDash", movementSettings.dashTime);
+
+                Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
+
+                rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
+            }
+        }
+
+        // transition back to idle
+        if (isGrounded())
+        {
+            animationState = AnimationState.IDLE;
+        }
+    }
+
+    // the player is double jumping
+    void DoubleJump()
+    {
+        if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
+        {
+            // add the double jump force
+            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            animationState = AnimationState.DOUBLEJUMP;
+            currentJumps--;
+        }
+
+        // apply extra jump force
+        if (extraJumpTimer > 0 && rb.velocity.y > 0)
+        {
+            rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
+
+            // decrement extra jump timer
+            extraJumpTimer = Mathf.Max(0.0f, extraJumpTimer - Time.fixedDeltaTime);
+        }
+
+        // dash input
+        if (Input.GetAxisRaw("Fire2") == 1)
+        {
+            if (dashCooldownTimer == 0)
+            {
+                animationState = AnimationState.DASH;
+
+                // reset dash cooldown timer
+                dashCooldownTimer = movementSettings.dashCooldown;
+
+                // return from 
+                Invoke("cancelDash", movementSettings.dashTime);
+
+                Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
+
+                rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
+            }
+        }
+
+        // transition back to idle
+        if (isGrounded())
+        {
+            animationState = AnimationState.IDLE;
+        }
+    }
+
     // check if the player is currently on the ground
     public bool isGrounded()
     {
@@ -212,54 +381,13 @@ public class Player : MonoBehaviour
 
             // reset extra jump timer
             extraJumpTimer = movementSettings.extraJumpTime;
+
             return true;
         }
         else
         {
             Debug.DrawLine(bottomLeft, bottomRight, Color.red);
             return false;
-        }
-    }
-
-    // handle jumping
-    [ContextMenu("Jump")]
-    void Jump()
-    {
-        // to make a jump the following conditions must be met
-        // the player must have at least 1 jump left
-        // the player must not be holding the jump button from a previous jump
-        // if grounded the players y velocity must be 0 (to prevent "super jumps")
-        if (!jumpHeld)
-        {
-            // jump is now being held
-            jumpHeld = true;
-
-            if (currentJumps > 0)
-            {
-                // "use" a jump
-                currentJumps--;
-
-                // add the initial impulse jump force
-                rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
-                animationState = AnimationState.JUMP;
-
-                // this is a double jump
-                if(currentJumps < movementSettings.jumpCount - 1)
-                {
-                    animationState = AnimationState.DOUBLEJUMP;
-                }
-            }
-        }
-
-        // if a jump can't be started it may be because a jump is already in progress
-        // in this case extra jump height should be applied until extra jump timer reaches 0
-        else if (extraJumpTimer > 0.0f && rb.velocity.y > 0)
-        {
-            // add extra jump force
-            rb.AddForce(Vector3.up * movementSettings.extraJumpForce, ForceMode2D.Force);
-
-            // decrement extra jump timer
-            extraJumpTimer -= Time.fixedDeltaTime;
         }
     }
 
@@ -319,12 +447,12 @@ public class Player : MonoBehaviour
     public void cancelDash()
     {
         rb.AddForce(Vector2.right * -rb.velocity.x * movementSettings.dashForce);
-        animationState = AnimationState.IDLE;
+        animationState = AnimationState.RUN;
     }
 
     // shortcut for setting material color
     void setColor(Color color)
     {
-        GetComponent<MeshRenderer>().material.color = color;
+        GetComponentInChildren<SkinnedMeshRenderer>().material.color = color;
     }
 }
