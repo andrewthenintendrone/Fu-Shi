@@ -26,12 +26,13 @@ public class patrolmove : MonoBehaviour
         hangcount = hangtime;
 
         // attempt to find patrol points (parented to the same object as this)
-        foreach (Transform currentTransform in transform.parent.GetComponentsInChildren<Transform>())
+        Transform[] children = transform.parent.GetComponentsInChildren<Transform>();
+        foreach (Transform child in children)
         {
             // the platform itself is not a waypoint add it to the list
-            if(currentTransform != transform.parent && currentTransform != this.transform && currentTransform.parent != this.transform)
+            if(child != transform.parent && child != this.transform && child.parent != this.transform)
             {
-                patrolPoints.Add(currentTransform.position);
+                patrolPoints.Add(child.position);
             }
         }
 

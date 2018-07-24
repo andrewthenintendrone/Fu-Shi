@@ -70,12 +70,15 @@ public class Player : MonoBehaviour
 
     public bool enableDebug = false;
 
-    public enum animationState
+    public enum AnimationState
     {
         IDLE,
         RUN,
-        DASH
+        DASH,
+        JUMP
     }
+
+    public AnimationState animationState;
 
     private void Start()
     {
@@ -99,6 +102,7 @@ public class Player : MonoBehaviour
         if (Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
+            animationState = AnimationState.RUN;
         }
 
         // if the jump axis is 0 a hold is over
@@ -114,7 +118,7 @@ public class Player : MonoBehaviour
         }
 
         // Dash if the dash button is pressed and the dash cooldown is 0
-        if(Input.GetAxisRaw("Fire2") == 1 && dashCooldownTimer == 0)
+        if (Input.GetAxisRaw("Fire2") == 1 && dashCooldownTimer == 0)
         {
             // reset dash cooldown timer
             dashCooldownTimer = movementSettings.dashCooldown;
@@ -127,13 +131,18 @@ public class Player : MonoBehaviour
         }
 
         // flip model to match direction
-        if(rb.velocity.x > 0.1)
+        if (rb.velocity.x > 0.1)
         {
             transform.eulerAngles = Vector3.up * 180;
         }
-        else if(rb.velocity.x < -0.1)
+        else if (rb.velocity.x < -0.1)
         {
             transform.eulerAngles = Vector3.zero;
+        }
+
+        if(rb.velocity.magnitude < 0.1f)
+        {
+            animationState = AnimationState.IDLE;
         }
     }
 
@@ -225,6 +234,7 @@ public class Player : MonoBehaviour
 
                 // add the initial impulse jump force
                 rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+                animationState = AnimationState.JUMP;
             }
         }
 
