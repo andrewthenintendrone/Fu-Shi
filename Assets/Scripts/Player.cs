@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
         JUMP
     }
 
-    public AnimationState animationState;
+    public AnimationState animationState = AnimationState.IDLE;
 
     private void Start()
     {
@@ -102,7 +102,6 @@ public class Player : MonoBehaviour
         if (Mathf.Abs(rb.velocity.x) < movementSettings.maxRunSpeed)
         {
             rb.AddForce(Vector2.right * xAxis * movementSettings.acceleration);
-            animationState = AnimationState.RUN;
         }
 
         // if the jump axis is 0 a hold is over
@@ -128,22 +127,32 @@ public class Player : MonoBehaviour
             Vector3 dashDirection = Vector3.right * -Mathf.Sign(transform.right.x);
 
             rb.AddForce(dashDirection * movementSettings.dashForce, ForceMode2D.Impulse);
+
+            animationState = AnimationState.DASH;
+            //Debug.Break();
         }
 
         // flip model to match direction
         if (rb.velocity.x > 0.1)
         {
             transform.eulerAngles = Vector3.up * 180;
+            if(animationState != AnimationState.DASH)
+                animationState = AnimationState.RUN;
         }
         else if (rb.velocity.x < -0.1)
         {
             transform.eulerAngles = Vector3.zero;
+            if (animationState != AnimationState.DASH)
+                animationState = AnimationState.RUN;
         }
 
         if(rb.velocity.magnitude < 0.1f)
         {
             animationState = AnimationState.IDLE;
         }
+
+        // decrement dash cooldown timer to 0
+        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.fixedDeltaTime);
     }
 
     private void Update()
@@ -177,9 +186,6 @@ public class Player : MonoBehaviour
         {
             currentJumps = movementSettings.jumpCount;
         }
-
-        // decrement dash cooldown timer to 0
-        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
     }
 
     // check if the player is currently on the ground
@@ -306,6 +312,7 @@ public class Player : MonoBehaviour
     public void cancelDash()
     {
         rb.AddForce(Vector2.right * -rb.velocity.x * movementSettings.dashForce);
+        animationState = AnimationState.IDLE;
     }
 
     // shortcut for setting material color
