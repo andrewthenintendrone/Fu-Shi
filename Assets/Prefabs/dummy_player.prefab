@@ -1312,22 +1312,28 @@ MonoBehaviour:
   m_Root: {fileID: 4599907709383632}
   m_UpdateRate: 60
   m_UpdateMode: 0
-  m_Damping: 0.72
+  m_Damping: 0.78
   m_DampingDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Elasticity: 0.3
+  m_Elasticity: 0.656
   m_ElasticityDistrib:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
-      time: 0.0041656494
-      value: 0.88750076
-      inSlope: 0
-      outSlope: 0
+      time: 0.017749848
+      value: 0.24502686
+      inSlope: 0.06435694
+      outSlope: 0.06435694
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.76884794
+      value: 0.1986787
+      inSlope: -0.25972724
+      outSlope: -0.25972724
       tangentMode: 0
     - serializedVersion: 2
       time: 0.99993896
@@ -1338,14 +1344,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  m_Stiffness: 0.47
+  m_Stiffness: 0.743
   m_StiffnessDistrib:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0.004322052
+      value: 0.74863386
+      inSlope: 0.5089523
+      outSlope: 0.5089523
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.9916687
+      value: 0.018749237
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_Inert: 0.67
+    m_RotationOrder: 0
+  m_Inert: 0.538
   m_InertDistrib:
     serializedVersion: 2
     m_Curve: []
