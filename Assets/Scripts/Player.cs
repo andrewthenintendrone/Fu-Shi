@@ -381,7 +381,6 @@ public class Player : MonoBehaviour
 
             // reset extra jump timer
             extraJumpTimer = movementSettings.extraJumpTime;
-
             return true;
         }
         else

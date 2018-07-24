@@ -69,21 +69,17 @@
 				float distanceFromCenter = length(i.uv - center);
 
 				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
+
+				if (render.r >= 0.6)
+				{
+					return canvasBlend * color;
+				}
 				return convertToGreyscale(canvasBlend) * color;
 			}
 
 			float4 convertToGreyscale(float4 color)
 			{
 				float average = (color.r + color.g + color.b) / 3.0;
-				
-				if (average > 0.5)
-				{
-					average = 1.0;
-				}
-				else
-				{
-					average = 0.0;
-				}
 
 				return float4(average, average, average, 1.0);
 			}
