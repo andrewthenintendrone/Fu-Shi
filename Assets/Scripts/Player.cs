@@ -75,7 +75,8 @@ public class Player : MonoBehaviour
         IDLE,
         RUN,
         DASH,
-        JUMP
+        JUMP,
+        DOUBLEJUMP
     }
 
     public AnimationState animationState = AnimationState.IDLE;
@@ -136,13 +137,13 @@ public class Player : MonoBehaviour
         if (rb.velocity.x > 0.1)
         {
             transform.eulerAngles = Vector3.up * 180;
-            if(animationState != AnimationState.DASH)
+            if(animationState != AnimationState.DASH && animationState != AnimationState.JUMP && animationState != AnimationState.DOUBLEJUMP)
                 animationState = AnimationState.RUN;
         }
         else if (rb.velocity.x < -0.1)
         {
             transform.eulerAngles = Vector3.zero;
-            if (animationState != AnimationState.DASH)
+            if (animationState != AnimationState.DASH && animationState != AnimationState.JUMP && animationState != AnimationState.DOUBLEJUMP)
                 animationState = AnimationState.RUN;
         }
 
@@ -241,6 +242,12 @@ public class Player : MonoBehaviour
                 // add the initial impulse jump force
                 rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
                 animationState = AnimationState.JUMP;
+
+                // this is a double jump
+                if(currentJumps < movementSettings.jumpCount - 1)
+                {
+                    animationState = AnimationState.DOUBLEJUMP;
+                }
             }
         }
 
