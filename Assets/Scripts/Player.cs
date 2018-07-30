@@ -181,6 +181,8 @@ public class Player : MonoBehaviour
             }
 
             currentJumps--;
+            // cancel y momentum
+            rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
         }
     }
