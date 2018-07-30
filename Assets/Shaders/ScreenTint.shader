@@ -7,7 +7,7 @@
 		_Power("Power", Range(0, 1)) = 0.5
 		_InnerColor("Inner Color", Color) = (1, 1, 1, 1)
 		_OuterColor("Outer Color", Color) = (1, 1, 1, 1)
-		_SplitCount("Split Count", Float) = 1.0
+		_GradientTexture("Gradient Texture", 2D) = "white" {}
 	}
 	SubShader
 	{
@@ -45,7 +45,7 @@
 			float4 _OuterColor;
 			float _camX;
 			float _camY;
-			float _SplitCount;
+			sampler2D _GradientTexture;
 
 			float4 convertToGreyscale(float4 color);
 			
@@ -74,14 +74,17 @@
 				{
 					return canvasBlend * color;
 				}
-				return convertToGreyscale(canvasBlend) * color;
+				return convertToGreyscale(render) * color * canvas;
 			}
 
 			float4 convertToGreyscale(float4 color)
 			{
 				float average = (color.r + color.g + color.b) / 3.0;
 
-				return float4(average, average, average, 1.0);
+				// sample from gradient texture at that x coordinate
+				float4 shade = tex2D(_GradientTexture, float2(average, 0));
+
+				return shade;
 			}
 			ENDCG
 		}

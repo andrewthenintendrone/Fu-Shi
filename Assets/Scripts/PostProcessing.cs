@@ -12,6 +12,27 @@ public class PostProcessing : MonoBehaviour
     [Range(0, 4)]
     public int DownRes;
 
+    // gradient testing
+    public Gradient shaderGradient;
+    public Texture2D gradTex;
+
+    private void OnEnable()
+    {
+        // create gradient texture
+        gradTex = new Texture2D(256, 1);
+
+        List<Color> gradColors = new List<Color>();
+
+        for (float i = 0.0f; i < 1.0f; i += 1.0f / 256.0f)
+        {
+            gradColors.Add(shaderGradient.Evaluate(i));
+        }
+
+        gradTex.SetPixels(gradColors.ToArray());
+
+        effectMaterial.SetTexture("_GradientTexture", gradTex);
+    }
+
     void Start()
     {
         GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
