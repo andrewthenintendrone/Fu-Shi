@@ -166,24 +166,27 @@ public class Player : MonoBehaviour
         }
 
         // jump input when jumps are more than 0
-        if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld && currentJumps > 0)
+        if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld)
         {
             jumpHeld = true;
 
-            // jump
-            if(currentJumps == movementSettings.jumpCount)
+            if(currentJumps > 0)
             {
-                animationState = AnimationState.JUMP;
-            }
-            else
-            {
-                animationState = AnimationState.DOUBLEJUMP;
-            }
+                // jump
+                if (currentJumps == movementSettings.jumpCount)
+                {
+                    animationState = AnimationState.JUMP;
+                }
+                else
+                {
+                    animationState = AnimationState.DOUBLEJUMP;
+                }
 
-            currentJumps--;
-            // cancel y momentum
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+                currentJumps--;
+                // cancel y momentum
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
+            }
         }
     }
 
