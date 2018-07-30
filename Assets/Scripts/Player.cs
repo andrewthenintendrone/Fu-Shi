@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
     // number of jumps the player can still make
     public int currentJumps;
 
+    private TrailRenderer thinTrail;
+    private TrailRenderer thickTrail;
+
     private List<Vector3> positions = new List<Vector3>();
 
     [Tooltip("maximum health that the player can have")]
@@ -92,6 +95,19 @@ public class Player : MonoBehaviour
 
         currentHealth = maxHealth;
         currentJumps = movementSettings.jumpCount;
+
+        // find thin and thick trails
+        foreach(Transform child in GetComponentsInChildren<Transform>())
+        {
+            if(child.name == "thin trail")
+            {
+                thinTrail = child.gameObject.GetComponent<TrailRenderer>();
+            }
+            else if (child.name == "thick trail")
+            {
+                thickTrail = child.gameObject.GetComponent<TrailRenderer>();
+            }
+        }
     }
 
     // physics step
@@ -188,13 +204,13 @@ public class Player : MonoBehaviour
                 rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
             }
         }
+
+        // decrement dash cooldown timer to 0
+        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.fixedDeltaTime);
     }
 
     private void Update()
     {
-        // decrement dash cooldown timer to 0
-        dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.deltaTime);
-
         if (enableDebug)
         {
             // change color to match state
@@ -218,6 +234,18 @@ public class Player : MonoBehaviour
             {
                 Debug.Break();
             }
+        }
+
+        // enable / disbale trail
+        if(animationState == AnimationState.DASH)
+        {
+            thickTrail.enabled = true;
+            thinTrail.enabled = false;
+        }
+        else
+        {
+            thickTrail.enabled = false;
+            thinTrail.enabled = true;
         }
 
         if (Input.GetKey(KeyCode.Escape))
