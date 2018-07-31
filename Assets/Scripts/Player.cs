@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// movement settings struct
 [System.Serializable]
 public struct MovementSettings
 {
@@ -39,6 +40,7 @@ public struct MovementSettings
     public float knockbackToEnemies;
 }
 
+// player requires a RigidBody2D component
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
@@ -57,9 +59,11 @@ public class Player : MonoBehaviour
     // number of jumps the player can still make
     public int currentJumps;
 
+    // trail renderers
     private TrailRenderer thinTrail;
     private TrailRenderer thickTrail;
 
+    // list of previous positions for debugging
     private List<Vector3> positions = new List<Vector3>();
 
     [Tooltip("maximum health that the player can have")]
@@ -71,8 +75,10 @@ public class Player : MonoBehaviour
     // movement settings
     public MovementSettings movementSettings;
 
+    [Tooltip("enable debugging functions")]
     public bool enableDebug = false;
 
+    // AnimationState enum
     public enum AnimationState
     {
         IDLE,
@@ -82,23 +88,27 @@ public class Player : MonoBehaviour
         DOUBLEJUMP
     }
 
+    [Tooltip("current animation state")]
     public AnimationState animationState = AnimationState.IDLE;
 
+    // called once on the first frame this script exists
     private void Start()
     {
         // initialise Utils
         Utils.Init();
 
-        // store RigidBody
+        // store a reference to the RigidBody2D component and set its velocity to zero
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = Vector2.zero;
 
+        // set the current health and current jums to thier maximum values
         currentHealth = maxHealth;
         currentJumps = movementSettings.jumpCount;
 
-        // find thin and thick trails
+        // store references to the thin and thick trail renderers
         foreach(Transform child in GetComponentsInChildren<Transform>())
         {
+            // TODO: make this less bad
             if(child.name == "thin trail")
             {
                 thinTrail = child.gameObject.GetComponent<TrailRenderer>();
@@ -110,7 +120,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // physics step
+    // called once per physics step (faster than frame rate)
     void FixedUpdate()
     {
         // branch based on current state (state machine)
@@ -141,7 +151,7 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.right * Input.GetAxisRaw("Horizontal") * movementSettings.acceleration);
         }
 
-        // flip model to match direction
+        // flip the player model to match the direction of the players velocity
         if (rb.velocity.x > 0.1f)
         {
             transform.eulerAngles = Vector3.up * 180;
@@ -169,26 +179,29 @@ public class Player : MonoBehaviour
             animationState = AnimationState.DASH;
         }
 
+        // reset extra jump timer and current number of jumps when on the ground
         if(isGrounded())
         {
             extraJumpTimer = movementSettings.extraJumpTime;
             currentJumps = movementSettings.jumpCount;
         }
 
-        // if the jump axis is 0 a hold is over
+        // if the jump axis is 0 jumpHeld becomes false
         if (Input.GetAxisRaw("Fire1") == 0)
         {
             jumpHeld = false;
         }
 
-        // jump input when jumps are more than 0
+        // jump input
         if (Input.GetAxisRaw("Fire1") == 1 && !jumpHeld)
         {
+            // jump is now being held
             jumpHeld = true;
 
+            // if the player still has jumps left
             if(currentJumps > 0)
             {
-                // jump
+                // jump / double jump
                 if (currentJumps == movementSettings.jumpCount)
                 {
                     animationState = AnimationState.JUMP;
@@ -198,9 +211,13 @@ public class Player : MonoBehaviour
                     animationState = AnimationState.DOUBLEJUMP;
                 }
 
+                // subtract a jump
                 currentJumps--;
-                // cancel y momentum
+
+                // cancel y momentum to ensure all jumps are the same height
                 rb.velocity = new Vector2(rb.velocity.x, 0);
+
+                // add impulse force upwards
                 rb.AddForce(Vector3.up * movementSettings.jumpForce, ForceMode2D.Impulse);
             }
         }
@@ -209,35 +226,61 @@ public class Player : MonoBehaviour
         dashCooldownTimer = Mathf.Max(0, dashCooldownTimer - Time.fixedDeltaTime);
     }
 
+    // called once per frame
     private void Update()
     {
+        // show debug info (if enabled)
         if (enableDebug)
         {
             // change color to match state
-            if (isGrounded())
+            switch(animationState)
             {
-                setColor(Color.red);
-            }
-            else
-            {
-                setColor(Color.white);
+                case AnimationState.IDLE:
+                    setColor(Color.white);
+                    break;
+                case AnimationState.RUN:
+                    setColor(Color.green);
+                    break;
+                case AnimationState.DASH:
+                    setColor(Color.blue);
+                    break;
+                case AnimationState.JUMP:
+                    setColor(Color.yellow);
+                    break;
+                case AnimationState.DOUBLEJUMP:
+                    setColor(Color.cyan);
+                    break;
+                default:
+                    // this should never occur
+                    setColor(Color.magenta);
+                    break;
             }
 
+            // add the current position to the list
             positions.Add(transform.position);
 
+            // draw a debug line between all previous positions
             for (int i = 0; i < positions.Count - 1; i++)
             {
                 Debug.DrawLine(positions[i], positions[i + 1], Color.red);
             }
 
+            // use B to break
             if (Input.GetKeyDown(KeyCode.B))
             {
                 Debug.Break();
             }
         }
 
+        // use escape key to exit game
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Utils.Exit();
+        }
+
         // enable / disbale trail
-        if(animationState == AnimationState.DASH)
+        // TODO: make this work
+        if (animationState == AnimationState.DASH)
         {
             thickTrail.enabled = true;
             thinTrail.enabled = false;
@@ -247,17 +290,12 @@ public class Player : MonoBehaviour
             thickTrail.enabled = false;
             thinTrail.enabled = true;
         }
-
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            Utils.Exit();
-        }
     }
 
     // the player is Idle
     private void Idle()
     {
-        // left / right input
+        // horizontal velocity
         if(Mathf.Abs(rb.velocity.x) > 0)
         {
             // transition to run state
@@ -272,7 +310,18 @@ public class Player : MonoBehaviour
         // transition back to an appropriate state when velocity gets low enough
         if (Mathf.Abs(rb.velocity.x) < 0.1f)
         {
-            animationState = AnimationState.IDLE;
+            if(isGrounded())
+            {
+                animationState = AnimationState.IDLE;
+            }
+            else if (currentJumps == movementSettings.jumpCount - 1)
+            {
+                animationState = AnimationState.JUMP;
+            }
+            else
+            {
+                animationState = AnimationState.DOUBLEJUMP;
+            }
         }
     }
 
