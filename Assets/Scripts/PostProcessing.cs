@@ -20,13 +20,16 @@ public class PostProcessing : MonoBehaviour
     public Gradient shaderGradient;
 
     // look up texture created from shaderGradient
-    private Texture2D gradTex;
+    public Texture2D gradTex;
 
     // called when this script is enabled
     private void OnEnable()
     {
         // create gradient texture at 256x1
-        gradTex = new Texture2D(256, 1);
+        gradTex = new Texture2D(256, 1, TextureFormat.RGB24, false);
+        gradTex.filterMode = FilterMode.Point;
+        gradTex.wrapMode = TextureWrapMode.Clamp;
+        gradTex.anisoLevel = 0;
 
         // create a new list of colors for the gradient texture
         List<Color> gradColors = new List<Color>();
@@ -39,6 +42,8 @@ public class PostProcessing : MonoBehaviour
 
         // set the pixels of the gradient texture
         gradTex.SetPixels(gradColors.ToArray());
+
+        gradTex.Apply();
 
         // set the shader uniform for the material
         effectMaterial.SetTexture("_GradientTexture", gradTex);
