@@ -60,16 +60,16 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				//float2 offset = float2(_camX, _camY) * 0.01f;
+				float2 offset = float2(_camX, _camY) * 0.01f;
 				fixed4 render = tex2D(_MainTex, i.uv);
-				//fixed4 canvas = tex2D(_TintTex, i.uv2 + offset);
-				//float4 canvasBlend = lerp(render, canvas, _Power);
+				fixed4 canvas = tex2D(_TintTex, i.uv2 + offset);
+				float4 canvasBlend = lerp(render, canvas, _Power);
 
-				//float2 center = float2(0.5f, 0.5f);
-				//float distanceFromCenter = length(i.uv - center);
-				//float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
+				float2 center = float2(0.5f, 0.5f);
+				float distanceFromCenter = length(i.uv - center);
+				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
 
-				return convertToGreyscale(render);
+				return convertToGreyscale(canvasBlend);
 			}
 
 			float4 convertToGreyscale(float4 color)
@@ -79,7 +79,7 @@
 				average = pow(average, 2.0);
 
 				// sample from gradient texture at that x coordinate
-				float4 shade = tex2D(_GradientTexture, float2(1.0 - average, 0.5));
+				float4 shade = tex2D(_GradientTexture, float2(average, 0.5));
 
 				return shade;
 			}
