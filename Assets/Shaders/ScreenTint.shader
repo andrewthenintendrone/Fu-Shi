@@ -38,6 +38,7 @@
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
+			float4 _MainTex_TexelSize;
 			sampler2D _TintTex;
 			float4 _TintTex_ST;
 			float _Power;
@@ -48,6 +49,7 @@
 			sampler2D _GradientTexture;
 
 			float4 convertToGreyscale(float4 color);
+			float4 BoxBlur(float2 uv);
 			
 			v2f vert (appdata v)
 			{
@@ -61,7 +63,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float2 offset = float2(_camX, _camY) * 0.01f;
-				fixed4 render = tex2D(_MainTex, i.uv);
+				float4 render = BoxBlur(i.uv);
 				fixed4 canvas = tex2D(_TintTex, i.uv2 + offset);
 				float4 canvasBlend = lerp(render, canvas, _Power);
 
@@ -69,7 +71,7 @@
 				float distanceFromCenter = length(i.uv - center);
 				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
 
-				return convertToGreyscale(canvasBlend);
+				return render;
 			}
 
 			float4 convertToGreyscale(float4 color)
@@ -83,6 +85,31 @@
 
 				return shade;
 			}
+
+			// box blur sample _MainTex
+			float4 BoxBlur(float2 uv)
+			{
+				float2 texel = _MainTex_TexelSize;
+
+				float4 color = float4(0, 0, 0, 0);
+
+				color += tex2D(_MainTex, uv + float2(-texel.x, texel.y));
+				color += tex2D(_MainTex, uv + float2(0, texel.y));
+				color += tex2D(_MainTex, uv + float2(texel.x, texel.y));
+
+				color += tex2D(_MainTex, uv + float2(-texel.x, 0));
+				color += tex2D(_MainTex, uv);
+				color += tex2D(_MainTex, uv + float2(texel.x, 0));
+
+				color += tex2D(_MainTex, uv + float2(-texel.x, -texel.y));
+				color += tex2D(_MainTex, uv + float2(0, -texel.y));
+				color += tex2D(_MainTex, uv + float2(texel.x, -texel.y));
+
+				color /= 9.0;
+
+				return color;
+			}
+
 			ENDCG
 		}
 	}
