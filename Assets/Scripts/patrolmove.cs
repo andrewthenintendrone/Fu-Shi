@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class patrolmove : MonoBehaviour
 {
-    public Transform[] patrolPoints = new Transform[2];
+    public Transform[] patrolPoints = new Transform[0];
     [Tooltip("wether the unit will patrol or not")]
     public bool willPatrol = false;
 
@@ -13,12 +13,18 @@ public class patrolmove : MonoBehaviour
     public float moveSpd;
     [Tooltip("time unit waits at each patrol point position")]
     public float hangtime = 1.0f;
+    [Tooltip ("defines how the platform will return to the start position, reversing or looping")]
+    public bool willCycle = false;
 
-    //default patrol point that enemy will move towards on start if moving
-    private int currPatrolPoint = 0;
+    
+    //default patrol point that object will move towards on start if moving
+  
+    public int currPatrolPoint = 0;
+    //what point is the platform trying to reach
+    private int endpoint;
     private bool freeze = false;
     private float hangcount;
-
+    private bool goingForward = true;
     // Use this for initialization
     void Start()
     {
@@ -28,6 +34,12 @@ public class patrolmove : MonoBehaviour
             
             Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
         }
+
+        //generate endpoints
+
+
+        endpoint = patrolPoints.Length - 1;
+
     }
 
     // Update is called once per frame
@@ -47,15 +59,13 @@ public class patrolmove : MonoBehaviour
 
         Vector3 target;
         float distanceCutoff = 0.05f;
-        if (currPatrolPoint == 0)
-        {
-            target = patrolPoints[0].position;
-        }
-        else
-        {
-            target = patrolPoints[1].position;
-        }
+
+        target = patrolPoints[currPatrolPoint].position;
+
         //check distance to nearest patrol point
+
+
+
 
         float distCheck = (transform.position - target).magnitude;
         if (distCheck <= distanceCutoff)
@@ -64,20 +74,48 @@ public class patrolmove : MonoBehaviour
 
             freeze = true;
 
-            if (currPatrolPoint == 0)
+
+            if (currPatrolPoint == endpoint)
             {
-                currPatrolPoint = 1;
+                if (willCycle == true)
+                {
+                    currPatrolPoint = -1;
+                }
+                else
+                {
+                    reverse();
+                }
+            }
+
+
+
+            // update target to next position
+
+            if (goingForward)
+            {
+                currPatrolPoint++;
             }
             else
             {
-                currPatrolPoint = 0;
+                currPatrolPoint--;
             }
+
+
+            
+            
+            //if (currPatrolPoint == 0)
+            //{
+            //    currPatrolPoint = 1;
+            //}
+            //else
+            //{
+            //    currPatrolPoint = 0;
+            //}
         }
 
 
-
-        //if within threshold change target point to other one
-
+        
+        //move to next position
         if (!freeze)
         {
             float step = moveSpd * Time.deltaTime;
@@ -100,4 +138,19 @@ public class patrolmove : MonoBehaviour
             hangcount = hangtime;
         }
     }
+
+    public void reverse()
+    {
+        goingForward = !goingForward;
+
+        if (endpoint == 0)
+        {
+            endpoint = patrolPoints.Length - 1;
+        }
+        else
+        {
+            endpoint = 0;
+        }
+    }
+
 }
