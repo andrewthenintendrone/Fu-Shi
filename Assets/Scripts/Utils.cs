@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Utils
+public static class Utils
 {
-    
 
     //the position to reset to (updated via function)
     public static Vector3 resetPos;
@@ -35,5 +34,17 @@ public class Utils
         Application.Quit();
     }
 
+    public static T GetSafeComponent<T>(this GameObject obj)
+    {
+        T component = obj.GetComponent<T>();
+
+        if (component == null)
+        {
+            Debug.LogError("Expected to find component of type "
+               + typeof(T) + " but found none", obj);
+        }
+
+        return component;
+    }
 
 }

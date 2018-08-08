@@ -59,10 +59,6 @@ public class Player : MonoBehaviour
     // number of jumps the player can still make
     public int currentJumps;
 
-    // trail renderers
-    private TrailRenderer thinTrail;
-    private TrailRenderer thickTrail;
-
     // list of previous positions for debugging
     private List<Vector3> positions = new List<Vector3>();
 
@@ -104,20 +100,6 @@ public class Player : MonoBehaviour
         // set the current health and current jums to thier maximum values
         currentHealth = maxHealth;
         currentJumps = movementSettings.jumpCount;
-
-        // store references to the thin and thick trail renderers
-        foreach(Transform child in GetComponentsInChildren<Transform>())
-        {
-            // TODO: make this less bad
-            if(child.name == "thin trail")
-            {
-                thinTrail = child.gameObject.GetComponent<TrailRenderer>();
-            }
-            else if (child.name == "thick trail")
-            {
-                thickTrail = child.gameObject.GetComponent<TrailRenderer>();
-            }
-        }
     }
 
     // called once per physics step (faster than frame rate)
@@ -276,19 +258,6 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.Escape))
         {
             Utils.Exit();
-        }
-
-        // enable / disbale trail
-        // TODO: make this work
-        if (animationState == AnimationState.DASH)
-        {
-            thickTrail.enabled = true;
-            thinTrail.enabled = false;
-        }
-        else
-        {
-            thickTrail.enabled = false;
-            thinTrail.enabled = true;
         }
     }
 
