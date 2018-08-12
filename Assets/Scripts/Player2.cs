@@ -2,174 +2,142 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
+//[RequireComponent(typeof(Rigidbody2D))]
 public class Player2 : MonoBehaviour
 {
-    #region Fields
+    #region fields
 
-    public float m_rayDistance;
-    public float m_slopeLimitAngle;
+    // earth gravity constant (9.81 m/s^2)
+    private const float gravityConstant = -9.81f;
 
-    private BoxCollider2D m_boxCollider;
+    // whether the player is grounded or not
+    private bool grounded = false;
 
-    private int m_colLayerMask;
+    // whether the player is above a slope or not
+    private bool aboveSlope = false;
 
-    private RaycastHit2D m_hitBottom;
-    private RaycastHit2D m_hitBottomLeft;
-    private RaycastHit2D m_hitBottomRight;
-    private RaycastHit2D m_hitTop;
-    private RaycastHit2D m_hitTopLeft;
-    private RaycastHit2D m_hitTopRight;
-    private RaycastHit2D m_hitLeft;
-    private RaycastHit2D m_hitLeftTop;
-    private RaycastHit2D m_hitLeftBottom;
-    private RaycastHit2D m_hitRight;
-    private RaycastHit2D m_hitRightTop;
-    private RaycastHit2D m_hitRightBottom;
+    // BoxCollider2D reference
+    private BoxCollider2D col;
 
-    private float m_limitMinY;
-    private float m_limitMaxY;
-    private float m_limitMinX;
-    private float m_limitMaxX;
+    // RigidBody2D reference
+    //private Rigidbody2D rb;
 
-    private float m_posMinY;
-    private float m_posMaxY;
-    private float m_posMinX;
-    private float m_posMaxX;
+    // x axis movement speed
+    public float moveSpeed;
 
-    private bool m_isGrounded;
-    private bool m_isTopBlocked;
-    private bool m_isLeftBlocked;
-    private bool m_isRightBlocked;
-    private bool m_isAboveSlope;
-    private bool m_isOnSlope;
+    // lasyer mask to interact with
+    public LayerMask layerMask;
 
-    private bool m_isRunning;
-    private bool m_isJumping;
-
-    private Vector2 m_speed;
+    // player velocity
+    private Vector3 velocity;
 
     #endregion
 
-    #region Properties
-
-    public Vector2 Speed { get { return m_speed; } }
-    public bool isGrounded { get { return m_isGrounded; } }
-    public bool isJumping { get { return m_isJumping; } }
-
-    #endregion
-
-    #region Init
-
-    void Awake()
+    private void Awake()
     {
-        m_boxCollider = Utils.GetSafeComponent<BoxCollider2D>(gameObject);
-
-        m_colLayerMask = 1 << LayerMask.NameToLayer("Ground");
+        // store component references
+        col = GetComponent<BoxCollider2D>();
+        //rb = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
+    private void FixedUpdate()
     {
-        m_limitMinY = ComputeLimitBottom();
-        m_limitMinX = ComputeLimitLeft();
-        m_limitMaxX = ComputeLimitRight();
-        m_limitMaxY = ComputeLimitTop();
-    }
+        checkGrounded();
+        checkSlope();
 
-    #endregion
+        float xAxis = Input.GetAxis("Horizontal");
 
-    void Update()
-    {
-        #region ComputeLimits
+        velocity.x = xAxis * moveSpeed;
 
-        // Compute limits when needed
-
-        m_limitMinY = ComputeLimitBottom();
-
-        if (m_speed.x < 0)
-            m_limitMinX = ComputeLimitLeft();
-
-        if (m_speed.x > 0)
-            m_limitMaxX = ComputeLimitRight();
-
-        if (m_speed.y > 0)
-            m_limitMaxY = ComputeLimitTop();
-
-        // Calculate collider position for each limits
-        m_posMinY = m_limitMinY + m_boxCollider.size.y / 2 - m_boxCollider.offset.y;
-        m_posMaxY = m_limitMaxY - m_boxCollider.size.y / 2 - m_boxCollider.offset.y;
-        m_posMinX = m_limitMinX + m_boxCollider.size.x / 2 - m_boxCollider.offset.x;
-        m_posMaxX = m_limitMaxX + m_boxCollider.size.x / 2 - m_boxCollider.offset.x;
-
-        #endregion
-
-        #region Handle collisions
-
-        // Define controller state (bigger buffer to leave grounded state if on a slope)
-
-    }
-
-    #region Compute limits methods
-
-    private float ComputeLimitBottom()
-    {
-        Ray rayBottomLeft = new Ray(new Vector3(m_boxCollider.bounds.min.x, m_boxCollider.bounds.center.y, 0), Vector3.down);
-        Ray rayBottomRight = new Ray(new Vector3(m_boxCollider.bounds.max.x, m_boxCollider.bounds.max.y, 0), Vector3.down);
-        Ray rayBottom = new Ray(new Vector3(m_boxCollider.bounds.center.x, m_boxCollider.bounds.max.y, 0), Vector3.down);
-
-        Vector3 limitBottomLeft = rayBottomLeft.origin + Vector3.down * m_rayDistance;
-        Vector3 limitBottomRight = rayBottomRight.origin + Vector3.down * m_rayDistance;
-        Vector3 limitBottom = rayBottomLeft.origin + Vector3.down * m_rayDistance;
-
-        bool slopeLeft = false;
-        bool slopeRight = false;
-
-        if (Physics.Raycast(rayBottomLeft, out m_hitBottomLeft, m_rayDistance, m_colLayerMask))
+        if(!grounded)
         {
-            limitBottomLeft = m_hitBottomLeft.point;
-            slopeLeft = Mathf.Abs(Vector3.Angle(m_hitBottomLeft.normal, Vector3.right) - 90) >= 5;
-        }
-        if (Physics.Raycast(rayBottomRight, out m_hitBottomRight, m_rayDistance, m_colLayerMask))
-        {
-            limitBottomRight = m_hitBottomLeft.point;
-            slopeRight = Mathf.Abs(Vector3.Angle(m_hitBottomRight.normal, Vector3.right) - 90) >= 5;
-        }
-
-        m_isAboveSlope = (slopeLeft && slopeRight) ||
-            (slopeLeft && !slopeRight && limitBottomLeft.y >= limitBottomRight.y) ||
-            (!slopeLeft && slopeRight && limitBottomRight.y >= limitBottomLeft.y);
-
-        if (m_isAboveSlope)
-        {
-            if (Physics.Raycast(rayBottom, out m_hitBottom, m_rayDistance, m_colLayerMask))
-            {
-                limitBottom = m_hitBottom.point;
-            }
-
-            if (slopeLeft && limitBottomLeft.y - limitBottom.y > 5)
-                return limitBottomLeft.y;
-
-            else if (slopeRight && limitBottomRight.y - limitBottom.y > 5)
-                return limitBottomRight.y;
-
-            else
-                return limitBottom.y;
+            velocity.y += gravityConstant * Time.fixedDeltaTime;
         }
         else
         {
-            return Mathf.Max(limitBottomLeft.y, limitBottomRight.y);
+            velocity.y = 0;
         }
+
+        changeColor(Color.red);
+
+        //if(aboveSlope)
+        //{
+        //    changeColor(Color.red);
+        //}
+        //else
+        //{
+        //    changeColor(Color.white);
+        //}
+
+        transform.position += velocity * Time.fixedDeltaTime;
     }
 
-    private float ComputeLimitTop()
+    // updates whether the player is grounded
+    private void checkGrounded()
     {
-        Ray rayTopLeft = new Ray(new Vector3(m_boxCollider.bounds.min.x + 2, m_boxCollider.bounds.center.y, 0), Vector3.up);
-        Ray rayTopRight = new Ray(new Vector3(m_boxCollider.bounds.min.x - 2, m_boxCollider.bounds.center.y, 0), Vector3.up);
+        RaycastHit2D hitInfo;
 
-        Vector3 limitTopLeft = rayTopLeft.origin + Vector3.up * m_rayDistance;
-        Vector3 limitTopRight = rayTopRight.origin + Vector3.up * m_rayDistance;
+        hitInfo = (Physics2D.Raycast(col.bounds.center, Vector2.down, layerMask));
 
-        if(Physics.Raycast())
+        // ray hit something
+        if(hitInfo.collider != null)
+        {
+            if(hitInfo.distance < col.bounds.extents.y)
+            {
+                grounded = true;
+                transform.position += Vector3.up * (hitInfo.distance - hitInfo.distance);
+                return;
+            }
+        }
+
+        grounded = false;
     }
 
-    #endregion
+    private void checkSlope()
+    {
+        RaycastHit2D hitInfo;
+        RaycastHit2D leftHitInfo;
+        RaycastHit2D rightHitInfo;
+
+        hitInfo = Physics2D.Raycast(col.bounds.center, Vector2.down, layerMask);
+        leftHitInfo = Physics2D.Raycast(new Vector2(col.bounds.min.x, col.bounds.center.y), Vector2.down, layerMask);
+        rightHitInfo = Physics2D.Raycast(new Vector2(col.bounds.max.x, col.bounds.center.y), Vector2.down, layerMask);
+
+        float hitDistanceLeft = 0;
+        float hitDistanceRight = 0;
+
+        // we are on a slope in the following conditions
+        // the hit distances of the two raycasts are different
+        // the normal direction of at least one slope is not straight up
+        if(leftHitInfo.collider != null)
+        {
+            hitDistanceLeft = leftHitInfo.distance;
+        }
+        if(rightHitInfo.collider != null)
+        {
+            hitDistanceRight = rightHitInfo.distance;
+        }
+
+        if(hitDistanceLeft != hitDistanceRight)
+        {
+            if(Vector3.Angle(leftHitInfo.normal, Vector3.up) > 5)
+            {
+                aboveSlope = true;
+                return;
+            }
+            if(Vector3.Angle(rightHitInfo.normal, Vector3.up) > 5)
+            {
+                aboveSlope = true;
+                return;
+            }
+        }
+
+        aboveSlope = false;
+    }
+
+    void changeColor(Color color)
+    {
+        GetComponent<Renderer>().material.color = color;
+    }
 }
