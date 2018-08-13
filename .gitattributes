@@ -1,11 +1,11 @@
 *.cs text eol=crlf
 *.txt text eol=crlf
 
+*.asset binary
 *.fbx binary
 *.tga binary
 *.unity binary
 *.prefab binary
-##*.asset binary
 *.anim binary
 *.controller binary
 *.mat binary
@@ -14,3 +14,8 @@
 *.jpg binary
 *.wav binary
 *.mp3 binary
+
+#testing if there is a way to exclude a * clasification
+TagManager.asset diff
+
+
