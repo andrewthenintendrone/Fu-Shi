@@ -21,7 +21,7 @@ public class patrolmove : MonoBehaviour
   
     public int currPatrolPoint = 0;
     //what point is the platform trying to reach
-    private int endpoint;
+    //private int endpoint;
     private bool freeze = false;
     private float hangcount;
     private bool goingForward = true;
@@ -35,16 +35,13 @@ public class patrolmove : MonoBehaviour
             Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
         }
 
-        //generate endpoints
-
-
-        endpoint = patrolPoints.Length - 1;
-
     }
+
 
     // Update is called once per frame
     void Update()
     {
+
         if (willPatrol && patrolPoints[0])
         {
             patrol();
@@ -62,55 +59,37 @@ public class patrolmove : MonoBehaviour
 
         target = patrolPoints[currPatrolPoint].position;
 
+
+
         //check distance to nearest patrol point
-
-
-
-
         float distCheck = (transform.position - target).magnitude;
         if (distCheck <= distanceCutoff)
         {
+            Debug.Log("hit a node");
             //need it to pause here for a short delay
 
             freeze = true;
 
 
-            if (currPatrolPoint == endpoint)
-            {
-                if (willCycle == true)
-                {
-                    currPatrolPoint = -1;
-                }
-                else
-                {
-                    reverse();
-                }
-            }
+            //if (goingForward && currPatrolPoint == patrolPoints.Length - 1 || !goingForward && currPatrolPoint == 0)
+            //{
+            //    if (willCycle == true)
+            //    {
+            //        //currPatrolPoint = -1;
+            //    }
+            //    else
+            //    {
+            //        reverse();
+            //    }
+            //}
 
 
 
             // update target to next position
 
-            if (goingForward)
-            {
-                currPatrolPoint++;
-            }
-            else
-            {
-                currPatrolPoint--;
-            }
+            findNextNode();
 
 
-            
-            
-            //if (currPatrolPoint == 0)
-            //{
-            //    currPatrolPoint = 1;
-            //}
-            //else
-            //{
-            //    currPatrolPoint = 0;
-            //}
         }
 
 
@@ -139,17 +118,69 @@ public class patrolmove : MonoBehaviour
         }
     }
 
+    [ContextMenu("reverse")]
+
     public void reverse()
     {
         goingForward = !goingForward;
 
-        if (endpoint == 0)
+        findNextNode();
+    }
+
+    void findNextNode()
+    {
+        //Debug.Break();
+        if(willCycle)
         {
-            endpoint = patrolPoints.Length - 1;
+            if (goingForward)
+            {
+                if(currPatrolPoint == patrolPoints.Length - 1)
+                {
+                    currPatrolPoint = 0;
+                }
+                else
+                {
+                    currPatrolPoint++;
+                }
+            }
+            else
+            {
+                if(currPatrolPoint == 0)
+                {
+                    currPatrolPoint = patrolPoints.Length - 1;
+                }
+                else
+                {
+                    currPatrolPoint--;
+                }
+            }
         }
         else
         {
-            endpoint = 0;
+            if(goingForward)
+            {
+                if(currPatrolPoint == patrolPoints.Length - 1)
+                {
+                    goingForward = !goingForward;
+                    currPatrolPoint--;
+                }
+                else
+                {
+                    currPatrolPoint++;
+                }
+            }
+            else
+            {
+                if(currPatrolPoint == 0)
+                {
+                    goingForward = !goingForward;
+                    currPatrolPoint++;
+                }
+                else
+                {
+                    currPatrolPoint--;
+                }
+            }
         }
     }
 
