@@ -13,7 +13,6 @@ public class Player2 : MonoBehaviour
 
     private int jumpCount = 2;
     bool jumpHeld = false;
-    bool debugEnabled = false;
 
     private void Start()
     {
@@ -28,21 +27,21 @@ public class Player2 : MonoBehaviour
         int jumpAxis = (int)Input.GetAxisRaw("Fire1");
         int dashAxis = (int)Input.GetAxisRaw("Fire2");
 
-        //// toggle devmode
-        //if(Input.GetKeyDown(KeyCode.Alpha0))
-        //{
-        //    Utils.toggleDevMode();
-        //}
+        // toggle devmode
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Utils.toggleDevMode();
+        }
 
-        //if(Utils.DEVMODE)
-        //{
-        //    float yAxis = Input.GetAxis("Vertical");
-        //    velocity = new Vector3(xAxis, yAxis, 0).normalized * moveSpeed;
+        if (Utils.DEVMODE)
+        {
+            float yAxis = Input.GetAxis("Vertical");
+            velocity = new Vector3(xAxis, yAxis, 0).normalized * moveSpeed;
 
-        //    transform.position += velocity * Time.deltaTime;
+            transform.position += velocity * Time.deltaTime;
 
-        //    return;
-        //}
+            return;
+        }
 
         velocity.x = xAxis * moveSpeed;
 
