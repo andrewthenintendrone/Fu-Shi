@@ -51,7 +51,14 @@ public class Player2 : MonoBehaviour
         }
         else
         {
+            velocity.y = -0.1f;
             jumpCount = 2;
+        }
+
+        // kill velocity when hitting a roof
+        if(character.collisionState.above)
+        {
+            velocity.y = 0;
         }
 
         // update jump held
@@ -62,7 +69,7 @@ public class Player2 : MonoBehaviour
             if(jumpCount > 0)
             {
                 velocity.y = jumpHeight;
-                //jumpCount--;
+                jumpCount--;
             }
         }
         if(jumpHeld && jumpAxis == 0)
