@@ -65,30 +65,15 @@ public class patrolmove : MonoBehaviour
         float distCheck = (transform.position - target).magnitude;
         if (distCheck <= distanceCutoff)
         {
-            Debug.Log("hit a node");
+         
             //need it to pause here for a short delay
 
             freeze = true;
-
-
-            //if (goingForward && currPatrolPoint == patrolPoints.Length - 1 || !goingForward && currPatrolPoint == 0)
-            //{
-            //    if (willCycle == true)
-            //    {
-            //        //currPatrolPoint = -1;
-            //    }
-            //    else
-            //    {
-            //        reverse();
-            //    }
-            //}
-
-
+            
 
             // update target to next position
 
             findNextNode();
-
 
         }
 
@@ -129,10 +114,10 @@ public class patrolmove : MonoBehaviour
 
     void findNextNode()
     {
-        //Debug.Break();
+
         if(willCycle)
         {
-            if (goingForward)
+            if (goingForward)//looping down the list
             {
                 if(currPatrolPoint == patrolPoints.Length - 1)
                 {
@@ -143,7 +128,7 @@ public class patrolmove : MonoBehaviour
                     currPatrolPoint++;
                 }
             }
-            else
+            else//looping up the list
             {
                 if(currPatrolPoint == 0)
                 {
@@ -157,7 +142,7 @@ public class patrolmove : MonoBehaviour
         }
         else
         {
-            if(goingForward)
+            if(goingForward)//not looping down the list
             {
                 if(currPatrolPoint == patrolPoints.Length - 1)
                 {
@@ -169,7 +154,7 @@ public class patrolmove : MonoBehaviour
                     currPatrolPoint++;
                 }
             }
-            else
+            else//not looping up the list
             {
                 if(currPatrolPoint == 0)
                 {

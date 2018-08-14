@@ -8,7 +8,11 @@ public static class Utils
     //the position to reset to (updated via function)
     public static Vector3 resetPos;
     
-
+    private static bool devMode = false;
+    public static bool DEVMODE
+    {
+        get { return devMode; }
+    }
     // Use this for initialization
     public static void Init ()
     {
@@ -46,5 +50,11 @@ public static class Utils
 
         return component;
     }
+
+    public static void toggleDevMode()
+    {
+        devMode = !devMode;
+    }
+
 
 }
