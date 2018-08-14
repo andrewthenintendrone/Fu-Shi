@@ -27,12 +27,6 @@ public class Player2 : MonoBehaviour
         int jumpAxis = (int)Input.GetAxisRaw("Fire1");
         int dashAxis = (int)Input.GetAxisRaw("Fire2");
 
-        // toggle devmode
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Utils.toggleDevMode();
-        }
-
         if (Utils.DEVMODE)
         {
             float yAxis = Input.GetAxis("Vertical");
@@ -68,7 +62,7 @@ public class Player2 : MonoBehaviour
             if(jumpCount > 0)
             {
                 velocity.y = jumpHeight;
-                jumpCount--;
+                //jumpCount--;
             }
         }
         if(jumpHeld && jumpAxis == 0)
@@ -85,6 +79,15 @@ public class Player2 : MonoBehaviour
 
         changeColor(character.isGrounded ? Color.red : Color.white);
 	}
+
+    void Update()
+    {
+        // toggle devmode
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Utils.toggleDevMode();
+        }
+    }
 
     void changeColor(Color color)
     {
