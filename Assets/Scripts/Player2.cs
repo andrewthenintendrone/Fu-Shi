@@ -1,173 +1,106 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
-//[RequireComponent(typeof(Rigidbody2D))]
 public class Player2 : MonoBehaviour
 {
-    #region fields
-
-    // earth gravity constant (9.81 m/s^2)
-    private const float gravityConstant = -9.81f;
-
-    // whether the player is grounded or not
-    private bool grounded = false;
-
-    // whether the player is above a slope or not
-    private bool aboveSlope = false;
-
-    // BoxCollider2D reference
-    private BoxCollider2D col;
-
-    // RigidBody2D reference
-    //private Rigidbody2D rb;
-
-    // x axis movement speed
     public float moveSpeed;
+    public float jumpHeight;
+    public float dashSpeed;
+    public float gravityScale;
+    private CharacterController2D character;
+    private Vector3 velocity;
 
-    // jump force
-    public float jumpForce;
+    private int jumpCount = 2;
+    bool jumpHeld = false;
+    bool debugEnabled = false;
 
-    // gravity multiplier
-    public float gravityMultiplier;
-
-    // lasyer mask to interact with
-    public LayerMask layerMask;
-
-    public float minDistanceToFloor;
-
-    // player velocity
-    public Vector3 velocity;
-
-    #endregion
-
-    private void Awake()
+    private void Start()
     {
-        // store component references
-        col = GetComponent<BoxCollider2D>();
-        //rb = GetComponent<Rigidbody2D>();
+        Utils.Init();
+        character = GetComponent<CharacterController2D>();
+        character.onTriggerEnterEvent += triggerFunction;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate ()
     {
-        checkGround();
-
         float xAxis = Input.GetAxis("Horizontal");
+        int jumpAxis = (int)Input.GetAxisRaw("Fire1");
+        int dashAxis = (int)Input.GetAxisRaw("Fire2");
 
-        if(xAxis > 0)
-        {
-            checkRight();
-        }
-        if(xAxis < 0)
-        {
-            checkLeft();
-        }
+        //// toggle devmode
+        //if(Input.GetKeyDown(KeyCode.Alpha0))
+        //{
+        //    Utils.toggleDevMode();
+        //}
 
-        float jumpAxis = (int)Input.GetAxisRaw("Fire1");
+        //if(Utils.DEVMODE)
+        //{
+        //    float yAxis = Input.GetAxis("Vertical");
+        //    velocity = new Vector3(xAxis, yAxis, 0).normalized * moveSpeed;
+
+        //    transform.position += velocity * Time.deltaTime;
+
+        //    return;
+        //}
 
         velocity.x = xAxis * moveSpeed;
 
-        if (!grounded)
+        // rotate model to match direction
+        if(Mathf.Abs(velocity.x) != 0)
         {
-            velocity.y += gravityConstant * gravityMultiplier * Time.fixedDeltaTime;
+            transform.eulerAngles = (velocity.x > 0 ? Vector3.zero : Vector3.up * 180.0f);
+        }
+
+        if(!character.isGrounded)
+        {
+            velocity.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
         }
         else
         {
-            velocity.y = 0;
+            jumpCount = 2;
+        }
 
-            transform.position += Vector3.up * (col.bounds.extents.y - minDistanceToFloor);
+        // update jump held
+        if(!jumpHeld && jumpAxis == 1)
+        {
+            jumpHeld = true;
 
-            if (jumpAxis == 1)
+            if(jumpCount > 0)
             {
-                velocity.y = jumpForce;
+                velocity.y = jumpHeight;
+                jumpCount--;
             }
         }
-
-        if (aboveSlope)
+        if(jumpHeld && jumpAxis == 0)
         {
-            changeColor(Color.red);
-        }
-        else
-        {
-            changeColor(Color.white);
+            jumpHeld = false;
         }
 
-        transform.position += velocity * Time.fixedDeltaTime;
-    }
-
-    // moves the player out of wall geometry to the left
-    private void checkLeft()
-    {
-        RaycastHit2D rayLeft = Physics2D.Raycast(col.bounds.center, Vector2.left, layerMask);
-
-        if(rayLeft.collider != null)
+        if (dashAxis == 1)
         {
-            if (rayLeft.distance < col.bounds.extents.x)
-            {
-                transform.position += Vector3.right * (col.bounds.extents.x - rayLeft.distance);
-            }
-        }
-    }
-
-    // moves the player out of wall geometry to the right
-    private void checkRight()
-    {
-        RaycastHit2D rayRight = Physics2D.Raycast(col.bounds.center, Vector2.right, layerMask);
-
-        if(rayRight.collider != null)
-        {
-            if (rayRight.distance < col.bounds.extents.x)
-            {
-                transform.position += Vector3.left * (col.bounds.extents.x - rayRight.distance);
-            }
-        }
-    }
-
-    // updates whether the player is grounded and on a slope
-    private void checkGround()
-    {
-        minDistanceToFloor = col.bounds.extents.y + 1;
-
-        RaycastHit2D hitInfo;
-        RaycastHit2D hitInfoLeft;
-        RaycastHit2D hitInfoRight;
-
-        hitInfo = (Physics2D.Raycast(col.bounds.center, Vector2.down, layerMask));
-        hitInfoLeft = (Physics2D.Raycast(new Vector2(col.bounds.min.x, col.bounds.center.y), Vector2.down, layerMask));
-        hitInfoRight = (Physics2D.Raycast(new Vector2(col.bounds.max.x, col.bounds.center.y), Vector2.down, layerMask));
-
-        // ray hit something
-        if (hitInfo.collider != null)
-        {
-            //Debug.DrawLine(col.bounds.center, hitInfo.point, Color.green);
-            minDistanceToFloor = Mathf.Min(minDistanceToFloor, hitInfo.distance);
-        }
-        if (hitInfoLeft.collider != null)
-        {
-            //Debug.DrawLine(new Vector3(col.bounds.min.x, col.bounds.center.y, 0), hitInfoLeft.point, Color.red);
-            minDistanceToFloor = Mathf.Min(minDistanceToFloor, hitInfoLeft.distance);
-        }
-        if (hitInfoRight.collider != null)
-        {
-            //Debug.DrawLine(new Vector3(col.bounds.max.x, col.bounds.center.y, 0), hitInfoRight.point, Color.blue);
-            minDistanceToFloor = Mathf.Min(minDistanceToFloor, hitInfoRight.distance);
+            velocity.x = xAxis * dashSpeed;
         }
 
-        Debug.DrawLine(col.bounds.center, col.bounds.center + Vector3.down * minDistanceToFloor, Color.yellow);
+        character.move(velocity * Time.fixedDeltaTime);
 
-        grounded = minDistanceToFloor <= col.bounds.extents.y;
-
-        bool slopeLeft = Mathf.Abs(Vector3.Angle(hitInfoLeft.normal, Vector3.up)) >= 5;
-        bool slopeRight = Mathf.Abs(Vector3.Angle(hitInfoRight.normal, Vector3.up)) >= 5;
-
-        aboveSlope = (slopeLeft && slopeRight) ||
-                       (slopeLeft && !slopeRight && hitInfoLeft.point.y >= hitInfoRight.point.y) ||
-                       (!slopeLeft && slopeRight && hitInfoRight.point.y >= hitInfoLeft.point.y);
-    }
+        changeColor(character.isGrounded ? Color.red : Color.white);
+	}
 
     void changeColor(Color color)
     {
         GetComponent<Renderer>().material.color = color;
+    }
+
+    public void triggerFunction(Collider2D col)
+    {
+        if(col.tag == "reset")
+        {
+            Utils.resetPlayer();
+        }
+        else if (col.tag == "checkpoint")
+        {
+            Utils.updateCheckpoint(col.transform.position);
+        }
     }
 }
