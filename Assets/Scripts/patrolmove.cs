@@ -39,7 +39,7 @@ public class patrolmove : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         if (willPatrol && patrolPoints[0])
@@ -82,7 +82,7 @@ public class patrolmove : MonoBehaviour
         //move to next position
         if (!freeze)
         {
-            float step = moveSpd * Time.deltaTime;
+            float step = moveSpd * Time.fixedDeltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
         }
 
@@ -94,7 +94,7 @@ public class patrolmove : MonoBehaviour
     {
         if (freeze)
         {
-            hangcount -= 1 * Time.deltaTime;
+            hangcount -= 1 * Time.fixedDeltaTime;
         }
         if (hangcount <= 0)
         {
