@@ -2,57 +2,90 @@
 using System;
 using System.Collections.Generic;
 
+[System.Serializable]
+public struct MovementSettings2
+{
+    public float runSpeed;
+
+    public float dashSpeed;
+
+    public float jumpHeight;
+
+    public int jumpCount;
+
+    public float extraJumpForce;
+
+    public float extraJumpTime;
+
+    public float gravityScale;
+}
+
 public class Player2 : MonoBehaviour
 {
-    public float moveSpeed;
-    public float jumpHeight;
-    public float dashSpeed;
-    public float gravityScale;
     private CharacterController2D character;
     private Vector3 velocity;
 
-    private int jumpCount = 2;
+    private int currentJumps;
+    public float extraJumpTimer;
     bool jumpHeld = false;
+
+    public MovementSettings2 movementSettings;
 
     private void Start()
     {
         Utils.Init();
         character = GetComponent<CharacterController2D>();
         character.onTriggerEnterEvent += triggerFunction;
+        currentJumps = movementSettings.jumpCount;
+        extraJumpTimer = movementSettings.extraJumpTime;
     }
 
     void FixedUpdate ()
     {
-        float xAxis = Input.GetAxis("Horizontal");
-        int jumpAxis = (int)Input.GetAxisRaw("Fire1");
-        int dashAxis = (int)Input.GetAxisRaw("Fire2");
+        #region get inputs
 
+        float xAxis = Input.GetAxis("Horizontal");
+        float yAxis = Input.GetAxis("Vertical");
+        int jumpAxis = (int)Input.GetAxisRaw("Jump");
+        int dashAxis = (int)Input.GetAxisRaw("Dash");
+
+        #endregion
+
+        if (dashAxis == 1)
+        {
+            velocity.x = xAxis * movementSettings.dashSpeed;
+        }
+        else
+        {
+            velocity.x = xAxis * movementSettings.runSpeed;
+        }
+
+        // development movement
         if (Utils.DEVMODE)
         {
-            float yAxis = Input.GetAxis("Vertical");
-            velocity = new Vector3(xAxis, yAxis, 0).normalized * moveSpeed;
+            velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed;
 
             transform.position += velocity * Time.deltaTime;
 
             return;
         }
 
-        velocity.x = xAxis * moveSpeed;
-
-        // rotate model to match direction
-        if(Mathf.Abs(velocity.x) != 0)
+        // flip the player model to match the direction of the players velocity
+        if (Mathf.Abs(velocity.x) != 0)
         {
             transform.eulerAngles = (velocity.x > 0 ? Vector3.zero : Vector3.up * 180.0f);
         }
 
+        // reset jump count if the player becomes grounded
         if(!character.isGrounded)
         {
-            velocity.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+            velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
         }
         else
         {
             velocity.y = -0.1f;
-            jumpCount = 2;
+            currentJumps = movementSettings.jumpCount;
+            extraJumpTimer = movementSettings.extraJumpTime;
         }
 
         // kill velocity when hitting a roof
@@ -66,20 +99,15 @@ public class Player2 : MonoBehaviour
         {
             jumpHeld = true;
 
-            if(jumpCount > 0)
+            if(currentJumps > 0)
             {
-                velocity.y = jumpHeight;
-                jumpCount--;
+                velocity.y = movementSettings.jumpHeight;
+                currentJumps--;
             }
         }
         if(jumpHeld && jumpAxis == 0)
         {
             jumpHeld = false;
-        }
-
-        if (dashAxis == 1)
-        {
-            velocity.x = xAxis * dashSpeed;
         }
 
         character.move(velocity * Time.fixedDeltaTime);
@@ -98,7 +126,7 @@ public class Player2 : MonoBehaviour
 
     void changeColor(Color color)
     {
-        GetComponent<Renderer>().material.color = color;
+        GetComponentInChildren<Renderer>().material.color = color;
     }
 
     public void triggerFunction(Collider2D col)
