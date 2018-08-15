@@ -238,7 +238,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1238041879114982}
   m_BodyType: 0
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.0001
@@ -336,7 +336,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208a74c169c8ce0469005034420cb341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
-  jumpHeight: 10
-  dashSpeed: 50
-  gravityScale: 4
+  extraJumpTimer: 0
+  movementSettings:
+    runSpeed: 20
+    dashSpeed: 50
+    jumpHeight: 20
+    jumpCount: 2
+    extraJumpForce: 0
+    extraJumpTime: 0
+    gravityScale: 4

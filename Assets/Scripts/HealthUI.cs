@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class HealthUI : MonoBehaviour
 {
-    private Sprite healthImage;
-    public Vector2 healthSize;
+    private Sprite[] healthImages;
 
     private void Start()
     {
@@ -15,7 +14,13 @@ public class HealthUI : MonoBehaviour
 
     public void setHealth(int health)
     {
-        GetComponent<RectTransform>().localScale = new Vector3(healthSize.x, healthSize.y, 1);
-        GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, GetComponent<RectTransform>().sizeDelta.x * health);
+        if(health >= 0 && health < healthImages.Length)
+        {
+            GetComponent<Image>().sprite = healthImages[health];
+        }
+        else
+        {
+            Debug.Log("Tried to set health to " + health.ToString() + ". Was this a mistake?");
+        }
     }
 }
