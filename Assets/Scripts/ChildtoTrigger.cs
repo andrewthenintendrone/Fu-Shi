@@ -11,7 +11,7 @@ public class ChildtoTrigger : MonoBehaviour
 		
 	}
 
-    private void ontriggerenter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")
         {
