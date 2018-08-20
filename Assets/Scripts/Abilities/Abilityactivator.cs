@@ -35,7 +35,21 @@ public class Abilityactivator : MonoBehaviour {
                 }
             }
         }
-	}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            int numHits = Physics2D.CircleCast(transform.position, inkRadius, Vector2.zero, filter, hits, Mathf.Infinity);
+
+            for (int i = 0; i < numHits; i++)
+            {
+
+                Debug.Log(hits[i].collider.gameObject.name);
+                if (hits[i].collider.gameObject.GetComponent<patrolmove>() != null)
+                {
+                    hits[i].collider.gameObject.GetComponent<patrolmove>().reverse();
+                }
+            }
+        }
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
