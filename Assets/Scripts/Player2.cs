@@ -29,6 +29,11 @@ public class Player2 : MonoBehaviour
     public float extraJumpTimer;
     bool jumpHeld = false;
 
+    private float xAxis;
+    private float yAxis;
+    private int jumpAxis;
+    private int dashAxis;
+
     public MovementSettings2 movementSettings;
 
     private void Start()
@@ -44,14 +49,14 @@ public class Player2 : MonoBehaviour
     {
         #region get inputs
 
-        float xAxis = Input.GetAxis("Horizontal");
-        float yAxis = Input.GetAxis("Vertical");
-        int jumpAxis = (int)Input.GetAxisRaw("Jump");
-        int dashAxis = (int)Input.GetAxisRaw("Dash");
+        xAxis = Input.GetAxis("Horizontal");
+        yAxis = Input.GetAxis("Vertical");
+        jumpAxis = (int)Input.GetAxisRaw("Jump");
+        dashAxis = (int)Input.GetAxisRaw("Dash");
 
         #endregion
 
-        if (dashAxis == 1)
+        if(dashAxis == 1)
         {
             velocity.x = xAxis * movementSettings.dashSpeed;
         }
@@ -63,7 +68,7 @@ public class Player2 : MonoBehaviour
         // development movement
         if (Utils.DEVMODE)
         {
-            velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed;
+            velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed * 2;
 
             transform.position += velocity * Time.deltaTime;
 
@@ -80,6 +85,12 @@ public class Player2 : MonoBehaviour
         if(!character.isGrounded)
         {
             velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
+
+            if(jumpAxis == 1 && extraJumpTimer > 0 && velocity.y > 0)
+            {
+                velocity.y += movementSettings.extraJumpForce * Time.deltaTime;
+                extraJumpTimer = Mathf.Max(0.0f, extraJumpTimer - Time.fixedDeltaTime);
+            }
         }
         else
         {
@@ -88,8 +99,14 @@ public class Player2 : MonoBehaviour
             extraJumpTimer = movementSettings.extraJumpTime;
         }
 
+        if (yAxis < 0)
+        {
+            character.ignoreOneWayPlatformsThisFrame = true;
+            Invoke("enableOneWayPlatforms", 0.25f);
+        }
+
         // kill velocity when hitting a roof
-        if(character.collisionState.above)
+        if (character.collisionState.above)
         {
             velocity.y = 0;
         }
@@ -113,7 +130,7 @@ public class Player2 : MonoBehaviour
         character.move(velocity * Time.fixedDeltaTime);
 
         changeColor(character.isGrounded ? Color.red : Color.white);
-	}
+    }
 
     void Update()
     {
@@ -127,6 +144,11 @@ public class Player2 : MonoBehaviour
     void changeColor(Color color)
     {
         GetComponentInChildren<Renderer>().material.color = color;
+    }
+
+    void enableOneWayPlatforms()
+    {
+        character.ignoreOneWayPlatformsThisFrame = false;
     }
 
     public void triggerFunction(Collider2D col)

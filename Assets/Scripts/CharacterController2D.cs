@@ -246,7 +246,7 @@ public class CharacterController2D : MonoBehaviour
                 onControllerCollidedEvent(_raycastHitsThisFrame[i]);
         }
 
-        ignoreOneWayPlatformsThisFrame = false;
+        //ignoreOneWayPlatformsThisFrame = false;
     }
 
     // moves directly down until grounded
