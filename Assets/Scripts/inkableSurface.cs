@@ -41,7 +41,7 @@ public class inkableSurface : MonoBehaviour
 
     public void updateMaterial()
     {
-        SpriteRenderer spriteR = gameObject.GetComponent<SpriteRenderer>();
+        Renderer spriteR = gameObject.GetComponent<Renderer>();
 
         spriteR.material = inked ? inkedSurface : cleanSurface;
     }
