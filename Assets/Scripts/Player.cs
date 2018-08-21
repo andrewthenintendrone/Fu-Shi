@@ -7,8 +7,6 @@ public struct MovementSettings
 {
     public float runSpeed;
 
-    public float dashSpeed;
-
     public float jumpHeight;
 
     public int jumpCount;
@@ -23,16 +21,15 @@ public struct MovementSettings
 public class Player : MonoBehaviour
 {
     private CharacterController2D character;
-    private Vector3 velocity;
+    public Vector3 velocity;
 
-    private int currentJumps;
+    public int currentJumps;
     public float extraJumpTimer;
     bool jumpHeld = false;
 
     private float xAxis;
     private float yAxis;
     private int jumpAxis;
-    private int dashAxis;
 
     public MovementSettings movementSettings;
 
@@ -65,18 +62,10 @@ public class Player : MonoBehaviour
         xAxis = Input.GetAxis("Horizontal");
         yAxis = Input.GetAxis("Vertical");
         jumpAxis = (int)Input.GetAxisRaw("Jump");
-        dashAxis = (int)Input.GetAxisRaw("Dash");
 
         #endregion
 
-        if(dashAxis == 1)
-        {
-            velocity.x = xAxis * movementSettings.dashSpeed;
-        }
-        else
-        {
-            velocity.x = xAxis * movementSettings.runSpeed;
-        }
+        velocity.x = xAxis * movementSettings.runSpeed;
 
         // development movement
         if (Utils.DEVMODE)
@@ -125,7 +114,7 @@ public class Player : MonoBehaviour
         }
 
         // update jump held
-        if(!jumpHeld && jumpAxis == 1)
+        if (!jumpHeld && jumpAxis == 1)
         {
             jumpHeld = true;
 
@@ -167,22 +156,17 @@ public class Player : MonoBehaviour
     public void collisionFunction(RaycastHit2D hitInfo)
     {
         // inkable surface
-        if(hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
+        if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
         {
             // inked
-            if(hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
+            if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
             {
-                GameObject currentInkBlot = GameObject.Find("inkblot");
-                if(currentInkBlot == null)
-                {
-                    GameObject inkBlot = Instantiate(InkBlotPrefab);
-                    inkBlot.name = "inkblot";
-                    // position is half way between transform.position and the hit point
-                    inkBlot.transform.position = ((Vector2)transform.position + hitInfo.point) * 0.5f;
-                    inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
-                    inkBlot.GetComponent<InkBlot>().player = this.gameObject;
-                    this.gameObject.SetActive(false);
-                }
+                GameObject inkBlot = Instantiate(InkBlotPrefab);
+                inkBlot.name = "inkblot";
+                inkBlot.transform.position = transform.position;
+                inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
+                inkBlot.GetComponent<InkBlot>().player = this.gameObject;
+                this.gameObject.SetActive(false);
             }
         }
     }
