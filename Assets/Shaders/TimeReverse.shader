@@ -55,11 +55,7 @@
 
 				if (distanceToPlayer < _EffectDistance)
 				{
-					float2 newUV = i.uv;
 
-					newUV.x = 1.0 - newUV.x;
-
-					finalColor = tex2D(_MainTex, newUV);
 				}
 
 				return finalColor;
