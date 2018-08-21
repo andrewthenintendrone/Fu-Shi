@@ -22,6 +22,8 @@ public class PostProcessing : MonoBehaviour
     // look up texture created from shaderGradient
     public Texture2D gradTex;
 
+    private Transform playerTransform;
+
     // called when this script is enabled
     private void OnEnable()
     {
@@ -53,6 +55,7 @@ public class PostProcessing : MonoBehaviour
     void Start()
     {
         GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // called at the last moment before blitting each frame to the screen
@@ -61,6 +64,8 @@ public class PostProcessing : MonoBehaviour
         // set _camX and _camY in the shader
         effectMaterial.SetFloat("_camX", transform.position.x);
         effectMaterial.SetFloat("_camY", transform.position.y);
+
+        effectMaterial.SetVector("_PlayerPos", Camera.main.WorldToViewportPoint(playerTransform.position));
 
         // downscale the image (if required)
         int width = source.width >> DownRes;

@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class InkBlot : MonoBehaviour
 {
-    public float gripTime;
     public GameObject player;
-
-    public void Start()
-    {
-        Invoke("fallOff", gripTime);
-    }
+    public float launchForce;
 
     private void Update()
     {
-        player.transform.position = transform.position;
+        if((int)Input.GetAxisRaw("Jump") == 1)
+        {
+            launch();
+        }
     }
 
-    public void fallOff()
+    public void launch()
     {
-        // reenable the player
+        float xAxis = Input.GetAxis("Horizontal");
+        float yAxis = Input.GetAxis("Vertical");
+
+        Vector3 direction = (Vector3.right * xAxis + Vector3.up * yAxis).normalized;
+
         player.SetActive(true);
+
+        player.GetComponent<Player>().velocity = direction * launchForce;
 
         // destroy this gameobject
         Destroy(gameObject);
