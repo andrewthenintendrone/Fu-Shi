@@ -46,11 +46,14 @@ public class Player : MonoBehaviour
 
     public AnimationState animationState = AnimationState.IDLE;
 
+    public GameObject InkBlotPrefab;
+
     private void Start()
     {
         Utils.Init();
         character = GetComponent<CharacterController2D>();
         character.onTriggerEnterEvent += triggerFunction;
+        character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
         extraJumpTimer = movementSettings.extraJumpTime;
     }
@@ -159,6 +162,29 @@ public class Player : MonoBehaviour
     void enableOneWayPlatforms()
     {
         character.ignoreOneWayPlatformsThisFrame = false;
+    }
+
+    public void collisionFunction(RaycastHit2D hitInfo)
+    {
+        // inkable surface
+        if(hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
+        {
+            // inked
+            if(hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
+            {
+                GameObject currentInkBlot = GameObject.Find("inkblot");
+                if(currentInkBlot == null)
+                {
+                    GameObject inkBlot = Instantiate(InkBlotPrefab);
+                    inkBlot.name = "inkblot";
+                    // position is half way between transform.position and the hit point
+                    inkBlot.transform.position = ((Vector2)transform.position + hitInfo.point) * 0.5f;
+                    inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
+                    inkBlot.GetComponent<InkBlot>().player = this.gameObject;
+                    this.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 
     public void triggerFunction(Collider2D col)
