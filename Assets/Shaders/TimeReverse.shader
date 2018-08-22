@@ -55,7 +55,9 @@
 
 				if (distanceToPlayer < _EffectDistance)
 				{
-
+					finalColor.r = 1.0 - finalColor.r;
+					finalColor.g = 1.0 - finalColor.g;
+					finalColor.b = 1.0 - finalColor.b;
 				}
 
 				return finalColor;

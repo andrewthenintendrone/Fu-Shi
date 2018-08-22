@@ -67,6 +67,11 @@ public class PostProcessing : MonoBehaviour
 
         effectMaterial.SetVector("_PlayerPos", Camera.main.WorldToViewportPoint(playerTransform.position));
 
+        float timeAxis = Input.GetAxis("Time");
+
+        Debug.Log(timeAxis);
+        effectMaterial.SetFloat("_EffectDistance", timeAxis);
+
         // downscale the image (if required)
         int width = source.width >> DownRes;
         int height = source.height >> DownRes;

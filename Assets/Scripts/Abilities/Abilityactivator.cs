@@ -5,49 +5,65 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class Abilityactivator : MonoBehaviour {
-
+public class Abilityactivator : MonoBehaviour
+{
     public float inkRadius;
     public float timeRadius;
     private RaycastHit2D[] hits = new RaycastHit2D[100];
     private ContactFilter2D filter;
 
-	// Use this for initialization
+    bool inkHeld = false;
+    bool timeHeld = false;
+
 	void Start ()
     {
         filter.layerMask = 1 << LayerMask.NameToLayer("Solid");
 	}
 	
-	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        float inkAxis = Input.GetAxis("Ink");
+        float timeAxis = Input.GetAxis("Time");
+
+        if (inkAxis != 0)
         {
-            int numHits = Physics2D.CircleCast(transform.position, inkRadius, Vector2.zero, filter, hits, Mathf.Infinity);
-
-            for(int i = 0; i < numHits; i++)
+            if(!inkHeld)
             {
+                int numHits = Physics2D.CircleCast(transform.position, inkRadius, Vector2.zero, filter, hits, Mathf.Infinity);
 
-                Debug.Log(hits[i].collider.gameObject.name);
-                if( hits[i].collider.gameObject.GetComponent<inkableSurface>() != null)
+                for (int i = 0; i < numHits; i++)
                 {
-                    hits[i].collider.gameObject.GetComponent<inkableSurface>().Inked = true;
+                    if (hits[i].collider.gameObject.GetComponent<inkableSurface>() != null)
+                    {
+                        hits[i].collider.gameObject.GetComponent<inkableSurface>().Inked = true;
+                    }
                 }
             }
+            inkHeld = true;
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        else
         {
-            int numHits = Physics2D.CircleCast(transform.position, inkRadius, Vector2.zero, filter, hits, Mathf.Infinity);
-
-            for (int i = 0; i < numHits; i++)
+            inkHeld = false;
+        }
+        if (timeAxis != 0)
+        {
+            if(!timeHeld)
             {
+                int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, filter, hits, Mathf.Infinity);
 
-                Debug.Log(hits[i].collider.gameObject.name);
-                if (hits[i].collider.gameObject.GetComponent<patrolmove>() != null)
+                for (int i = 0; i < numHits; i++)
                 {
-                    hits[i].collider.gameObject.GetComponent<patrolmove>().reverse();
+                    if (hits[i].collider.gameObject.GetComponent<patrolmove>() != null)
+                    {
+                        hits[i].collider.gameObject.GetComponent<patrolmove>().reverse();
+                    }
                 }
             }
+            timeHeld = true;
+        }
+        else
+        {
+            timeHeld = false;
         }
     }
 
