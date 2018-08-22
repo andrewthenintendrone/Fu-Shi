@@ -29,10 +29,10 @@ public class patrolmove : MonoBehaviour
     void Start()
     {
         hangcount = hangtime;
-        if (willPatrol && patrolPoints[0] == null)
+        if (willPatrol == true  && patrolPoints.Length < 2)
         {
-            
             Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
+            willPatrol = false;
         }
 
     }
@@ -42,7 +42,7 @@ public class patrolmove : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (willPatrol && patrolPoints[0])
+        if (willPatrol)
         {
             patrol();
         }
