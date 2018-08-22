@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
 
     public GameObject InkBlotPrefab;
 
+    public bool isLaunching = false;
+
     private void Start()
     {
         Utils.Init();
@@ -65,7 +67,10 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        velocity.x = xAxis * movementSettings.runSpeed;
+        if(!isLaunching)
+        {
+            velocity.x = xAxis * movementSettings.runSpeed;
+        }
 
         // development movement
         if (Utils.DEVMODE)
@@ -99,6 +104,7 @@ public class Player : MonoBehaviour
             velocity.y = -0.1f;
             currentJumps = movementSettings.jumpCount;
             extraJumpTimer = movementSettings.extraJumpTime;
+            isLaunching = false;
         }
 
         if (yAxis < 0)
@@ -161,12 +167,16 @@ public class Player : MonoBehaviour
             // inked
             if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
             {
-                GameObject inkBlot = Instantiate(InkBlotPrefab);
-                inkBlot.name = "inkblot";
-                inkBlot.transform.position = transform.position;
-                inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
-                inkBlot.GetComponent<InkBlot>().player = this.gameObject;
-                this.gameObject.SetActive(false);
+                // ensure only one ink blot at a time
+                if(GameObject.Find("inkblot") == null)
+                {
+                    GameObject inkBlot = Instantiate(InkBlotPrefab);
+                    inkBlot.name = "inkblot";
+                    inkBlot.transform.position = transform.position;
+                    inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
+                    inkBlot.GetComponent<InkBlot>().player = this.gameObject;
+                    this.gameObject.SetActive(false);
+                }
             }
         }
     }
