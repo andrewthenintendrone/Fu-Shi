@@ -107,12 +107,6 @@ public class Player : MonoBehaviour
             isLaunching = false;
         }
 
-        if (yAxis < 0)
-        {
-            character.ignoreOneWayPlatformsThisFrame = true;
-            Invoke("enableOneWayPlatforms", 0.25f);
-        }
-
         // kill velocity when hitting a roof
         if (character.collisionState.above)
         {
@@ -124,10 +118,18 @@ public class Player : MonoBehaviour
         {
             jumpHeld = true;
 
-            if(currentJumps > 0)
+            if (yAxis == -1)
             {
-                velocity.y = movementSettings.jumpHeight;
-                currentJumps--;
+                character.ignoreOneWayPlatformsThisFrame = true;
+                Invoke("enableOneWayPlatforms", 0.25f);
+            }
+            else
+            {
+                if (currentJumps > 0)
+                {
+                    velocity.y = movementSettings.jumpHeight;
+                    currentJumps--;
+                }
             }
         }
         if(jumpHeld && jumpAxis == 0)
