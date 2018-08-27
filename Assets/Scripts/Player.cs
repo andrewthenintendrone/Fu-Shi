@@ -161,6 +161,11 @@ public class Player : MonoBehaviour
         character.ignoreOneWayPlatformsThisFrame = false;
     }
 
+    void cancelLaunch()
+    {
+        isLaunching = false;
+    }
+
     public void collisionFunction(RaycastHit2D hitInfo)
     {
         // inkable surface
@@ -192,6 +197,12 @@ public class Player : MonoBehaviour
         else if (col.tag == "checkpoint")
         {
             Utils.updateCheckpoint(col.transform.position);
+        }
+        else if(col.tag == "collectable")
+        {
+            Utils.numberOfCollectables++;
+            Utils.updateCollectableText();
+            Destroy(col.gameObject);
         }
     }
 }

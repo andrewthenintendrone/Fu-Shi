@@ -69,7 +69,6 @@ public class PostProcessing : MonoBehaviour
 
         float timeAxis = Input.GetAxis("Time");
 
-        Debug.Log(timeAxis);
         effectMaterial.SetFloat("_EffectDistance", timeAxis);
 
         // downscale the image (if required)
