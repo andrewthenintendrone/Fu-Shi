@@ -81,10 +81,10 @@ public class Player : MonoBehaviour
             {
                 velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
             }
-            // decelerate 
-            if(xAxis == 0)
+            // decelerate
+            if(xAxis == 0 && velocity.x != 0)
             {
-                velocity.x = Mathf.Sign(velocity.x)
+                velocity.x -= Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x) - movementSettings.deceleration, 0.0f);
             }
         }
 
