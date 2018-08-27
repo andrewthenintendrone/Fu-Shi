@@ -249,7 +249,7 @@ public class Player : MonoBehaviour
         }
         else if (col.tag == "levelDoor")
         {
-            Utils.loadScene("Basic level v2 2nd room");
+            Utils.loadScene(col.name);
         }
     }
 }

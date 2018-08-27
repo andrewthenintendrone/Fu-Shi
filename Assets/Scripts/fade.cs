@@ -22,7 +22,8 @@ public class fade : MonoBehaviour
 
     private void Update()
     {
-        if(fadingOut)
+        fadeImage.color = currentColor;
+        if (fadingOut)
         {
             currentColor.a = Mathf.Min(currentColor.a + Time.deltaTime, 1.0f);
 
@@ -36,7 +37,7 @@ public class fade : MonoBehaviour
                 fadingIn = true;
             }
         }
-        else if(fadingIn)
+        if(fadingIn)
         {
             currentColor.a = Mathf.Max(currentColor.a - Time.deltaTime, 0.0f);
 
@@ -45,8 +46,6 @@ public class fade : MonoBehaviour
                 fadingIn = false;
             }
         }
-
-        fadeImage.color = currentColor;
     }
 
     public void loadScene(string sceneName)
