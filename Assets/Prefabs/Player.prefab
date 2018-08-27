@@ -341,6 +341,9 @@ MonoBehaviour:
   extraJumpTimer: 0
   movementSettings:
     runSpeed: 20
+    acceleration: 100
+    deceleration: 100
+    slowDeceleration: 0
     jumpHeight: 20
     jumpCount: 2
     extraJumpForce: 15
@@ -350,3 +353,4 @@ MonoBehaviour:
   InkBlotPrefab: {fileID: 1983901096847096, guid: 6fa63f1dc9f763640869f05d20846b60,
     type: 2}
   isLaunching: 0
+  canTurnIntoInkBlot: 1

@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
     public bool isLaunching = false;
     public bool canTurnIntoInkBlot = true;
 
+    private float currentDeceleration;
+
     private void Start()
     {
         Utils.Init();
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
         extraJumpTimer = movementSettings.extraJumpTime;
+        currentDeceleration = movementSettings.deceleration;
     }
 
     void FixedUpdate ()
@@ -81,11 +84,11 @@ public class Player : MonoBehaviour
             {
                 velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
             }
-            // decelerate
-            if(xAxis == 0 && velocity.x != 0)
-            {
-                velocity.x -= Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x) - movementSettings.deceleration, 0.0f);
-            }
+        }
+        // decelerate
+        if (xAxis == 0 && velocity.x != 0)
+        {
+            velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - currentDeceleration, 0.0f);
         }
 
         // development movement
@@ -210,6 +213,16 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+        }
+
+        // slippery surface
+        if(hitInfo.collider.gameObject.tag == "slippery")
+        {
+            currentDeceleration = movementSettings.slowDeceleration;
+        }
+        else
+        {
+            currentDeceleration = movementSettings.deceleration;
         }
     }
 

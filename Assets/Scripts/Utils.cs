@@ -9,6 +9,8 @@ public static class Utils
     //the position to reset to (updated via function)
     public static Vector3 resetPos;
 
+    // health image
+    private static Image healthImage;
 
     //player health value
     private static int health;
@@ -37,6 +39,10 @@ public static class Utils
         if(GameObject.Find("collectableText") != null)
         {
             collectableText = GameObject.Find("collectableText").GetComponent<Text>();
+        }
+        if (GameObject.Find("Health") != null)
+        {
+            healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
 
         //set default health
@@ -94,13 +100,16 @@ public static class Utils
 
     private static void updateHealthSprite()
     {
-        if (Health >= 0 && Health < healthImages.Length)
+        if(healthImage != null)
         {
-            GameObject.Find("Health").GetComponent<Image>().sprite = healthImages[Health];
-        }
-        else
-        {
-            Debug.Log("Tried to set health to " + Health.ToString() + ". Was this a mistake?");
+            if (Health >= 0 && Health < healthImages.Length)
+            {
+                GameObject.Find("Health").GetComponent<Image>().sprite = healthImages[Health];
+            }
+            else
+            {
+                Debug.Log("Tried to set health to " + Health.ToString() + ". Was this a mistake?");
+            }
         }
     }
 }
