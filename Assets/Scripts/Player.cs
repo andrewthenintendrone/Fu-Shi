@@ -232,15 +232,24 @@ public class Player : MonoBehaviour
         {
             Utils.resetPlayer();
         }
+        else if(col.tag == "enemy")
+        {
+            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+        }
         else if (col.tag == "checkpoint")
         {
             Utils.updateCheckpoint(col.transform.position);
         }
         else if(col.tag == "collectable")
         {
+            Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
             Utils.numberOfCollectables++;
             Utils.updateCollectableText();
             Destroy(col.gameObject);
+        }
+        else if (col.tag == "levelDoor")
+        {
+            Utils.loadScene("Basic level v2 2nd room");
         }
     }
 }
