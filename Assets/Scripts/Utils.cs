@@ -22,7 +22,10 @@ public static class Utils
     public static void Init()
     {
         resetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
-        collectableText = GameObject.Find("collectableText").GetComponent<Text>();
+        if(GameObject.Find("collectableText") != null)
+        {
+            collectableText = GameObject.Find("collectableText").GetComponent<Text>();
+        }
 	}
 
     public static void resetPlayer()
@@ -62,6 +65,9 @@ public static class Utils
 
     public static void updateCollectableText()
     {
-        collectableText.text = "Collectables: " + numberOfCollectables.ToString();
+        if(collectableText != null)
+        {
+            collectableText.text = "Collectables: " + numberOfCollectables.ToString();
+        }
     }
 }

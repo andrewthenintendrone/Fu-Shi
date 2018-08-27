@@ -7,6 +7,12 @@ public struct MovementSettings
 {
     public float runSpeed;
 
+    public float acceleration;
+
+    public float deceleration;
+
+    public float slowDeceleration;
+
     public float jumpHeight;
 
     public int jumpCount;
@@ -70,7 +76,16 @@ public class Player : MonoBehaviour
 
         if(!isLaunching)
         {
-            velocity.x = xAxis * movementSettings.runSpeed;
+            // accelerate up to run speed
+            if(Mathf.Abs(velocity.x) < movementSettings.runSpeed)
+            {
+                velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
+            }
+            // decelerate 
+            if(xAxis == 0)
+            {
+                velocity.x = Mathf.Sign(velocity.x)
+            }
         }
 
         // development movement
