@@ -51,9 +51,12 @@ public static class Utils
             healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
 
-        if(GameObject.Find("Fade").GetComponent<Image>() != null)
+        if(GameObject.Find("Fade") != null)
         {
-            fadeScript = GameObject.Find("Fade").GetComponent<fade>();
+            if(GameObject.Find("Fade").GetComponent<fade>() != null)
+            {
+                fadeScript = GameObject.Find("Fade").GetComponent<fade>();
+            }
         }
 
         //load the health sprites

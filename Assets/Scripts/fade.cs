@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class fade : MonoBehaviour
 {
     private Image fadeImage;
-    private bool fadingOut;
-    private bool fadingIn;
+    private bool fadingOut = false;
+    private bool fadingIn = true;
     private Color currentColor = Color.black;
     private string sceneName;
 
@@ -38,13 +38,15 @@ public class fade : MonoBehaviour
         }
         else if(fadingIn)
         {
-            currentColor.a = Mathf.Min(currentColor.a + Time.deltaTime, 1.0f);
+            currentColor.a = Mathf.Max(currentColor.a - Time.deltaTime, 0.0f);
 
-            if(currentColor.a == 1.0f)
+            if(currentColor.a == 0.0f)
             {
                 fadingIn = false;
             }
         }
+
+        fadeImage.color = currentColor;
     }
 
     public void loadScene(string sceneName)
