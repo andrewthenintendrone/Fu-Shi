@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public static class Utils
 {
@@ -21,7 +22,9 @@ public static class Utils
         set { health = value; updateHealthSprite(); }
     }
 
-    public static Sprite[] healthImages = new Sprite[3];
+    public static int maxHealth;
+
+    private static Sprite[] healthImages = new Sprite[9];
 
     private static bool devMode = false;
     public static bool DEVMODE
@@ -31,6 +34,9 @@ public static class Utils
 
     public static int numberOfCollectables = 0;
     private static Text collectableText;
+
+    // fade script
+    private static fade fadeScript;
 
     // Use this for initialization
     public static void Init()
@@ -45,14 +51,21 @@ public static class Utils
             healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
 
-        //set default health
-        Health = 3;
+        if(GameObject.Find("Fade") != null)
+        {
+            if(GameObject.Find("Fade").GetComponent<fade>() != null)
+            {
+                fadeScript = GameObject.Find("Fade").GetComponent<fade>();
+            }
+        }
 
         //load the health sprites
-        healthImages[0] = Resources.Load<Sprite>("Health_Full");
-        healthImages[1] = Resources.Load<Sprite>("Health_Medium");
-        healthImages[2] = Resources.Load<Sprite>("Health_Dangerous");
+        healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
 
+        maxHealth = healthImages.Length - 1;
+
+        //set default health
+        Health = maxHealth;
     }
 
     public static void resetPlayer()
@@ -100,16 +113,22 @@ public static class Utils
 
     private static void updateHealthSprite()
     {
-        if(healthImage != null)
+        if (healthImage != null)
         {
-            if (Health >= 0 && Health < healthImages.Length)
+            if (Health >= 0 && Health <= maxHealth)
             {
-                GameObject.Find("Health").GetComponent<Image>().sprite = healthImages[Health];
+                healthImage.sprite = healthImages[Health];
             }
             else
             {
                 Debug.Log("Tried to set health to " + Health.ToString() + ". Was this a mistake?");
             }
         }
+    }
+
+    // fade out while loading scene
+    public static void loadScene(string sceneName)
+    {
+        fadeScript.loadScene(sceneName);
     }
 }

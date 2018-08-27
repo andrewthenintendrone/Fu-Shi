@@ -33,6 +33,8 @@ public class InkBlot : MonoBehaviour
 
     private void Update()
     {
+        player.transform.position = transform.position;
+
         // get inputs
         float xAxis = Input.GetAxis("Horizontal");
         float yAxis = Input.GetAxis("Vertical");
