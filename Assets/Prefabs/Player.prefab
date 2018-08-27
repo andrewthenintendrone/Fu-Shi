@@ -99,7 +99,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1238041879114982}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -64.15143, y: -112.96875, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children:
   - {fileID: 4365453822099134}
@@ -336,13 +336,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208a74c169c8ce0469005034420cb341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0, z: 0}
+  currentJumps: 0
   extraJumpTimer: 0
   movementSettings:
     runSpeed: 20
-    dashSpeed: 50
     jumpHeight: 20
     jumpCount: 2
     extraJumpForce: 15
     extraJumpTime: 1
     gravityScale: 4
   animationState: 0
+  InkBlotPrefab: {fileID: 1983901096847096, guid: 6fa63f1dc9f763640869f05d20846b60,
+    type: 2}
+  isLaunching: 0
