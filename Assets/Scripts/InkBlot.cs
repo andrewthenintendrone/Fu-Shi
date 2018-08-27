@@ -20,6 +20,10 @@ public class InkBlot : MonoBehaviour
     // debug launch direction
     private Vector3 direction;
 
+    private bool lastframeWasJump = true;
+
+    [Tooltip("how long until the player can turn into an ink blot after launch")]
+    public float gracePeriod;
 
     private void Start()
     {
@@ -43,10 +47,12 @@ public class InkBlot : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + direction, Color.red);
 
         // the jump button launches
-        if ((int)Input.GetAxisRaw("Jump") == 1)
+        if ((int)Input.GetAxisRaw("Jump") == 1 && !lastframeWasJump)
         {
             launch();
         }
+
+        lastframeWasJump = Input.GetAxisRaw("Jump") == 1;
     }
 
     public void launch()
@@ -54,12 +60,16 @@ public class InkBlot : MonoBehaviour
         // reactivate the player gameobject and set isLaunching to true
         player.SetActive(true);
         player.GetComponent<Player>().isLaunching = true;
+        player.GetComponent<Player>().canTurnIntoInkBlot = false;
 
         // set the players velocity to the launch force
         player.GetComponent<Player>().velocity = direction * launchForce;
 
         // stop the launch after launchTime
         player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
+
+        // reenable canTurnIntoInkBlot after grace period
+        player.GetComponent<Player>().Invoke("setCanTurnIntoInkBlot", gracePeriod);
 
         // destroy this gameobject
         Destroy(gameObject);

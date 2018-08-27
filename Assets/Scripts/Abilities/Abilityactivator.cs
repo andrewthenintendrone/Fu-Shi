@@ -33,9 +33,9 @@ public class Abilityactivator : MonoBehaviour
 
                 for (int i = 0; i < numHits; i++)
                 {
-                    if (hits[i].collider.gameObject.GetComponent<inkableSurface>() != null)
+                    if (hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
                     {
-                        hits[i].collider.gameObject.GetComponent<inkableSurface>().Inked = true;
+                        hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
                     }
                 }
             }

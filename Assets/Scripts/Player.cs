@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     public GameObject InkBlotPrefab;
 
     public bool isLaunching = false;
+    public bool canTurnIntoInkBlot = true;
 
     private void Start()
     {
@@ -166,6 +167,12 @@ public class Player : MonoBehaviour
         isLaunching = false;
     }
 
+    // sets canTurnIntoInkBlot to true
+    void setCanTurnIntoInkBlot()
+    {
+        canTurnIntoInkBlot = true;
+    }
+
     public void collisionFunction(RaycastHit2D hitInfo)
     {
         // inkable surface
@@ -177,12 +184,15 @@ public class Player : MonoBehaviour
                 // ensure only one ink blot at a time
                 if(GameObject.Find("inkblot") == null)
                 {
-                    GameObject inkBlot = Instantiate(InkBlotPrefab);
-                    inkBlot.name = "inkblot";
-                    inkBlot.transform.position = transform.position;
-                    inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
-                    inkBlot.GetComponent<InkBlot>().player = this.gameObject;
-                    this.gameObject.SetActive(false);
+                    if(canTurnIntoInkBlot)
+                    {
+                        GameObject inkBlot = Instantiate(InkBlotPrefab);
+                        inkBlot.name = "inkblot";
+                        inkBlot.transform.position = transform.position;
+                        inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
+                        inkBlot.GetComponent<InkBlot>().player = this.gameObject;
+                        this.gameObject.SetActive(false);
+                    }
                 }
             }
         }
