@@ -31,7 +31,9 @@ public class Player : MonoBehaviour
 
     public int currentJumps;
     public float extraJumpTimer;
-    bool jumpHeld = false;
+
+    [HideInInspector]
+    public bool jumpHeld = false;
 
     private float xAxis;
     private float yAxis;
@@ -121,16 +123,9 @@ public class Player : MonoBehaviour
         }
         else
         {
-            velocity.y = -0.1f;
             currentJumps = movementSettings.jumpCount;
             extraJumpTimer = movementSettings.extraJumpTime;
             isLaunching = false;
-        }
-
-        // kill velocity when hitting a roof
-        if (character.collisionState.above)
-        {
-            velocity.y = 0;
         }
 
         // update jump held

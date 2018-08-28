@@ -73,6 +73,8 @@ public class InkBlot : MonoBehaviour
         // reenable canTurnIntoInkBlot after grace period
         player.GetComponent<Player>().Invoke("setCanTurnIntoInkBlot", gracePeriod);
 
+        player.GetComponent<Player>().jumpHeld = true;
+
         // destroy this gameobject
         Destroy(gameObject);
     }
