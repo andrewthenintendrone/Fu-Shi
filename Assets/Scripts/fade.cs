@@ -14,9 +14,22 @@ public class fade : MonoBehaviour
 
     private void Start()
     {
-        if(GetComponent<Image>())
+
+        // attach to canvas
+        if (GameObject.FindObjectOfType<Canvas>() != null)
         {
-            fadeImage = GetComponent<Image>();
+            fadeImage = gameObject.AddComponent<Image>();
+            fadeImage.rectTransform.SetParent(GameObject.FindObjectOfType<Canvas>().transform);
+
+            // scale to fill canvas
+            fadeImage.rectTransform.anchorMin = new Vector2(0, 0);
+            fadeImage.rectTransform.anchorMax = new Vector2(1, 1);
+            fadeImage.rectTransform.offsetMin = Vector3.zero;
+            fadeImage.rectTransform.offsetMax = Vector3.zero;
+            fadeImage.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            fadeImage.rectTransform.localScale = new Vector3(1, 1, 1);
+
+            fadeImage.rectTransform.localPosition = Vector3.zero;
         }
     }
 

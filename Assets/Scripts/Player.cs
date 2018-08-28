@@ -137,7 +137,7 @@ public class Player : MonoBehaviour
         {
             jumpHeld = true;
 
-            if (yAxis == -1)
+            if (yAxis <= -0.5f)
             {
                 character.ignoreOneWayPlatformsThisFrame = true;
                 Invoke("enableOneWayPlatforms", 0.25f);

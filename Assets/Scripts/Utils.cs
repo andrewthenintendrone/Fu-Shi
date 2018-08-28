@@ -51,13 +51,9 @@ public static class Utils
             healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
 
-        if(GameObject.Find("Fade") != null)
-        {
-            if(GameObject.Find("Fade").GetComponent<fade>() != null)
-            {
-                fadeScript = GameObject.Find("Fade").GetComponent<fade>();
-            }
-        }
+        // create UI fade effect
+        GameObject fadeObject = new GameObject("Fade");
+        fadeScript = fadeObject.AddComponent<fade>();
 
         //load the health sprites
         healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
