@@ -69,6 +69,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate ()
     {
+        if(character.collisionState.left)
+        {
+            Debug.Break();
+        }
+
         #region get inputs
 
         xAxis = Input.GetAxis("Horizontal");
