@@ -50,10 +50,17 @@ public static class Utils
         {
             healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
+        else
+        {
+
+        }
 
         // create UI fade effect
         GameObject fadeObject = new GameObject("Fade");
         fadeScript = fadeObject.AddComponent<fade>();
+
+        //in the same manner as the fade object above create the health sprite
+        GameObject HPsymbol = new GameObject("Heath");
 
         //load the health sprites
         healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
