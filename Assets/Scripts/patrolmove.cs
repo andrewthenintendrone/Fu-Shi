@@ -107,9 +107,26 @@ public class patrolmove : MonoBehaviour
 
     public void reverse()
     {
-        goingForward = !goingForward;
+        if (transform.parent == null)
+        {
+            goingForward = !goingForward;
 
-        findNextNode();
+            findNextNode();
+        }
+        else
+        {
+            foreach (Transform Child in transform.parent)
+            {
+                if (Child.gameObject.GetComponent<patrolmove>() != null)
+                {
+                    patrolmove currScript = Child.gameObject.GetComponent<patrolmove>();
+                    currScript.goingForward = !currScript.goingForward;
+                    currScript.findNextNode();
+                }
+                
+            }
+        }
+        
     }
 
     void findNextNode()

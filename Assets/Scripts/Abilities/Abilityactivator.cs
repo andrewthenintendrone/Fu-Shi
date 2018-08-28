@@ -50,12 +50,13 @@ public class Abilityactivator : MonoBehaviour
             if(!timeHeld)
             {
                 int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, filter, hits, Mathf.Infinity);
-
-                for (int i = 0; i < numHits; i++)
+                bool hasReversed = false;
+                for (int i = 0; i < numHits && !hasReversed; i++)
                 {
                     if (hits[i].collider.gameObject.GetComponent<patrolmove>() != null)
                     {
                         hits[i].collider.gameObject.GetComponent<patrolmove>().reverse();
+                        hasReversed = true;
                     }
                 }
             }
@@ -72,6 +73,8 @@ public class Abilityactivator : MonoBehaviour
     {
         UnityEditor.Handles.color = Color.red;
         UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, inkRadius);
+        UnityEditor.Handles.color = Color.cyan;
+        UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, timeRadius);
     }
 #endif
 }
