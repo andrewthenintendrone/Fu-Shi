@@ -2079,26 +2079,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1238041879114982, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114992241879690478, guid: adb17bee90db16f41ad1923a05db6100,
-        type: 2}
-      propertyPath: InkBlotPrefab
-      value: 
-      objectReference: {fileID: 1983901096847096, guid: 6fa63f1dc9f763640869f05d20846b60,
-        type: 2}
-    - target: {fileID: 114992241879690478, guid: adb17bee90db16f41ad1923a05db6100,
-        type: 2}
-      propertyPath: movementSettings.acceleration
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114992241879690478, guid: adb17bee90db16f41ad1923a05db6100,
-        type: 2}
-      propertyPath: movementSettings.deceleration
-      value: 100
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
   m_IsPrefabParent: 0
@@ -2833,7 +2813,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  gradTex: {fileID: 1640717427}
+  gradTex: {fileID: 1672727334}
 --- !u!120 &1158741846
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -3298,24 +3278,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4899924807885006, guid: 37f369d0874e94e46a10c823315f6b9f,
     type: 2}
   m_PrefabInternal: {fileID: 1321439531}
---- !u!1 &1321861988 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1238041879114982, guid: adb17bee90db16f41ad1923a05db6100,
-    type: 2}
-  m_PrefabInternal: {fileID: 1049326268}
---- !u!114 &1321861996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1321861988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b398f2b23b0433488960520122cc0f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inkRadius: 5
-  timeRadius: 5
 --- !u!1 &1327245996
 GameObject:
   m_ObjectHideFlags: 0
@@ -3392,7 +3354,8 @@ Prefab:
       propertyPath: m_Name
       value: OneWayPlatform
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 61276849307296906, guid: 04b7492a29552ee4eb0f83cf8160a0b6, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 04b7492a29552ee4eb0f83cf8160a0b6, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1342852162
@@ -4026,7 +3989,12 @@ Transform:
   m_Father: {fileID: 1327245997}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!28 &1640717427
+--- !u!4 &1657424434 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4274424561892360, guid: 885f92cd7ca03fe43a6eea4d59088dd8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1918494508}
+--- !u!28 &1672727334
 Texture2D:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -4063,11 +4031,6 @@ Texture2D:
     offset: 0
     size: 0
     path: 
---- !u!4 &1657424434 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4274424561892360, guid: 885f92cd7ca03fe43a6eea4d59088dd8,
-    type: 2}
-  m_PrefabInternal: {fileID: 1918494508}
 --- !u!1001 &1681965462
 Prefab:
   m_ObjectHideFlags: 0
@@ -4268,6 +4231,28 @@ Transform:
   m_PrefabParentObject: {fileID: 4899924807885006, guid: 37f369d0874e94e46a10c823315f6b9f,
     type: 2}
   m_PrefabInternal: {fileID: 1722500668}
+--- !u!1 &1754405280 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1868231056669192, guid: 04b7492a29552ee4eb0f83cf8160a0b6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1328117580}
+--- !u!68 &1754405281
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1754405280}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.5}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.5, y: 0}
+  - {x: 0.5, y: 0}
 --- !u!1 &1780430632
 GameObject:
   m_ObjectHideFlags: 0

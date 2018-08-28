@@ -92,7 +92,7 @@ public class CharacterController2D : MonoBehaviour
     // the threshold in the change in vertical movement between frames that constitutes jumping
     public float jumpingThreshold = 0.07f;
 
-    /// curve for multiplying speed based on slope (negative = down slope and positive = up slope)
+    // curve for multiplying speed based on slope (negative = down slope and positive = up slope)
     public AnimationCurve slopeSpeedMultiplier = new AnimationCurve(new Keyframe(-90f, 1.5f), new Keyframe(0f, 1f), new Keyframe(90f, 0f));
 
     [Range(2, 20)]
@@ -246,7 +246,7 @@ public class CharacterController2D : MonoBehaviour
                 onControllerCollidedEvent(_raycastHitsThisFrame[i]);
         }
 
-        ignoreOneWayPlatformsThisFrame = false;
+        //ignoreOneWayPlatformsThisFrame = false;
     }
 
     // moves directly down until grounded
