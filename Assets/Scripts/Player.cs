@@ -77,13 +77,14 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        if(!isLaunching)
+        // accelerate up to run speed
+        if(xAxis > 0 && velocity.x < movementSettings.runSpeed)
         {
-            // accelerate up to run speed
-            if(Mathf.Abs(velocity.x) < movementSettings.runSpeed)
-            {
-                velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
-            }
+            velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
+        }
+        if(xAxis < 0 && velocity.x > -movementSettings.runSpeed)
+        {
+            velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
         }
         // decelerate
         if (xAxis == 0 && velocity.x != 0)
@@ -101,10 +102,10 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // flip the player model to match the direction of the players velocity
+        // scale the player model to match the direction of the players velocity
         if (Mathf.Abs(velocity.x) != 0)
         {
-            transform.eulerAngles = (velocity.x > 0 ? Vector3.zero : Vector3.up * 180.0f);
+            transform.localScale = (velocity.x > 0 ? new Vector3(2, 1, 1) : new Vector3(-2, 1, 1));
         }
 
         // reset jump count if the player becomes grounded
