@@ -63,7 +63,7 @@ public static class Utils
         GameObject HPsymbol = new GameObject("Heath");
 
         //load the health sprites
-        healthImages = Resources.LoadAll<Sprite>("health_strip");
+        healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
 
         maxHealth = healthImages.Length - 1;
 
