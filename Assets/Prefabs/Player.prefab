@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1238041879114982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -44.53, y: 5.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -211,15 +211,15 @@ MonoBehaviour:
   extraJumpTimer: 0
   jumpHeld: 0
   movementSettings:
-    runSpeed: 20
-    acceleration: 100
-    deceleration: 100
+    runSpeed: 13
+    acceleration: 200
+    deceleration: 300
     slowDeceleration: 0
-    jumpHeight: 20
+    jumpHeight: 16
     jumpCount: 2
-    extraJumpForce: 15
-    extraJumpTime: 1
-    gravityScale: 4
+    extraJumpForce: 60
+    extraJumpTime: 2
+    gravityScale: 9.5
   animationState: 0
   InkBlotPrefab: {fileID: 1983901096847096, guid: 6fa63f1dc9f763640869f05d20846b60,
     type: 2}
