@@ -4,26 +4,32 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    public Sprite unpressedSprite;
-    public Sprite pressedSprite;
+    [Tooltip("Sprites to use for unpressed / pressed")]
+    public Sprite[] sprites = new Sprite[2];
 
-    bool pressed = false;
+    [SerializeField]
+    [Tooltip("is this is checked the pressure plate is pressed")]
+    private bool isPressed = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // player touches pressure plate
         if(collision.gameObject.tag == "Player")
         {
-            pressed = true;
-            GetComponent<SpriteRenderer>().sprite = pressedSprite;
+            // become pressed
+            isPressed = true;
+            GetComponent<SpriteRenderer>().sprite = sprites[1];
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        // player leaves pressure plate
         if (collision.gameObject.tag == "Player")
         {
-            pressed = false;
-            GetComponent<SpriteRenderer>().sprite = unpressedSprite;
+            // become depressed (like me)
+            isPressed = false;
+            GetComponent<SpriteRenderer>().sprite = sprites[0];
         }
     }
 }

@@ -25,7 +25,7 @@ public class Abilityactivator : MonoBehaviour
         float inkAxis = Input.GetAxis("Ink");
         float timeAxis = Input.GetAxis("Time");
 
-        if (inkAxis != 0)
+        if (inkAxis > 0.5f)
         {
             if(!inkHeld)
             {
@@ -45,7 +45,7 @@ public class Abilityactivator : MonoBehaviour
         {
             inkHeld = false;
         }
-        if (timeAxis != 0)
+        if (timeAxis >= 0.5f)
         {
             if(!timeHeld)
             {
