@@ -11,9 +11,10 @@ public class Abilityactivator : MonoBehaviour
     public float timeRadius;
     private RaycastHit2D[] hits = new RaycastHit2D[100];
     private ContactFilter2D filter;
+    public GameObject inkwaveprefab;
 
-    bool inkHeld = false;
-    bool timeHeld = false;
+    private bool inkHeld = false;
+    private bool timeHeld = false;
 
 	void Start ()
     {
@@ -35,6 +36,19 @@ public class Abilityactivator : MonoBehaviour
                 {
                     if (hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
                     {
+                        //create a gameobject InkWave
+                        GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position, Quaternion.identity);
+                        //if player has R stick input use it
+                        //else use player facing
+                        Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
+                        //if (RstickDir >= )
+                        //{
+
+                        //}
+                        //else
+                        //{
+
+                        //}
                         hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
                     }
                 }
@@ -45,7 +59,7 @@ public class Abilityactivator : MonoBehaviour
         {
             inkHeld = false;
         }
-        if (timeAxis >= 0.5f)
+        if (timeAxis > 0.5f)
         {
             if(!timeHeld)
             {
