@@ -58,6 +58,10 @@ public class Player : MonoBehaviour
 
     private float currentDeceleration;
 
+    [Tooltip("terminal velocity")]
+    [SerializeField]
+    private float maxFallSpeed;
+
     private void Start()
     {
         Utils.Init();
@@ -113,7 +117,7 @@ public class Player : MonoBehaviour
         // reset jump count if the player becomes grounded
         if(!character.isGrounded)
         {
-            velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
+            velocity.y = Mathf.Max(velocity.y + Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime, -maxFallSpeed);
 
             if(jumpAxis == 1 && extraJumpTimer > 0 && velocity.y > 0)
             {
