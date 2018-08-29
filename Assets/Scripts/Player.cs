@@ -117,7 +117,10 @@ public class Player : MonoBehaviour
         // reset jump count if the player becomes grounded
         if(!character.isGrounded)
         {
-            velocity.y = Mathf.Max(velocity.y + Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime, -maxFallSpeed);
+            if(velocity.y > -maxFallSpeed)
+            {
+                velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
+            }
 
             if(jumpAxis == 1 && extraJumpTimer > 0 && velocity.y > 0)
             {
@@ -127,6 +130,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            velocity.y = -0.1f;
             currentJumps = movementSettings.jumpCount;
             extraJumpTimer = movementSettings.extraJumpTime;
             isLaunching = false;
