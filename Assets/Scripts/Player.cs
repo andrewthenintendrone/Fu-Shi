@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
         // scale the player model to match the direction of the players velocity
         if (Mathf.Abs(velocity.x) != 0)
         {
-            transform.localScale = (velocity.x > 0 ? new Vector3(2, 1, 1) : new Vector3(-2, 1, 1));
+            transform.localScale = (velocity.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
         }
 
         // reset jump count if the player becomes grounded
