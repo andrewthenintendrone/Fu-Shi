@@ -6,22 +6,23 @@ using UnityEngine.SceneManagement;
 
 public static class Utils
 {
-
-    //the position to reset to (updated via function)
+    //the position to reset the player to when they die
     public static Vector3 resetPos;
 
-    // health image
+    // reference to health ui image
     private static Image healthImage;
 
-    //player health value
+    // current player health value
     private static int health;
 
     public static int Health
     {
         get { return health; }
+        // update UI health sprite whenever health is set
         set { health = value; updateHealthSprite(); }
     }
 
+    // maximum player health
     public static int maxHealth;
 
     private static Sprite[] healthImages = new Sprite[9];
@@ -50,21 +51,18 @@ public static class Utils
         {
             healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
-        else
-        {
-
-        }
 
         // create UI fade effect
         GameObject fadeObject = new GameObject("Fade");
         fadeScript = fadeObject.AddComponent<fade>();
 
-        //in the same manner as the fade object above create the health sprite
-        GameObject HPsymbol = new GameObject("Heath");
+        // in the same manner as the fade object above create the health sprite
+        GameObject healthObject = new GameObject("Health");
 
-        //load the health sprites
+        // load the health sprites
         healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
 
+        // maximum health is determined y how many health sprites there are
         maxHealth = healthImages.Length - 1;
 
         //set default health
