@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class inkableSurface : MonoBehaviour
 {
-    //[Tooltip("the current state of the platform")]
+    // the current state of the platform
     public bool Inked
     {
         get

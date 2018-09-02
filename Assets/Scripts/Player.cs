@@ -41,26 +41,16 @@ public class Player : MonoBehaviour
 
     public MovementSettings movementSettings;
 
-    public enum AnimationState
-    {
-        IDLE,
-        DASH,
-        RUN,
-        JUMP
-    }
-
-    public AnimationState animationState = AnimationState.IDLE;
-
     public GameObject InkBlotPrefab;
-
-    public bool isLaunching = false;
-    public bool canTurnIntoInkBlot = true;
 
     private float currentDeceleration;
 
     [Tooltip("terminal velocity")]
     [SerializeField]
     private float maxFallSpeed;
+
+    // is the player launching
+    public bool isLaunching = false;
 
     private void Start()
     {
@@ -83,22 +73,7 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        // accelerate up to run speed
-        if(xAxis > 0 && velocity.x < movementSettings.runSpeed)
-        {
-            velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
-        }
-        if(xAxis < 0 && velocity.x > -movementSettings.runSpeed)
-        {
-            velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
-        }
-        // decelerate
-        if (xAxis == 0 && velocity.x != 0)
-        {
-            velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - currentDeceleration, 0.0f);
-        }
-
-        // development movement
+        // development movement overides everything else
         if (Utils.DEVMODE)
         {
             velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed * 2;
@@ -108,32 +83,55 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // scale the player model to match the direction of the players velocity
-        if (Mathf.Abs(velocity.x) != 0)
+        if(!isLaunching)
         {
-            transform.localScale = (velocity.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
+            // accelerate up to run speed
+            if (Mathf.Abs(velocity.x) < movementSettings.runSpeed)
+            {
+                velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
+            }
+            // decelerate
+            if (xAxis == 0 && velocity.x != 0)
+            {
+                velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - currentDeceleration, 0.0f);
+            }
         }
 
-        // reset jump count if the player becomes grounded
-        if(!character.isGrounded)
+        // the player is on the ground
+        if (character.isGrounded)
         {
-            if(velocity.y > -maxFallSpeed)
+            // reset current number of jumps
+            currentJumps = movementSettings.jumpCount;
+
+            // reset extra jumps
+            extraJumpTimer = movementSettings.extraJumpTime;
+
+            // set y velocity to a small negative value to keep grounded
+            if(!isLaunching)
             {
-                velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
+                velocity.y = -0.1f;
             }
 
-            if(jumpAxis == 1 && extraJumpTimer > 0 && velocity.y > 0)
+            // finish launch
+            if (velocity.y < 0)
             {
-                velocity.y += movementSettings.extraJumpForce * Time.deltaTime;
-                extraJumpTimer = Mathf.Max(0.0f, extraJumpTimer - Time.fixedDeltaTime);
+                isLaunching = false;
             }
         }
         else
         {
-            velocity.y = -0.1f;
-            currentJumps = movementSettings.jumpCount;
-            extraJumpTimer = movementSettings.extraJumpTime;
-            isLaunching = false;
+            // add gravity force until terminal velocity is reached
+            if (velocity.y > -maxFallSpeed)
+            {
+                velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
+            }
+
+            // apply extra jump force
+            if (jumpAxis == 1 && extraJumpTimer > 0 && velocity.y > 0)
+            {
+                velocity.y += movementSettings.extraJumpForce * Time.fixedDeltaTime;
+                extraJumpTimer = Mathf.Max(0.0f, extraJumpTimer - Time.fixedDeltaTime);
+            }
         }
 
         // update jump held
@@ -148,21 +146,21 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if (currentJumps > 0)
+                if (currentJumps > 0 && !isLaunching)
                 {
                     velocity.y = movementSettings.jumpHeight;
                     currentJumps--;
                 }
             }
         }
-        if(jumpHeld && jumpAxis == 0)
+        if (jumpHeld && jumpAxis == 0)
         {
             jumpHeld = false;
         }
 
         character.move(velocity * Time.fixedDeltaTime);
 
-        changeColor(character.isGrounded ? Color.red : Color.white);
+        UpdateAppearance();
     }
 
     void Update()
@@ -189,12 +187,6 @@ public class Player : MonoBehaviour
         isLaunching = false;
     }
 
-    // sets canTurnIntoInkBlot to true
-    void setCanTurnIntoInkBlot()
-    {
-        canTurnIntoInkBlot = true;
-    }
-
     public void collisionFunction(RaycastHit2D hitInfo)
     {
         // inkable surface
@@ -204,17 +196,16 @@ public class Player : MonoBehaviour
             if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
             {
                 // ensure only one ink blot at a time
-                if(GameObject.Find("inkblot") == null)
+                if (GameObject.Find("inkblot") == null)
                 {
-                    if(canTurnIntoInkBlot)
-                    {
-                        GameObject inkBlot = Instantiate(InkBlotPrefab);
-                        inkBlot.name = "inkblot";
-                        inkBlot.transform.position = transform.position;
-                        inkBlot.transform.parent = hitInfo.collider.gameObject.transform;
-                        inkBlot.GetComponent<InkBlot>().player = this.gameObject;
-                        this.gameObject.SetActive(false);
-                    }
+                    // disable this gameObject
+                    gameObject.SetActive(false);
+                    GameObject newInkBlot = Instantiate(InkBlotPrefab);
+                    newInkBlot.name = "inkblot";
+                    newInkBlot.transform.position = transform.position;
+                    newInkBlot.transform.parent = hitInfo.transform;
+                    newInkBlot.GetComponent<InkBlot>().player = gameObject;
+                    newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
                 }
             }
         }
@@ -254,6 +245,19 @@ public class Player : MonoBehaviour
         else if (col.tag == "levelDoor")
         {
             Utils.loadScene(col.name);
+        }
+    }
+
+    // eventually handle animation?
+    public void UpdateAppearance()
+    {
+        // color red if on the ground
+        changeColor(character.isGrounded ? Color.red : Color.white);
+
+        // scale the player model to match the direction of the players velocity
+        if (Mathf.Abs(velocity.x) != 0)
+        {
+            transform.localScale = (velocity.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
         }
     }
 }

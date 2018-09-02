@@ -7,9 +7,22 @@ public class PressurePlate : MonoBehaviour
     [Tooltip("Sprites to use for unpressed / pressed")]
     public Sprite[] sprites = new Sprite[2];
 
+    // is the pressure plate pressed
+    public bool isPressed
+    {
+        get
+        {
+            return m_isPressed;
+        }
+        set
+        {
+            m_isPressed = value;
+            UpdateImage();
+        }
+    }
+
     [SerializeField]
-    [Tooltip("is this is checked the pressure plate is pressed")]
-    private bool isPressed = false;
+    private bool m_isPressed = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,7 +31,7 @@ public class PressurePlate : MonoBehaviour
         {
             // become pressed
             isPressed = true;
-            GetComponent<SpriteRenderer>().sprite = sprites[1];
+            UpdateImage();
         }
     }
 
@@ -27,9 +40,20 @@ public class PressurePlate : MonoBehaviour
         // player leaves pressure plate
         if (collision.gameObject.tag == "Player")
         {
-            // become depressed (like me)
+            // become unpressed
             isPressed = false;
-            GetComponent<SpriteRenderer>().sprite = sprites[0];
+            UpdateImage();
         }
+    }
+
+    // update image to match isPressed value
+    private void UpdateImage()
+    {
+        GetComponent<SpriteRenderer>().sprite = sprites[m_isPressed ? 1 : 0];
+    }
+
+    private void OnValidate()
+    {
+        isPressed = m_isPressed;
     }
 }

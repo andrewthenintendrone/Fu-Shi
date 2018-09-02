@@ -36,9 +36,6 @@ public static class Utils
     public static int numberOfCollectables = 0;
     private static Text collectableText;
 
-    // fade script
-    private static fade fadeScript;
-
     // Use this for initialization
     public static void Init()
     {
@@ -51,13 +48,6 @@ public static class Utils
         {
             healthImage = GameObject.Find("Health").GetComponent<Image>();
         }
-
-        // create UI fade effect
-        GameObject fadeObject = new GameObject("Fade");
-        fadeScript = fadeObject.AddComponent<fade>();
-
-        // in the same manner as the fade object above create the health sprite
-        GameObject healthObject = new GameObject("Health");
 
         // load the health sprites
         healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
@@ -127,9 +117,9 @@ public static class Utils
         }
     }
 
-    // fade out while loading scene
+    // load scene (in Utils)
     public static void loadScene(string sceneName)
     {
-        fadeScript.loadScene(sceneName);
+        SceneManager.LoadScene(sceneName);
     }
 }

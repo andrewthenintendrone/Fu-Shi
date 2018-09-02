@@ -37,7 +37,7 @@ public class Abilityactivator : MonoBehaviour
                     if (hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
                     {
                         //create a gameobject InkWave
-                        GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position, Quaternion.identity);
+                        //GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position, Quaternion.identity);
                         //if player has R stick input use it
                         //else use player facing
                         Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;

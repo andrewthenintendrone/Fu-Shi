@@ -14,16 +14,17 @@ public class InkBlot : MonoBehaviour
     [Tooltip("how long it takes for the player to regain control after launch")]
     public float launchTime;
 
+    [Tooltip("how long until the player can turn into an ink blot after launch")]
+    public float gracePeriod;
+
     // debug line renderer
     private LineRenderer lr;
 
     // debug launch direction
     private Vector3 direction;
 
-    private bool lastframeWasJump = true;
-
-    [Tooltip("how long until the player can turn into an ink blot after launch")]
-    public float gracePeriod;
+    [HideInInspector]
+    public bool jumpHeld;
 
     private void Start()
     {
@@ -38,9 +39,32 @@ public class InkBlot : MonoBehaviour
         // get inputs
         float xAxis = Input.GetAxis("Horizontal");
         float yAxis = Input.GetAxis("Vertical");
+        int jumpAxis = (int)Input.GetAxisRaw("Jump");
+
+        if(jumpAxis == 0)
+        {
+            jumpHeld = false;
+        }
 
         // get normalized launch direction
         direction = (Vector3.right * xAxis + Vector3.up * yAxis).normalized;
+
+        // if there is no input find a good direction
+        if (yAxis == 0 && xAxis == 0)
+        {
+            // get direction to the center of the object first
+            Vector3 directionToCenter = (transform.parent.position - transform.position).normalized;
+
+            RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, directionToCenter, 1 << LayerMask.NameToLayer("Player"));
+
+            if (hitInfo)
+            {
+                if (hitInfo.collider.gameObject.transform == transform.parent)
+                {
+                    direction = hitInfo.normal.normalized;
+                }
+            }
+        }
 
         // reset line points and draw direction line
         lr.positionCount = 2;
@@ -49,12 +73,10 @@ public class InkBlot : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + direction, Color.red);
 
         // the jump button launches
-        if ((int)Input.GetAxisRaw("Jump") == 1 && !lastframeWasJump)
+        if ((int)Input.GetAxisRaw("Jump") == 1 && !jumpHeld)
         {
             launch();
         }
-
-        lastframeWasJump = Input.GetAxisRaw("Jump") == 1;
     }
 
     public void launch()
@@ -62,16 +84,12 @@ public class InkBlot : MonoBehaviour
         // reactivate the player gameobject and set isLaunching to true
         player.SetActive(true);
         player.GetComponent<Player>().isLaunching = true;
-        player.GetComponent<Player>().canTurnIntoInkBlot = false;
 
         // set the players velocity to the launch force
         player.GetComponent<Player>().velocity = direction * launchForce;
 
         // stop the launch after launchTime
         player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
-
-        // reenable canTurnIntoInkBlot after grace period
-        player.GetComponent<Player>().Invoke("setCanTurnIntoInkBlot", gracePeriod);
 
         player.GetComponent<Player>().jumpHeld = true;
 

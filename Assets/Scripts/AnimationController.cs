@@ -26,12 +26,12 @@ public class AnimationController : MonoBehaviour
     // update the animation state based on the AnimationState enum in Player
     void statecheck()
     {
-        animator.SetInteger("state", (int)player.animationState);
+        //animator.SetInteger("state", (int)player.animationState);
 
-        if(player.animationState == Player.AnimationState.DASH)
-        {
-            player.animationState = Player.AnimationState.IDLE;
-            animator.SetTrigger("dash");
-        }
+        //if(player.animationState == Player.AnimationState.DASH)
+        //{
+        //    player.animationState = Player.AnimationState.IDLE;
+        //    animator.SetTrigger("dash");
+        //}
     }
 }
