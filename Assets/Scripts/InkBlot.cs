@@ -84,12 +84,16 @@ public class InkBlot : MonoBehaviour
         // reactivate the player gameobject and set isLaunching to true
         player.SetActive(true);
         player.GetComponent<Player>().isLaunching = true;
-
-        // set the players velocity to the launch force
-        player.GetComponent<Player>().velocity = direction * launchForce;
+        player.GetComponent<Player>().canTurnIntoInkBlot = false;
 
         // stop the launch after launchTime
         player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
+
+        // let the player turn back into an ink blot after the grace period
+        player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
+
+        // set the players velocity to the launch force
+        player.GetComponent<Player>().velocity = direction * launchForce;
 
         player.GetComponent<Player>().jumpHeld = true;
 

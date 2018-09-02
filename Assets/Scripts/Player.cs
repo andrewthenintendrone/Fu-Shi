@@ -22,6 +22,9 @@ public struct MovementSettings
     public float extraJumpTime;
 
     public float gravityScale;
+
+    [Tooltip("terminal velocity")]
+    public float maxFallSpeed;
 }
 
 public class Player : MonoBehaviour
@@ -45,12 +48,11 @@ public class Player : MonoBehaviour
 
     private float currentDeceleration;
 
-    [Tooltip("terminal velocity")]
-    [SerializeField]
-    private float maxFallSpeed;
-
     // is the player launching
     public bool isLaunching = false;
+
+    // can the player turn into an ink blot
+    public bool canTurnIntoInkBlot = true;
 
     private void Start()
     {
@@ -121,7 +123,7 @@ public class Player : MonoBehaviour
         else
         {
             // add gravity force until terminal velocity is reached
-            if (velocity.y > -maxFallSpeed)
+            if (velocity.y > -movementSettings.maxFallSpeed)
             {
                 velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
             }
@@ -187,6 +189,11 @@ public class Player : MonoBehaviour
         isLaunching = false;
     }
 
+    void enableCanTurnIntoInkBlot()
+    {
+        canTurnIntoInkBlot = true;
+    }
+
     public void collisionFunction(RaycastHit2D hitInfo)
     {
         // inkable surface
@@ -195,17 +202,20 @@ public class Player : MonoBehaviour
             // inked
             if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
             {
-                // ensure only one ink blot at a time
-                if (GameObject.Find("inkblot") == null)
+                if(!isLaunching)
                 {
-                    // disable this gameObject
-                    gameObject.SetActive(false);
-                    GameObject newInkBlot = Instantiate(InkBlotPrefab);
-                    newInkBlot.name = "inkblot";
-                    newInkBlot.transform.position = transform.position;
-                    newInkBlot.transform.parent = hitInfo.transform;
-                    newInkBlot.GetComponent<InkBlot>().player = gameObject;
-                    newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+                    // ensure only one ink blot at a time
+                    if (GameObject.Find("inkblot") == null)
+                    {
+                        // disable this gameObject
+                        gameObject.SetActive(false);
+                        GameObject newInkBlot = Instantiate(InkBlotPrefab);
+                        newInkBlot.name = "inkblot";
+                        newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
+                        newInkBlot.transform.parent = hitInfo.transform;
+                        newInkBlot.GetComponent<InkBlot>().player = gameObject;
+                        newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+                    }
                 }
             }
         }

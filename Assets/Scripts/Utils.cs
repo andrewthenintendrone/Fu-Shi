@@ -50,7 +50,7 @@ public static class Utils
         }
 
         // load the health sprites
-        healthImages = Resources.LoadAll<Sprite>("dummy_healthbar");
+        healthImages = Resources.LoadAll<Sprite>("health_strip");
 
         // maximum health is determined y how many health sprites there are
         maxHealth = healthImages.Length - 1;
