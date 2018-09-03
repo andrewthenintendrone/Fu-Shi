@@ -54,6 +54,10 @@ public class Player : MonoBehaviour
     // can the player turn into an ink blot
     public bool canTurnIntoInkBlot = true;
 
+    // which way the player is facing
+    [HideInInspector]
+    public bool facingRight = true;
+
     private void Start()
     {
         Utils.Init();
@@ -271,7 +275,8 @@ public class Player : MonoBehaviour
         // scale the player model to match the direction of the players velocity
         if (Mathf.Abs(velocity.x) != 0)
         {
-            transform.localScale = (velocity.x > 0 ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
+            facingRight = velocity.x > 0;
+            transform.localScale = (facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
         }
     }
 }

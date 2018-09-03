@@ -43,6 +43,9 @@
 			float _Power;
 			float4 _InnerColor;
 			float4 _OuterColor;
+			float3 _CameraPosition;
+			float3 _PlayerPosition;
+			float _EffectDistance;
 			
 			v2f vert (appdata v)
 			{

@@ -62,10 +62,9 @@ public class PostProcessing : MonoBehaviour
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         // set _camX and _camY in the shader
-        effectMaterial.SetFloat("_camX", transform.position.x);
-        effectMaterial.SetFloat("_camY", transform.position.y);
+        effectMaterial.SetVector("_CameraPosition", transform.position);
 
-        effectMaterial.SetVector("_PlayerPos", Camera.main.WorldToViewportPoint(playerTransform.position));
+        effectMaterial.SetVector("_PlayerPosition", Camera.main.WorldToViewportPoint(playerTransform.position));
 
         float timeAxis = Input.GetAxis("Time");
 
