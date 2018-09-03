@@ -90,7 +90,7 @@ public class InkBlot : MonoBehaviour
         player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
 
         // let the player turn back into an ink blot after the grace period
-        player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
+        player.GetComponent<Player>().Invoke("enableCanTurnIntoInkBlot", gracePeriod);
 
         // set the players velocity to the launch force
         player.GetComponent<Player>().velocity = direction * launchForce;
