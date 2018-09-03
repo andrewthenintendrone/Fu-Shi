@@ -7,7 +7,7 @@ using UnityEditor;
 
 public class Abilityactivator : MonoBehaviour
 {
-    public float inkRadius;
+ 
     public float timeRadius;
     private RaycastHit2D[] hits = new RaycastHit2D[100];
     private ContactFilter2D filter;
@@ -30,28 +30,39 @@ public class Abilityactivator : MonoBehaviour
         {
             if(!inkHeld)
             {
-                int numHits = Physics2D.CircleCast(transform.position, inkRadius, Vector2.zero, filter, hits, Mathf.Infinity);
 
-                for (int i = 0; i < numHits; i++)
+
+
+
+
+                //create a gameobject InkWave
+                GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position, Quaternion.identity);
+
+                //if player has R stick input use it
+                //else use player facing
+                Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
+
+                
+
+                if (RstickDir.sqrMagnitude == 0 )
                 {
-                    if (hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
+                    if (gameObject.GetComponent<Player>().facingRight)
                     {
-                        //create a gameobject InkWave
-                        //GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position, Quaternion.identity);
-                        //if player has R stick input use it
-                        //else use player facing
-                        Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
-                        //if (RstickDir >= )
-                        //{
-
-                        //}
-                        //else
-                        //{
-
-                        //}
-                        hits[i].collider.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
+                        CurrentInkwave.GetComponent<inkWave>().direction = Vector2.right;
                     }
+                    else
+                    {
+                        CurrentInkwave.GetComponent<inkWave>().direction = Vector2.left;
+                    } 
                 }
+                else
+                {
+
+                    CurrentInkwave.GetComponent<inkWave>().direction = RstickDir;
+
+                }
+                
+
             }
             inkHeld = true;
         }
@@ -85,8 +96,6 @@ public class Abilityactivator : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        UnityEditor.Handles.color = Color.red;
-        UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, inkRadius);
         UnityEditor.Handles.color = Color.cyan;
         UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, timeRadius);
     }
