@@ -25,6 +25,8 @@ public struct MovementSettings
 
     [Tooltip("terminal velocity")]
     public float maxFallSpeed;
+
+    public AnimationCurve jumpCurve;
 }
 
 public class Player : MonoBehaviour
@@ -126,6 +128,7 @@ public class Player : MonoBehaviour
             if (velocity.y < 0)
             {
                 isLaunching = false;
+                velocity.x = Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x), movementSettings.runSpeed);
             }
         }
         else
