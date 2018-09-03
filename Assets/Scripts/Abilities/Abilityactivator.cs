@@ -36,7 +36,7 @@ public class Abilityactivator : MonoBehaviour
 
 
                 //create a gameobject InkWave
-                GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position, Quaternion.identity);
+                GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
 
                 //if player has R stick input use it
                 //else use player facing
