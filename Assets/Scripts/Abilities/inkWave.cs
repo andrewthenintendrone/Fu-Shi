@@ -9,11 +9,26 @@ public class inkWave: MonoBehaviour {
 
     public float speed;
 
+    public float lifetime;
+    private float countdown;
     private void Start()
     {
         float rotation = Vector2.SignedAngle(Vector2.left, direction);
         transform.eulerAngles = Vector3.forward * rotation;
+        countdown = lifetime;
     }
+
+
+    private void Update()
+    {
+        if (countdown <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+        countdown -= Time.deltaTime;
+    }
+
 
     // Update is called once per frame
     void FixedUpdate()
