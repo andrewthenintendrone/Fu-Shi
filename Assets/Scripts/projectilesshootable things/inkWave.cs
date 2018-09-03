@@ -50,11 +50,26 @@ public class inkWave: MonoBehaviour {
             collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
         }
 
+        
+
+
+
+
         if (collision.gameObject.GetComponent<inkWave>() == null)
         {
             Destroy(gameObject);
         }
 
-        
+               
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Enemy>() != null)
+        {
+            collision.gameObject.GetComponent<Enemy>().health--;
+        }
+
+        Destroy(gameObject);
     }
 }

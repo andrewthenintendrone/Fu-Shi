@@ -7,21 +7,18 @@ public class Enemy : MonoBehaviour {
     [Tooltip("number of discrete hits it takes to kill the enemy")]
     public int health;
 
+    public GameObject EnemyProjectile;
    
 
     [Tooltip("amount of damage contacting this enemy will do")]
     public int damageAmt;
-   
 
+    public bool shoot = false;
   
 
     // Use this for initialization
     void Start ()
     {
-        if (health == 0)
-        {
-            health = 3;
-        }
         
 	}
 	
@@ -40,5 +37,13 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+
+    void shootProjectile()
+    {
+        GameObject projectileInstance = Instantiate(EnemyProjectile, transform.position, Quaternion.identity);
+
+
+
+    }
 
 }
