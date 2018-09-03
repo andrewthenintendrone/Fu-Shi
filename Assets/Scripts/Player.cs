@@ -88,7 +88,11 @@ public class Player : MonoBehaviour
         if(!isLaunching)
         {
             // accelerate up to run speed
-            if (Mathf.Abs(velocity.x) < movementSettings.runSpeed)
+            if (velocity.x < movementSettings.runSpeed && xAxis > 0)
+            {
+                velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
+            }
+            else if (velocity.x > -movementSettings.runSpeed && xAxis < 0)
             {
                 velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
             }
