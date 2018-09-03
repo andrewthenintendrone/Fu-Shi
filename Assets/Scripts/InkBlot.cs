@@ -34,7 +34,7 @@ public class InkBlot : MonoBehaviour
 
     private void Update()
     {
-        player.transform.position = transform.position;
+        player.transform.position = transform.position - new Vector3(player.GetComponent<Player>().character.boxCollider.offset.x, player.GetComponent<Player>().character.boxCollider.offset.y, 0);
 
         // get inputs
         float xAxis = Input.GetAxis("Horizontal");

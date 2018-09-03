@@ -31,7 +31,8 @@ public struct MovementSettings
 
 public class Player : MonoBehaviour
 {
-    private CharacterController2D character;
+    [HideInInspector]
+    public CharacterController2D character;
     public Vector3 velocity;
 
     public int currentJumps;
