@@ -41,19 +41,26 @@ public class Abilityactivator : MonoBehaviour
                 //if player has R stick input use it
                 //else use player facing
                 Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
-
+                Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
                 
 
                 if (RstickDir.sqrMagnitude == 0 )
                 {
-                    if (gameObject.GetComponent<Player>().facingRight)
+                    if (LstickDir.sqrMagnitude == 0)
                     {
-                        CurrentInkwave.GetComponent<inkWave>().direction = Vector2.right;
+                        if (gameObject.GetComponent<Player>().facingRight)
+                        {
+                            CurrentInkwave.GetComponent<inkWave>().direction = Vector2.right;
+                        }
+                        else
+                        {
+                            CurrentInkwave.GetComponent<inkWave>().direction = Vector2.left;
+                        }
                     }
                     else
                     {
-                        CurrentInkwave.GetComponent<inkWave>().direction = Vector2.left;
-                    } 
+                        CurrentInkwave.GetComponent<inkWave>().direction = LstickDir;
+                    }
                 }
                 else
                 {
