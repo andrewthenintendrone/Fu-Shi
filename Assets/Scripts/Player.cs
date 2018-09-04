@@ -5,30 +5,38 @@ using System.Collections.Generic;
 [System.Serializable]
 public struct MovementSettings
 {
+    [Tooltip("maximum horizontal speed while on the ground")]
     public float maxGroundSpeed;
 
+    [Tooltip("maximum horizontal speed while in the air")]
     public float maxAirSpeed;
 
+    [Tooltip("speed at which to reach maximum horizontal speed")]
     public float acceleration;
 
+    [Tooltip("speed at which to reach zero horizontal speed from maximum horizontal speed")]
     public float deceleration;
 
+    [Tooltip("speed at which to reach zero horizontal speed from maximum horizontal speed while on a slippery surface")]
     public float slowDeceleration;
 
-    public float jumpHeight;
+    [Tooltip("force to apply when jumping")]
+    public float jumpForce;
 
+    [Tooltip("number of jumps that the player can make (2 is double jump)")]
     public int jumpCount;
 
-    public float extraJumpForce;
-
-    public float extraJumpTime;
-
+    [Tooltip("regular strength of gravity")]
     public float gravityScale;
+
+    [Tooltip("fall speed multiplier")]
+    public float fallSpeedMultiplier;
+
+    [Tooltip("low jump fall speed multiplier")]
+    public float lowJumpFallSpeedMultiplier;
 
     [Tooltip("terminal velocity")]
     public float maxFallSpeed;
-
-    public AnimationCurve jumpCurve;
 }
 
 public class Player : MonoBehaviour
@@ -38,7 +46,6 @@ public class Player : MonoBehaviour
     public Vector3 velocity;
 
     public int currentJumps;
-    public float extraJumpTimer;
 
     [HideInInspector]
     public bool jumpHeld = false;
@@ -65,9 +72,6 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool facingRight = true;
 
-    // dev mode jump curve time
-    private float devModeTime = 0.0f;
-
     private void Start()
     {
         Utils.Init();
@@ -75,7 +79,6 @@ public class Player : MonoBehaviour
         character.onTriggerEnterEvent += triggerFunction;
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
-        extraJumpTimer = movementSettings.extraJumpTime;
         currentDeceleration = movementSettings.deceleration;
     }
 
@@ -92,15 +95,8 @@ public class Player : MonoBehaviour
         // development movement overides everything else
         if (Utils.DEVMODE)
         {
-            //velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed * 2;
-            //transform.position += velocity * Time.deltaTime;
-            devModeTime += Time.fixedDeltaTime;
-            if (devModeTime >= movementSettings.jumpCurve.keys[movementSettings.jumpCurve.length - 1].time)
-            {
-                devModeTime = 0.0f;
-            }
-
-            transform.position = new Vector3(0, movementSettings.jumpCurve.Evaluate(devModeTime) * movementSettings.jumpHeight, 0);
+            velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.maxAirSpeed * 2;
+            transform.position += velocity * Time.deltaTime;
 
             return;
         }
@@ -137,7 +133,7 @@ public class Player : MonoBehaviour
             currentJumps = movementSettings.jumpCount;
 
             // reset extra jumps
-            extraJumpTimer = movementSettings.extraJumpTime;
+            //extraJumpTimer = movementSettings.extraJumpTime;
 
             // set y velocity to a small negative value to keep grounded
             if(!isLaunching)
@@ -154,17 +150,22 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // add gravity force until terminal velocity is reached
+            // only add gravity force until terminal velocity is reached
             if (velocity.y > -movementSettings.maxFallSpeed)
             {
+                // regular gravity
                 velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
-            }
 
-            // apply extra jump force
-            if (jumpAxis == 1 && extraJumpTimer > 0 && velocity.y > 0)
-            {
-                velocity.y += movementSettings.extraJumpForce * Time.fixedDeltaTime;
-                extraJumpTimer = Mathf.Max(0.0f, extraJumpTimer - Time.fixedDeltaTime);
+                // fall speed multiplied gravity
+                if(velocity.y < 0)
+                {
+                    velocity.y += Physics2D.gravity.y * movementSettings.fallSpeedMultiplier * Time.fixedDeltaTime;
+                }
+
+                if(!jumpHeld && velocity.y > 0)
+                {
+                    velocity.y += Physics2D.gravity.y * movementSettings.lowJumpFallSpeedMultiplier * Time.fixedDeltaTime;
+                }
             }
         }
 
@@ -182,7 +183,7 @@ public class Player : MonoBehaviour
             {
                 if (currentJumps > 0 && !isLaunching)
                 {
-                    velocity.y = movementSettings.jumpHeight;
+                    velocity.y = movementSettings.jumpForce;
                     currentJumps--;
                 }
             }
@@ -294,7 +295,7 @@ public class Player : MonoBehaviour
     public void UpdateAppearance()
     {
         // color red if on the ground
-        // changeColor(character.isGrounded ? Color.red : Color.white);
+        changeColor(character.isGrounded ? Color.red : Color.white);
 
         // scale the player model to match the direction of the players velocity
         if (Mathf.Abs(velocity.x) != 0)
