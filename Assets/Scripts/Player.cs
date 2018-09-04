@@ -43,25 +43,36 @@ public class Player : MonoBehaviour
 {
     [HideInInspector]
     public CharacterController2D character;
+
+    [HideInInspector]
     public Vector3 velocity;
 
+    [HideInInspector]
     public int currentJumps;
 
     [HideInInspector]
     public bool jumpHeld = false;
 
+    // current x axis value
     private float xAxis;
+
+    // current y axis value
     private float yAxis;
+
+    // current jump axis value
     private int jumpAxis;
 
+    [Tooltip("settings related to character movement")]
     public MovementSettings movementSettings;
 
+    [Tooltip("ink blot prefab")]
     public GameObject InkBlotPrefab;
 
+    // the current deceleration value to use (regular or slippery)
     private float currentDeceleration;
 
-    // is the player launching
     [HideInInspector]
+    // is the player launching
     public bool isLaunching = false;
 
     // can the player turn into an ink blot
