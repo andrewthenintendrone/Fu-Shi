@@ -7,7 +7,7 @@ public class enemyProjectile : MonoBehaviour {
     public float speed;
 
     [HideInInspector]
-    Vector2 direction;
+    public Vector3 direction;
 
     public float lifetime;
 
@@ -18,21 +18,13 @@ public class enemyProjectile : MonoBehaviour {
 	void Start ()
     {
         countdown = lifetime;
+        Destroy(gameObject, lifetime);
 	}
 
-    private void Update()
-    {
-        if (countdown <= 0)
-        {
-            Destroy(gameObject);
-        }
-        countdown -= Time.deltaTime;
-
-    }
     // Update is called once per frame
     void FixedUpdate()
     {
-        gameObject.transform.Translate(new Vector3(direction.x, direction.y) * speed * Time.fixedDeltaTime);
+        gameObject.transform.Translate(direction * speed * Time.fixedDeltaTime);
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -41,5 +33,14 @@ public class enemyProjectile : MonoBehaviour {
         {
             Utils.Health--;
         }
+        if (collision.gameObject.GetComponent<inkWave>() != null)
+        {
+
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
     }
 }

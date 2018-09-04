@@ -16,18 +16,10 @@ public class inkWave: MonoBehaviour {
         float rotation = Vector2.SignedAngle(Vector2.left, direction);
         transform.eulerAngles = Vector3.forward * rotation;
         countdown = lifetime;
+        Destroy(gameObject, lifetime);
     }
 
 
-    private void Update()
-    {
-        if (countdown <= 0)
-        {
-            Destroy(gameObject);
-        }
-
-        countdown -= Time.deltaTime;
-    }
 
 
     // Update is called once per frame
@@ -55,12 +47,15 @@ public class inkWave: MonoBehaviour {
 
 
 
-        if (collision.gameObject.GetComponent<inkWave>() == null)
+        if (collision.gameObject.GetComponent<enemyProjectile>() != null || collision.gameObject.GetComponent<inkWave>() != null)
         {
-            Destroy(gameObject);
+
+        }
+        else
+        {
+            DestroyObject(gameObject);
         }
 
-               
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -69,7 +64,8 @@ public class inkWave: MonoBehaviour {
         {
             collision.gameObject.GetComponent<Enemy>().health--;
         }
-
-        Destroy(gameObject);
+        
+            Destroy(gameObject);
+        
     }
 }
