@@ -7,14 +7,14 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class AnimationController : MonoBehaviour
 {
-    private Animator animator;
-    private Player player;
+    //private Animator animator;
+    //private Player player;
 
 	// Use this for initialization
 	void Start ()
     {
-        animator = GetComponent<Animator>();
-        player = GetComponent<Player>();
+        //animator = GetComponent<Animator>();
+        //player = GetComponent<Player>();
 	}
 	
 	// FixedUpdate is called once per physics step
