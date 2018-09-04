@@ -5,7 +5,9 @@ using System.Collections.Generic;
 [System.Serializable]
 public struct MovementSettings
 {
-    public float runSpeed;
+    public float maxGroundSpeed;
+
+    public float maxAirSpeed;
 
     public float acceleration;
 
@@ -105,12 +107,19 @@ public class Player : MonoBehaviour
 
         if(!isLaunching)
         {
+            float maxSpeed = movementSettings.maxGroundSpeed;
+
+            if(!character.isGrounded)
+            {
+                maxSpeed = movementSettings.maxAirSpeed;
+            }
+
             // accelerate up to run speed
-            if (velocity.x < movementSettings.runSpeed && xAxis > 0)
+            if (velocity.x < maxSpeed && xAxis > 0)
             {
                 velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
             }
-            else if (velocity.x > -movementSettings.runSpeed && xAxis < 0)
+            else if (velocity.x > -maxSpeed && xAxis < 0)
             {
                 velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
             }
@@ -140,7 +149,7 @@ public class Player : MonoBehaviour
             if (velocity.y < 0)
             {
                 isLaunching = false;
-                velocity.x = Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x), movementSettings.runSpeed);
+                velocity.x = Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x), movementSettings.maxGroundSpeed);
             }
         }
         else
