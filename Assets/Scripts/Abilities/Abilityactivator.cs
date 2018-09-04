@@ -91,7 +91,7 @@ public class Abilityactivator : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         UnityEditor.Handles.color = Color.cyan;
         UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, timeRadius);

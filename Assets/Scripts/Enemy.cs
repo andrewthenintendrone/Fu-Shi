@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         UnityEditor.Handles.color = Color.red;
 
