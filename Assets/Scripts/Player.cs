@@ -52,9 +52,11 @@ public class Player : MonoBehaviour
     private float currentDeceleration;
 
     // is the player launching
+    [HideInInspector]
     public bool isLaunching = false;
 
     // can the player turn into an ink blot
+    [HideInInspector]
     public bool canTurnIntoInkBlot = true;
 
     // which way the player is facing

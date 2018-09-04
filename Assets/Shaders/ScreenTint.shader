@@ -3,10 +3,15 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_TintTex("Tint Texture", 2D) = "white" {}
-		_Power("Power", Range(0, 1)) = 0.5
+
+		// canvas effect
+		_CanvasTex("Canvas Texture", 2D) = "white" {}
+		_CanvasPower("Canvas Power", Range(0, 1)) = 0.5
+
+		// color effect
 		_InnerColor("Inner Color", Color) = (1, 1, 1, 1)
 		_OuterColor("Outer Color", Color) = (1, 1, 1, 1)
+		_ColorPower("Color Power", Range(0, 1)) = 0.5
 	}
 	SubShader
 	{
@@ -38,35 +43,55 @@
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float4 _MainTex_TexelSize;
-			sampler2D _TintTex;
-			float4 _TintTex_ST;
-			float _Power;
+
+			sampler2D _CanvasTex;
+			float4 _CanvasTex_ST;
+			float _CanvasPower;
+
 			float4 _InnerColor;
 			float4 _OuterColor;
+			float _ColorPower;
+
 			float3 _CameraPosition;
 			float3 _PlayerPosition;
-			float _EffectDistance;
+			float _TimeWarpRadius;
 			
 			v2f vert (appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				o.uv2 = TRANSFORM_TEX(v.uv2, _TintTex);
+				o.uv2 = TRANSFORM_TEX(v.uv2, _CanvasTex);
 				return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
+				// sample render texture
 				fixed4 render = tex2D(_MainTex, i.uv);
-				fixed4 canvas = tex2D(_TintTex, i.uv2);
-				float4 canvasBlend = lerp(render, canvas, _Power);
 
+				// sample canvas texture
+				fixed4 canvas = tex2D(_CanvasTex, i.uv2);
+
+				// blend render and canvas textures
+				float4 canvasBlend = lerp(render, canvas, _CanvasPower);
+
+				// create color gradient based on distance from center
 				float2 center = float2(0.5f, 0.5f);
 				float distanceFromCenter = length(i.uv - center);
 				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
 
-				return canvasBlend * color;
+				// test time radius
+				float2 aspectRatio = float2(1, _MainTex_TexelSize.x / _MainTex_TexelSize.y);
+
+				float distanceFromPlayer = distance(_PlayerPosition * aspectRatio, i.uv * aspectRatio);
+
+				if (_TimeWarpRadius != 0 && distanceFromPlayer > _TimeWarpRadius && distanceFromPlayer < _TimeWarpRadius + 0.01)
+				{
+					return float4(0, 0, 0, 1);
+				}
+
+				return lerp(canvasBlend, color, _ColorPower);
 			}
 
 			ENDCG
