@@ -10,6 +10,20 @@ public class DualForwardFocusCamera : MonoBehaviour
     public new Camera camera;
     public Collider2D targetCollider;
 
+    [Range(0f, 20f)]
+    public float width = 3f;
+
+    private Vector3 basePosition;
+
+    [Tooltip("width of the detector / outer lines of the dual forward docus system")]
+    [Range(0.5f, 5f)]
+    public float dualForwardFocusThresholdExtents = 0.5f;
+
+    [Range(0.5f, 5f)]
+    public float dualVerticalFocusThresholdExtents = 0.5f;
+
+    public RectTransform.Edge _currentEdgeFocusHoriz;
+    public RectTransform.Edge _currentEdgeFocusVert;
 
     Transform _transform;
     private static DualForwardFocusCamera _instance;
@@ -23,7 +37,7 @@ public class DualForwardFocusCamera : MonoBehaviour
                 _instance = FindObjectOfType(typeof(DualForwardFocusCamera)) as DualForwardFocusCamera;
 
                 if (System.Object.Equals(_instance, null))
-                    throw new UnityException("CameraKit2D does not appear to exist");
+                    throw new UnityException("cameraScript does not appear to exist");
             }
 
             return _instance;
@@ -87,8 +101,22 @@ public class DualForwardFocusCamera : MonoBehaviour
         var positionInFrontOfCamera = getNormalizedCameraPosition();
         positionInFrontOfCamera.z = 1f;
 
-        // var allCameraBehaviors = GetComponents<ICameraBaseBehavior>();
-        //handle gizmo drawing here
+        
+        Gizmos.color = new Color(0f, 0.5f, 0.6f);
+
+        var bounds = new Bounds(basePosition, new Vector3(width, 10f));
+        var lineWidth = Camera.main.orthographicSize;
+
+        bounds.center = new Vector3(bounds.center.x, basePosition.y, bounds.center.z);
+        bounds.Expand(new Vector3(0f, lineWidth - bounds.size.y));
+
+        Gizmos.DrawLine(bounds.min, bounds.min + new Vector3(0f, bounds.size.y));
+        Gizmos.DrawLine(bounds.max, bounds.max - new Vector3(0f, bounds.size.y));
+
+        bounds.Expand(new Vector3(dualForwardFocusThresholdExtents, 1f));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(bounds.min, bounds.min + new Vector3(0f, bounds.size.y));
+        Gizmos.DrawLine(bounds.max, bounds.max - new Vector3(0f, bounds.size.y));
     }
 #endif
 
