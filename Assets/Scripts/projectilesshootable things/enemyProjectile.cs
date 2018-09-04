@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemyProjectile : MonoBehaviour {
-
+public class enemyProjectile : MonoBehaviour
+{
     public float speed;
 
     [HideInInspector]
@@ -11,17 +11,12 @@ public class enemyProjectile : MonoBehaviour {
 
     public float lifetime;
 
-    private float countdown;
 
-
-	// Use this for initialization
 	void Start ()
     {
-        countdown = lifetime;
         Destroy(gameObject, lifetime);
 	}
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         gameObject.transform.Translate(direction * speed * Time.fixedDeltaTime);
@@ -31,16 +26,11 @@ public class enemyProjectile : MonoBehaviour {
     {
         if (collision.gameObject.GetComponent<Player>() != null)
         {
-            Utils.Health--;
+            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
         }
-        if (collision.gameObject.GetComponent<inkWave>() != null)
-        {
-
-        }
-        else
+        if (collision.gameObject.GetComponent<inkWave>() == null && collision.gameObject.GetComponent<enemyProjectile>() == null)
         {
             Destroy(gameObject);
         }
-        
     }
 }

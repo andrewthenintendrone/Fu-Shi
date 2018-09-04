@@ -106,7 +106,14 @@ public static class Utils
     {
         if (healthImage != null)
         {
-            if (Health >= 0 && Health <= maxHealth)
+            if(Health <= 0)
+            {
+                resetPlayer();
+                Health = maxHealth;
+                return;
+            }
+
+            if (Health > 0 && Health <= maxHealth)
             {
                 healthImage.sprite = healthImages[Health];
             }

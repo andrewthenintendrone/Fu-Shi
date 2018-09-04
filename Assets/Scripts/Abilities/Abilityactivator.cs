@@ -7,7 +7,6 @@ using UnityEditor;
 
 public class Abilityactivator : MonoBehaviour
 {
- 
     public float timeRadius;
     private RaycastHit2D[] hits = new RaycastHit2D[100];
     private ContactFilter2D filter;
@@ -30,11 +29,6 @@ public class Abilityactivator : MonoBehaviour
         {
             if(!inkHeld)
             {
-
-
-
-
-
                 //create a gameobject InkWave
                 GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
 
@@ -42,7 +36,6 @@ public class Abilityactivator : MonoBehaviour
                 //else use player facing
                 Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
                 Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
-                
 
                 if (RstickDir.sqrMagnitude == 0 )
                 {
@@ -64,12 +57,8 @@ public class Abilityactivator : MonoBehaviour
                 }
                 else
                 {
-
                     CurrentInkwave.GetComponent<inkWave>().direction = RstickDir;
-
                 }
-                
-
             }
             inkHeld = true;
         }
@@ -101,10 +90,12 @@ public class Abilityactivator : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+
+    private void OnDrawGizmosSelected()
     {
         UnityEditor.Handles.color = Color.cyan;
         UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, timeRadius);
     }
+
 #endif
 }

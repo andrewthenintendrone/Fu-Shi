@@ -63,6 +63,9 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool facingRight = true;
 
+    // dev mode jump curve time
+    private float devModeTime = 0.0f;
+
     private void Start()
     {
         Utils.Init();
@@ -87,9 +90,15 @@ public class Player : MonoBehaviour
         // development movement overides everything else
         if (Utils.DEVMODE)
         {
-            velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed * 2;
+            //velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.runSpeed * 2;
+            //transform.position += velocity * Time.deltaTime;
+            devModeTime += Time.fixedDeltaTime;
+            if (devModeTime >= movementSettings.jumpCurve.keys[movementSettings.jumpCurve.length - 1].time)
+            {
+                devModeTime = 0.0f;
+            }
 
-            transform.position += velocity * Time.deltaTime;
+            transform.position = new Vector3(0, movementSettings.jumpCurve.Evaluate(devModeTime) * movementSettings.jumpHeight, 0);
 
             return;
         }

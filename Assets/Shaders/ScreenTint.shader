@@ -46,6 +46,7 @@
 
 			sampler2D _CanvasTex;
 			float4 _CanvasTex_ST;
+			float4 _CanvasTex_TexelSize;
 			float _CanvasPower;
 
 			float4 _InnerColor;

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
-
+public class Enemy : MonoBehaviour
+{
     [Tooltip("number of discrete hits it takes to kill the enemy")]
     public int health;
 
@@ -12,82 +12,72 @@ public class Enemy : MonoBehaviour {
 
     [Tooltip("squared distance to check around the enemy for the player")]
     public float detectDistance;
+
     [Tooltip("debugging / utility to show the range of detection")]
     public bool drawDetectRadius = false;
 
     [Tooltip("amount of damage contacting this enemy will do")]
     public int damageAmt;
 
-    [Tooltip("wether the enemy will shoot at the player")]
+    [Tooltip("whether the enemy will shoot at the player")]
     public bool shoot = false;
-
 
     [Tooltip("how long between shots from this enemy")]
     public float shootInterval;
 
 
-    private float countdown;
-    // Use this for initialization
     void Start ()
     {
-        countdown = shootInterval;
+        InvokeRepeating("checkPlayerDist", shootInterval, shootInterval);
 	}
 	
-	// Update is called once per frame
 	void Update ()
     {
         checkDead();
-
-        if (countdown <= 0)
-        {
-            checkPlayerDist();
-            countdown = shootInterval;
-        }
-
-        countdown -= Time.deltaTime;
 	}
 
     public void checkDead()
     {
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 
-
-   private void shootProjectile(Vector3 target)
+   private void shootProjectile(Vector3 direction)
    {
         GameObject projectileInstance = Instantiate(EnemyProjectile, transform.position, Quaternion.identity);
 
-        target -= gameObject.transform.position;
-        projectileInstance.GetComponent<enemyProjectile>().direction = target;
-
+        projectileInstance.GetComponent<enemyProjectile>().direction = direction.normalized;
    }
 
     private void checkPlayerDist()
     {
-        Vector3 targetpos = GameObject.FindGameObjectWithTag("Player").transform.position;
-
-
-        if (Vector3.SqrMagnitude(targetpos - gameObject.transform.position) <= Mathf.Pow(detectDistance, 2.0f))
+        if(gameObject == null)
         {
-            shootProjectile(targetpos);
+            CancelInvoke();
+            return;
         }
-        
+
+        Vector3 direction = GameObject.FindGameObjectWithTag("Player").transform.position - transform.position;
+
+        if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
+        {
+            shootProjectile(direction);
+        }
     }
 
-
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
 
+    private void OnDrawGizmosSelected()
+    {
         UnityEditor.Handles.color = Color.red;
+
         if (drawDetectRadius)
         {
             UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, detectDistance);
         }
-        
     }
+
 #endif
 }
