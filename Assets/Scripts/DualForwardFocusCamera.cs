@@ -29,8 +29,8 @@ public class DualForwardFocusCamera : MonoBehaviour
     [Range(0f, 20f)]
     public float dualVerticalFocusThresholdExtents = 0.5f;
 
-    private RectTransform.Edge XEdgeFocus;
-    private RectTransform.Edge YEdgeFocus;
+    private RectTransform.Edge XSideFocus;
+    private RectTransform.Edge YSideFocus;
 
     [SerializeField]
     private float smoothTime;
@@ -63,9 +63,11 @@ public class DualForwardFocusCamera : MonoBehaviour
 
         Vector3 deltaPositionFromBounds = Vector3.zero;
         bool didLastEdgeContactChange = false;
+        //worldspace position of rect edges
         float leftEdge, rightEdge, topEdge, bottomEdge;
 
-        if (XEdgeFocus == RectTransform.Edge.Left)
+        //if the camera focus is a certain side generate the two bound lines on X 
+        if (XSideFocus == RectTransform.Edge.Left)
         {
             rightEdge = basePosition.x - width * 0.5f;
             leftEdge = rightEdge - dualForwardFocusThresholdExtents * 0.5f;
@@ -76,33 +78,88 @@ public class DualForwardFocusCamera : MonoBehaviour
             rightEdge = leftEdge + dualForwardFocusThresholdExtents * 0.5f;
         }
 
+        //as above but generating the Y component
+        if (YSideFocus == RectTransform.Edge.Top)
+        {
+            bottomEdge = basePosition.y + height * 0.5f;
+            topEdge = bottomEdge + dualVerticalFocusThresholdExtents * 0.5f;
+        }
+        else
+        {
+            topEdge = basePosition.y - height * 0.5f;
+            bottomEdge = topEdge - dualVerticalFocusThresholdExtents * 0.5f;
+        }
+
+        
+        //if the player bounds is beyond the outside edge
         if (leftEdge > targetBounds.center.x)
         {
+            //how far the player has passed outside the bounds
             deltaPositionFromBounds.x = targetBounds.center.x - leftEdge;
-
-            if (XEdgeFocus == RectTransform.Edge.Left)
+            //if the player is on the left side of the screen
+            //swap the focus
+            if (XSideFocus == RectTransform.Edge.Left)
             {
                 didLastEdgeContactChange = true;
-                XEdgeFocus = RectTransform.Edge.Right;
+                XSideFocus = RectTransform.Edge.Right;
             }
         }
         else if (rightEdge < targetBounds.center.x)
         {
             deltaPositionFromBounds.x = targetBounds.center.x - rightEdge;
 
-            if (XEdgeFocus == RectTransform.Edge.Right)
+            if (XSideFocus == RectTransform.Edge.Right)
             {
                 didLastEdgeContactChange = true;
-                XEdgeFocus = RectTransform.Edge.Left;
+                XSideFocus = RectTransform.Edge.Left;
             }
         }
 
-        float desiredX = (XEdgeFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
+        //if the player has gone beyond a lower edge
+        if (bottomEdge > targetBounds.center.y)
+        {
+            //how far the player has passed outside the bounds
+            deltaPositionFromBounds.y = targetBounds.center.y - bottomEdge;
+            //if the player is on the bottom side of the screen
+            //swap the focus
+            if (YSideFocus == RectTransform.Edge.Bottom)
+            {
+                didLastEdgeContactChange = true;
+                YSideFocus = RectTransform.Edge.Top;
+            }
+        }
+        else if (topEdge < targetBounds.center.x)
+        {
+            deltaPositionFromBounds.x = targetBounds.center.x - rightEdge;
+
+            if (YSideFocus == RectTransform.Edge.Top)
+            {
+                didLastEdgeContactChange = true;
+                YSideFocus = RectTransform.Edge.Bottom;
+            }
+        }
+
+
+        float desiredY = (YSideFocus == RectTransform.Edge.Top ? bottomEdge : topEdge);
+        desiredOffset.y = targetBounds.center.y - desiredY;
+
+        float desiredX = (XSideFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
         desiredOffset.x = targetBounds.center.x - desiredX;
 
         // if we didnt switch direction this works much like a normal camera window
         if (!didLastEdgeContactChange)
+        {
             desiredOffset.x = deltaPositionFromBounds.x;
+            desiredOffset.y = deltaPositionFromBounds.y;
+        }
+           
+
+
+
+
+
+
+
 
         Vector3 targetPosition = transform.position + desiredOffset;
 
@@ -110,7 +167,7 @@ public class DualForwardFocusCamera : MonoBehaviour
         targetPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
 
         // bad hack
-        targetPosition.y = targetBounds.center.y;
+        //targetPosition.y = targetBounds.center.y;
 
 
         transform.position = targetPosition;
