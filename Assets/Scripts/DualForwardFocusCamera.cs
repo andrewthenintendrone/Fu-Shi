@@ -8,95 +8,147 @@ public class DualForwardFocusCamera : MonoBehaviour
     [System.NonSerialized]
     [HideInInspector]
     public new Camera camera;
-    public Collider2D targetCollider;
 
 
-    Transform _transform;
-    private static DualForwardFocusCamera _instance;
+    private Collider2D targetCollider;
 
-    public static DualForwardFocusCamera instance
-    {
-        get
-        {
-            if (System.Object.Equals(_instance, null))
-            {
-                _instance = FindObjectOfType(typeof(DualForwardFocusCamera)) as DualForwardFocusCamera;
+    [Range(0f, 20f)]
+    [SerializeField]
+    private float width = 3f;
 
-                if (System.Object.Equals(_instance, null))
-                    throw new UnityException("CameraKit2D does not appear to exist");
-            }
+    [Range(0f, 20f)]
+    [SerializeField]
+    public float height = 3f;
 
-            return _instance;
-        }
-    }
+    
 
+    [Tooltip("width of the detector / outer lines of the dual forward focus system")]
+    [Range(0f, 20f)]
+    public float dualForwardFocusThresholdExtents = 0.5f;
+
+    [Range(0f, 20f)]
+    public float dualVerticalFocusThresholdExtents = 0.5f;
+
+    private RectTransform.Edge XEdgeFocus;
+    private RectTransform.Edge YEdgeFocus;
+
+    [SerializeField]
+    private float smoothTime;
+
+    // current velocity
+    private Vector3 velocity;
+
+
+
+    
     #region MonoBehaviour
 
     void Awake()
     {
-        _instance = this;
-        _transform = GetComponent<Transform>();
+        
         camera = GetComponent<Camera>();
-
+        targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
     }
 
 
     void FixedUpdate()
     {
-        var targetBounds = targetCollider.bounds;
-
-        // we keep track of the target's velocity since some camera behaviors need to know about it
-        //TODO use player velocity value
-        //var velocity = (targetBounds.center - _targetPositionLastFrame) / Time.deltaTime;
-        //velocity.z = 0f;
+        Bounds targetBounds = targetCollider.bounds;
 
 
-        // fetch the average velocity for use in our camera behaviors
-        //TODO not sure whether we need this :confirm
-        //var targetAvgVelocity = _averageVelocityQueue.average();
+        Vector3 desiredOffset = Vector3.zero;
+
+        Vector3 basePosition = getNormalizedCameraPosition();
 
 
-        // we use the transform.position plus the offset when passing the base position to our camera behaviors
-        //var basePosition = getNormalizedCameraPosition();
-        //var accumulatedDeltaOffset = Vector3.zero;
+        Vector3 deltaPositionFromBounds = Vector3.zero;
+        bool didLastEdgeContactChange = false;
+        float leftEdge, rightEdge, topEdge, bottomEdge;
+
+        if (XEdgeFocus == RectTransform.Edge.Left)
+        {
+            rightEdge = basePosition.x - width * 0.5f;
+            leftEdge = rightEdge - dualForwardFocusThresholdExtents * 0.5f;
+        }
+        else
+        {
+            leftEdge = basePosition.x + width * 0.5f;
+            rightEdge = leftEdge + dualForwardFocusThresholdExtents * 0.5f;
+        }
+
+        if (leftEdge > targetBounds.center.x)
+        {
+            deltaPositionFromBounds.x = targetBounds.center.x - leftEdge;
+
+            if (XEdgeFocus == RectTransform.Edge.Left)
+            {
+                didLastEdgeContactChange = true;
+                XEdgeFocus = RectTransform.Edge.Right;
+            }
+        }
+        else if (rightEdge < targetBounds.center.x)
+        {
+            deltaPositionFromBounds.x = targetBounds.center.x - rightEdge;
+
+            if (XEdgeFocus == RectTransform.Edge.Right)
+            {
+                didLastEdgeContactChange = true;
+                XEdgeFocus = RectTransform.Edge.Left;
+            }
+        }
+
+        float desiredX = (XEdgeFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
+        desiredOffset.x = targetBounds.center.x - desiredX;
+
+        // if we didnt switch direction this works much like a normal camera window
+        if (!didLastEdgeContactChange)
+            desiredOffset.x = deltaPositionFromBounds.x;
+
+        Vector3 targetPosition = transform.position + desiredOffset;
 
 
-        //this is the position the camera wants to sit at
-        //position cameraBehavior                     
+        targetPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+
+        // bad hack
+        targetPosition.y = targetBounds.center.y;
 
 
+        transform.position = targetPosition;
 
-
-        //Smoothing section
-
-
-
-
-
-        // reset Z just in case one of the other scripts messed with it
-        //desiredPosition.z = _transform.position.z;
-
-
-
-        //pretty gizmo stuff
     }
 
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        var positionInFrontOfCamera = getNormalizedCameraPosition();
-        positionInFrontOfCamera.z = 1f;
+        Vector3 positionInFrontOfCamera = getNormalizedCameraPosition();
+        positionInFrontOfCamera.z = transform.position.z - 1;
 
-        // var allCameraBehaviors = GetComponents<ICameraBaseBehavior>();
-        //handle gizmo drawing here
+        
+        Gizmos.color = new Color(0f, 0.5f, 0.6f);
+
+        Bounds bounds = new Bounds(positionInFrontOfCamera, new Vector3(width, height));
+        float lineWidth = Camera.main.orthographicSize;
+
+        bounds.center = new Vector3(bounds.center.x, positionInFrontOfCamera.y, bounds.center.z);
+
+        //draw inner bounding lines
+        Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
+        Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
+        Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
+        Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
+
+
+        //draw outer detection bounds
+        bounds.Expand(new Vector3(dualForwardFocusThresholdExtents, dualVerticalFocusThresholdExtents));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
+        Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
+        Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
+        Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
+
+
     }
 #endif
-
-
-    void OnApplicationQuit()
-    {
-        _instance = null;
-    }
 
     #endregion
 
