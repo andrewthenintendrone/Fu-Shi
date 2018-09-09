@@ -72,7 +72,7 @@
 				fixed4 render = tex2D(_MainTex, i.uv);
 
 				// sample canvas texture
-				fixed4 canvas = tex2D(_CanvasTex, i.uv2);
+				fixed4 canvas = tex2D(_CanvasTex, i.uv2 + _CameraPosition.xy);
 
 				// blend render and canvas textures
 				float4 canvasBlend = lerp(render, canvas, _CanvasPower);
