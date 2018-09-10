@@ -12,26 +12,29 @@ public class DualForwardFocusCamera : MonoBehaviour
 
     private Collider2D targetCollider;
 
+    [Tooltip("width of the inner box for camera motion")]
     [Range(0f, 20f)]
     [SerializeField]
     private float width = 3f;
 
+    [Tooltip("height of the inner box for camera motion")]
     [Range(0f, 20f)]
     [SerializeField]
     public float height = 3f;
 
     
 
-    [Tooltip("width of the detector / outer lines of the dual forward focus system")]
+    [Tooltip("width of the detector / outer lines for vertical switching")]
     [Range(0f, 20f)]
     public float dualForwardFocusThresholdExtents = 0.5f;
-
+    [Tooltip("width of the detector / outer lines for vertical switching")]
     [Range(0f, 20f)]
     public float dualVerticalFocusThresholdExtents = 0.5f;
 
     private RectTransform.Edge XSideFocus = RectTransform.Edge.Left;
-    private RectTransform.Edge YSideFocus = RectTransform.Edge.Top;
+    private RectTransform.Edge YSideFocus = RectTransform.Edge.Bottom;
 
+    [Tooltip("the lag or delay to smooth the camera")]
     [SerializeField]
     private float smoothTime;
 
