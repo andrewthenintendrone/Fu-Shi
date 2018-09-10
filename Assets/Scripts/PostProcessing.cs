@@ -41,12 +41,6 @@ public class PostProcessing : MonoBehaviour
         // set _PlayerPosition in the shader (screen space)
         effectMaterial.SetVector("_PlayerPosition", Camera.main.WorldToViewportPoint(playerTransform.position));
 
-        // sample time control axis
-        float timeAxis = Input.GetAxis("Time");
-
-        // set _TimeWarpRadius in the shader
-        effectMaterial.SetFloat("_TimeWarpRadius", timeAxis);
-
         // blit from render texture to the destination (the screen)
         Graphics.Blit(source, destination, effectMaterial);
     }
