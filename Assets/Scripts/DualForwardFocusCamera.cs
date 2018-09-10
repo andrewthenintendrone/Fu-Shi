@@ -30,7 +30,7 @@ public class DualForwardFocusCamera : MonoBehaviour
     public float dualVerticalFocusThresholdExtents = 0.5f;
 
     private RectTransform.Edge XSideFocus = RectTransform.Edge.Left;
-    private RectTransform.Edge YSideFocus = RectTransform.Edge.Top;
+    private RectTransform.Edge YSideFocus = RectTransform.Edge.Bottom;
 
     [SerializeField]
     private float smoothTime;
@@ -162,10 +162,6 @@ public class DualForwardFocusCamera : MonoBehaviour
 
 
         targetPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
-
-        // bad hack
-        //targetPosition.y = targetBounds.center.y;
-
 
         transform.position = targetPosition;
 
