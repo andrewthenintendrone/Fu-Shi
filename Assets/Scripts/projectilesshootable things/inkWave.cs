@@ -34,7 +34,7 @@ public class inkWave: MonoBehaviour
             collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
         }
 
-        if (collision.gameObject.GetComponent<enemyProjectile>() != null || collision.gameObject.GetComponent<inkWave>() != null)
+        if (collision.gameObject.GetComponent<enemyProjectile>() != null || collision.gameObject.GetComponent<inkWave>() != null || collision.gameObject.GetComponent<Player>() != null)
         {
 
         }

@@ -7,6 +7,9 @@ public class PressurePlate : MonoBehaviour
     [Tooltip("Sprites to use for unpressed / pressed")]
     public Sprite[] sprites = new Sprite[2];
 
+    [Tooltip("Door that this pressure plate is linked to")]
+    public Door linkedDoor;
+
     // is the pressure plate pressed
     public bool isPressed
     {
@@ -32,6 +35,7 @@ public class PressurePlate : MonoBehaviour
             // become pressed
             isPressed = true;
             UpdateImage();
+            linkedDoor.isOpen = true;
         }
     }
 
@@ -43,6 +47,7 @@ public class PressurePlate : MonoBehaviour
             // become unpressed
             isPressed = false;
             UpdateImage();
+            linkedDoor.isOpen = false;
         }
     }
 
