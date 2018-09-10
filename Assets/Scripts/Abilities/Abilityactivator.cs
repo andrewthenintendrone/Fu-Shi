@@ -111,7 +111,14 @@ public class Abilityactivator : MonoBehaviour
         // set _TimeWarpRadius in the shader
         if(effectMaterial != null)
         {
-            effectMaterial.SetFloat("_TimeWarpRadius", timeAxis);
+            if(timeAxis > 0.5f)
+            {
+                effectMaterial.SetFloat("_TimeWarpRadius", 1.0f / 16.0f);
+            }
+            else
+            {
+                effectMaterial.SetFloat("_TimeWarpRadius", 0.0f);
+            }
         }
     }
 

@@ -39,7 +39,8 @@ public class PostProcessing : MonoBehaviour
         effectMaterial.SetTextureOffset("_CanvasTex", canvasTextureOffset);
 
         // set _PlayerPosition in the shader (screen space)
-        effectMaterial.SetVector("_PlayerPosition", Camera.main.WorldToViewportPoint(playerTransform.position));
+        //effectMaterial.SetVector("_PlayerPosition", Camera.main.WorldToViewportPoint(playerTransform.position));
+        effectMaterial.SetVector("_PlayerPosition", new Vector2(0.5f, 0.5f));
 
         // blit from render texture to the destination (the screen)
         Graphics.Blit(source, destination, effectMaterial);
