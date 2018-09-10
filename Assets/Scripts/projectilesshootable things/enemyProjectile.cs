@@ -33,4 +33,9 @@ public class enemyProjectile : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void Reverse()
+    {
+        direction = -direction;
+    }
 }
