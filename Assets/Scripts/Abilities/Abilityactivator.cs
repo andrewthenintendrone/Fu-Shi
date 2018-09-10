@@ -15,6 +15,12 @@ public class Abilityactivator : MonoBehaviour
     private bool inkHeld = false;
     private bool timeHeld = false;
 
+    [SerializeField]
+    private bool InkAbility = false;
+
+    [SerializeField]
+    private bool timeAbility = false;
+
     private Material effectMaterial;
 
 	void Start ()
@@ -33,37 +39,42 @@ public class Abilityactivator : MonoBehaviour
 
         if (inkAxis > 0.5f)
         {
-            if(!inkHeld)
+            if (!inkHeld)
             {
-                //create a gameobject InkWave
-                GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
-
-                //if player has R stick input use it
-                //else use player facing
-                Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
-                Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
-
-                if (RstickDir.sqrMagnitude == 0 )
+                if (InkAbility)
                 {
-                    if (LstickDir.sqrMagnitude == 0)
+
+
+                    //create a gameobject InkWave
+                    GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
+
+                    //if player has R stick input use it
+                    //else use player facing
+                    Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
+                    Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+
+                    if (RstickDir.sqrMagnitude == 0)
                     {
-                        if (gameObject.GetComponent<Player>().facingRight)
+                        if (LstickDir.sqrMagnitude == 0)
                         {
-                            CurrentInkwave.GetComponent<inkWave>().direction = Vector2.right;
+                            if (gameObject.GetComponent<Player>().facingRight)
+                            {
+                                CurrentInkwave.GetComponent<inkWave>().direction = Vector2.right;
+                            }
+                            else
+                            {
+                                CurrentInkwave.GetComponent<inkWave>().direction = Vector2.left;
+                            }
                         }
                         else
                         {
-                            CurrentInkwave.GetComponent<inkWave>().direction = Vector2.left;
+                            CurrentInkwave.GetComponent<inkWave>().direction = LstickDir;
                         }
                     }
                     else
                     {
-                        CurrentInkwave.GetComponent<inkWave>().direction = LstickDir;
+                        CurrentInkwave.GetComponent<inkWave>().direction = RstickDir;
                     }
-                }
-                else
-                {
-                    CurrentInkwave.GetComponent<inkWave>().direction = RstickDir;
                 }
             }
             inkHeld = true;
@@ -72,36 +83,41 @@ public class Abilityactivator : MonoBehaviour
         {
             inkHeld = false;
         }
+
         if (timeAxis > 0.5f)
         {
-            if(!timeHeld)
+            if (timeAbility)
             {
-                int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
-                bool hasReversed = false;
-                for (int i = 0; i < numHits && !hasReversed; i++)
+
+                if (!timeHeld)
                 {
-                    if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
+                    int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
+                    bool hasReversed = false;
+                    for (int i = 0; i < numHits && !hasReversed; i++)
                     {
-                        hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
-                        hasReversed = true;
-                    }
-                    if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
-                    {
-                        hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
-                        hasReversed = true;
-                    }
-                    if(hits[i].collider.gameObject.GetComponent<Door>() != null)
-                    {
-                        if(hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
+                        if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
                         {
-                            hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
-                            hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
+                            hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
                             hasReversed = true;
+                        }
+                        if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
+                        {
+                            hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
+                            hasReversed = true;
+                        }
+                        if (hits[i].collider.gameObject.GetComponent<Door>() != null)
+                        {
+                            if (hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
+                            {
+                                hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
+                                hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
+                                hasReversed = true;
+                            }
                         }
                     }
                 }
+                timeHeld = true;
             }
-            timeHeld = true;
         }
         else
         {
