@@ -166,10 +166,6 @@ public class DualForwardFocusCamera : MonoBehaviour
 
         targetPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
 
-        // bad hack
-        //targetPosition.y = targetBounds.center.y;
-
-
         transform.position = targetPosition;
 
     }

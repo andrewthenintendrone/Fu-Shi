@@ -72,7 +72,7 @@
 				fixed4 render = tex2D(_MainTex, i.uv);
 
 				// sample canvas texture
-				fixed4 canvas = tex2D(_CanvasTex, i.uv2 + _CameraPosition.xy);
+				fixed4 canvas = tex2D(_CanvasTex, i.uv2);
 
 				// blend render and canvas textures
 				float4 canvasBlend = lerp(render, canvas, _CanvasPower);
@@ -82,9 +82,10 @@
 				float distanceFromCenter = length(i.uv - center);
 				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
 
-				// test time radius
+				// calculate aspect ratio
 				float2 aspectRatio = float2(1, _MainTex_TexelSize.x / _MainTex_TexelSize.y);
 
+				// test time radius
 				float distanceFromPlayer = distance(_PlayerPosition * aspectRatio, i.uv * aspectRatio);
 
 				if (_TimeWarpRadius != 0 && distanceFromPlayer > _TimeWarpRadius && distanceFromPlayer < _TimeWarpRadius + 0.01)
