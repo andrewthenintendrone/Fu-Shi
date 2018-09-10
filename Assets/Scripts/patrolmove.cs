@@ -117,7 +117,7 @@ public class patrolmove : MonoBehaviour
         {
             foreach (Transform Child in transform.parent)
             {
-                if (Child.gameObject.GetComponent<patrolmove>() != null)
+                if (Child.gameObject.GetComponent<patrolmove>() != null && Child.gameObject.GetComponent<patrolmove>().willPatrol == false)
                 {
                     patrolmove currScript = Child.gameObject.GetComponent<patrolmove>();
                     currScript.goingForward = !currScript.goingForward;
