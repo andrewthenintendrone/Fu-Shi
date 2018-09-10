@@ -15,10 +15,16 @@ public class Abilityactivator : MonoBehaviour
     private bool inkHeld = false;
     private bool timeHeld = false;
 
+    private Material effectMaterial;
+
 	void Start ()
     {
         filter.layerMask = 1 << LayerMask.NameToLayer("Solid");
-	}
+        if(Camera.main.gameObject.GetComponent<PostProcessing>() != null)
+        {
+            effectMaterial = Camera.main.gameObject.GetComponent<PostProcessing>().effectMaterial;
+        }
+    }
 	
 	void Update ()
     {
@@ -70,14 +76,28 @@ public class Abilityactivator : MonoBehaviour
         {
             if(!timeHeld)
             {
-                int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, filter, hits, Mathf.Infinity);
+                int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
                 bool hasReversed = false;
                 for (int i = 0; i < numHits && !hasReversed; i++)
                 {
-                    if (hits[i].collider.gameObject.GetComponent<patrolmove>() != null)
+                    if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
                     {
-                        hits[i].collider.gameObject.GetComponent<patrolmove>().reverse();
+                        hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
                         hasReversed = true;
+                    }
+                    if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
+                    {
+                        hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
+                        hasReversed = true;
+                    }
+                    if(hits[i].collider.gameObject.GetComponent<Door>() != null)
+                    {
+                        if(hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
+                        {
+                            hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
+                            hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
+                            hasReversed = true;
+                        }
                     }
                 }
             }
@@ -86,6 +106,12 @@ public class Abilityactivator : MonoBehaviour
         else
         {
             timeHeld = false;
+        }
+
+        // set _TimeWarpRadius in the shader
+        if(effectMaterial != null)
+        {
+            effectMaterial.SetFloat("_TimeWarpRadius", timeAxis);
         }
     }
 
