@@ -36765,13 +36765,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1256643247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db4df3d6240c75a499bef856a566f280, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f1ab6d346e28b348949a38f6eb0b47a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  marginX: 4
-  marginY: 4
-  offsetY: 10
-  smoothTime: 0.125
+  width: 8
+  height: 3
+  dualForwardFocusThresholdExtents: 8
+  dualVerticalFocusThresholdExtents: 10
+  smoothTime: 0.35
 --- !u!1001 &1257450361
 Prefab:
   m_ObjectHideFlags: 0
@@ -38490,6 +38491,14 @@ Prefab:
     - target: {fileID: 4925648040850938, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
       propertyPath: m_RootOrder
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280890476259812, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -251.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280890476259812, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -8.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
