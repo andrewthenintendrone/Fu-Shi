@@ -34,13 +34,12 @@ public class inkWave: MonoBehaviour
             collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
         }
 
-        if (collision.gameObject.GetComponent<enemyProjectile>() != null || collision.gameObject.GetComponent<inkWave>() != null || collision.gameObject.GetComponent<Player>() != null)
+        if (collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<inkWave>() == null && collision.gameObject.GetComponent<Player>() == null)
         {
-
-        }
-        else
-        {
-            DestroyObject(gameObject);
+            if(direction.y < -0.25f)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -49,8 +48,7 @@ public class inkWave: MonoBehaviour
         if (collision.gameObject.GetComponent<Enemy>() != null)
         {
             collision.gameObject.GetComponent<Enemy>().health--;
+            Destroy(gameObject);
         }
-        
-        Destroy(gameObject);
     }
 }

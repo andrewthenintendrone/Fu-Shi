@@ -62,6 +62,9 @@ public class Player : MonoBehaviour
     // current jump axis value
     private int jumpAxis;
 
+    // current ink axis value
+    private float inkAxis;
+
     [Tooltip("settings related to character movement")]
     public MovementSettings movementSettings;
 
@@ -100,6 +103,7 @@ public class Player : MonoBehaviour
         xAxis = Input.GetAxis("Horizontal");
         yAxis = Input.GetAxis("Vertical");
         jumpAxis = (int)Input.GetAxisRaw("Jump");
+        inkAxis = (int)Input.GetAxisRaw("Ink");
 
         #endregion
 
@@ -142,9 +146,6 @@ public class Player : MonoBehaviour
         {
             // reset current number of jumps
             currentJumps = movementSettings.jumpCount;
-
-            // reset extra jumps
-            //extraJumpTimer = movementSettings.extraJumpTime;
 
             // set y velocity to a small negative value to keep grounded
             if(!isLaunching)
@@ -202,6 +203,11 @@ public class Player : MonoBehaviour
         if (jumpHeld && jumpAxis == 0)
         {
             jumpHeld = false;
+        }
+
+        if(inkAxis == 1)
+        {
+            velocity.y = 0;
         }
 
         character.move(velocity * Time.fixedDeltaTime);
@@ -304,7 +310,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // eventually handle animation?
     public void UpdateAppearance()
     {
         // color red if on the ground

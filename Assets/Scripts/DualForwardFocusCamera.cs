@@ -26,13 +26,8 @@ public class DualForwardFocusCamera : MonoBehaviour
     [Range(0f, 20f)]
     public float XThresholdExtents = 0.5f;
 
-    [Tooltip("width of the detector / outer lines for vertical switching")]
-    [Range(0f, 20f)]
-    public float YThresholdExtents = 0.5f;
-
-    // which sides are being focused on on the x and y axis
-    private RectTransform.Edge XSideFocus = RectTransform.Edge.Left;
-    private RectTransform.Edge YSideFocus = RectTransform.Edge.Bottom;
+    // which side is being focused on
+    private RectTransform.Edge currentFocus = RectTransform.Edge.Left;
 
     [Tooltip("the lag or delay to smooth the camera")]
     [SerializeField]
@@ -61,13 +56,12 @@ public class DualForwardFocusCamera : MonoBehaviour
 
         // did the x or y edge focus change this frame
         bool didLastXEdgeContactChange = false;
-        bool didLastYEdgeContactChange = false;
 
         // worldspace position of rect edges
         float leftEdge, rightEdge, topEdge, bottomEdge;
 
         // calculate the positions of the relevent edges on the x axis
-        if (XSideFocus == RectTransform.Edge.Left)
+        if (currentFocus == RectTransform.Edge.Left)
         {
             rightEdge = basePosition.x - width * 0.5f;
             leftEdge = rightEdge - XThresholdExtents * 0.5f;
@@ -78,17 +72,8 @@ public class DualForwardFocusCamera : MonoBehaviour
             rightEdge = leftEdge + XThresholdExtents * 0.5f;
         }
 
-        // calculate the positions of the relevent edges on the y axis
-        if (YSideFocus == RectTransform.Edge.Top)
-        {
-            bottomEdge = basePosition.y + height * 0.5f;
-            topEdge = bottomEdge + YThresholdExtents * 0.5f;
-        }
-        else
-        {
-            topEdge = basePosition.y - height * 0.5f;
-            bottomEdge = topEdge - YThresholdExtents * 0.5f;
-        }
+        bottomEdge = basePosition.y - height * 0.5f;
+        topEdge = basePosition.y + height * 0.5f;
 
         // the player has left the focus area on the x axis
         if (targetBounds.center.x < leftEdge)
@@ -96,10 +81,10 @@ public class DualForwardFocusCamera : MonoBehaviour
             deltaPositionFromBounds.x = targetBounds.center.x - leftEdge;
 
             // change focus edge
-            if (XSideFocus == RectTransform.Edge.Left)
+            if (currentFocus == RectTransform.Edge.Left)
             {
                 didLastXEdgeContactChange = true;
-                XSideFocus = RectTransform.Edge.Right;
+                currentFocus = RectTransform.Edge.Right;
             }
         }
         else if (targetBounds.center.x > rightEdge)
@@ -107,53 +92,34 @@ public class DualForwardFocusCamera : MonoBehaviour
             deltaPositionFromBounds.x = targetBounds.center.x - rightEdge;
 
             // change focus edge
-            if (XSideFocus == RectTransform.Edge.Right)
+            if (currentFocus == RectTransform.Edge.Right)
             {
                 didLastXEdgeContactChange = true;
-                XSideFocus = RectTransform.Edge.Left;
+                currentFocus = RectTransform.Edge.Left;
             }
         }
 
-        // // the player has left the focus area on the y axis
+        // // the player has left the camera on the y axis
         if (targetBounds.center.y < bottomEdge)
         {
             deltaPositionFromBounds.y = targetBounds.center.y - bottomEdge;
-
-            // change focus edge
-            if (YSideFocus == RectTransform.Edge.Bottom)
-            {
-                didLastYEdgeContactChange = true;
-                YSideFocus = RectTransform.Edge.Top;
-            }
         }
         else if (targetBounds.center.y > topEdge)
         {
             deltaPositionFromBounds.y = targetBounds.center.y - topEdge;
-
-            // change focus edge
-            if (YSideFocus == RectTransform.Edge.Top)
-            {
-                didLastYEdgeContactChange = true;
-                YSideFocus = RectTransform.Edge.Bottom;
-            }
         }
 
         // calculate the desired position
-        float desiredX = (XSideFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
+        float desiredX = (currentFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
         desiredOffset.x = targetBounds.center.x - desiredX;
 
-        float desiredY = (YSideFocus == RectTransform.Edge.Top ? bottomEdge : topEdge);
+        float desiredY = bottomEdge;
         desiredOffset.y = targetBounds.center.y - desiredY;
 
         // if we didnt change focus this frame update the desired offset
         if (!didLastXEdgeContactChange)
         {
             desiredOffset.x = deltaPositionFromBounds.x;
-        }
-
-        if(!didLastYEdgeContactChange)
-        {
-            desiredOffset.y = deltaPositionFromBounds.y;
         }
 
         // update the target position
@@ -188,7 +154,7 @@ public class DualForwardFocusCamera : MonoBehaviour
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
 
         //draw outer detection bounds
-        bounds.Expand(new Vector3(XThresholdExtents, YThresholdExtents));
+        bounds.Expand(new Vector3(XThresholdExtents, 0));
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
         Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
