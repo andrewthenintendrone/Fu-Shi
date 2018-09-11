@@ -4,19 +4,20 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Runtime.Serialization;
 
 public static class SaveLoad
 {
     [System.Serializable]
     public class SaveData
     {
-        public Vector2 currentPosition;
+        public Vector3 currentPosition;
 
         public int currentLevel;
 
         public SaveData()
         {
-            currentPosition = Vector2.zero;
+            currentPosition = Vector3.zero;
             currentLevel = 0;
         }
     }
@@ -33,6 +34,13 @@ public static class SaveLoad
 
         // serialize data to save file
         BinaryFormatter bf = new BinaryFormatter();
+
+        // use surrogate selector (otherwise Vectors won't serialize)
+        SurrogateSelector surrogateSelector = new SurrogateSelector();
+        Vector3SerializationSurrogate vector3SS = new Vector3SerializationSurrogate();
+        surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
+        bf.SurrogateSelector = surrogateSelector;
+
         FileStream file = File.Create("C:/Users/s170837/Desktop/saveGame.fox");
         bf.Serialize(file, saveData);
         file.Close();
@@ -48,6 +56,13 @@ public static class SaveLoad
         if (File.Exists("C:/Users/s170837/Desktop/saveGame.fox"))
         {
             BinaryFormatter bf = new BinaryFormatter();
+
+            // use surrogate selector (otherwise Vectors won't serialize)
+            SurrogateSelector surrogateSelector = new SurrogateSelector();
+            Vector3SerializationSurrogate vector3SS = new Vector3SerializationSurrogate();
+            surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
+            bf.SurrogateSelector = surrogateSelector;
+
             FileStream file = File.Open("C:/Users/s170837/Desktop/saveGame.fox", FileMode.Open);
             saveData = (SaveData)bf.Deserialize(file);
             file.Close();
@@ -55,7 +70,7 @@ public static class SaveLoad
             Debug.Log("loaded");
 
             // load scene and place player
-            SceneManager.LoadScene(saveData.currentLevel);
+            //SceneManager.LoadScene(saveData.currentLevel);
             Utils.resetPos = saveData.currentPosition;
             Utils.resetPlayer();
             return true;

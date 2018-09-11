@@ -7,7 +7,7 @@ public class DualForwardFocusCamera : MonoBehaviour
 
     [System.NonSerialized]
     [HideInInspector]
-    public new Camera camera;
+    public Camera cam;
 
 
     private Collider2D targetCollider;
@@ -48,8 +48,8 @@ public class DualForwardFocusCamera : MonoBehaviour
 
     void Awake()
     {
-        
-        camera = GetComponent<Camera>();
+
+        cam = GetComponent<Camera>();
         targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
     }
 

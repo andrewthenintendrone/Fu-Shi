@@ -289,7 +289,7 @@ public class Player : MonoBehaviour
         else if (col.tag == "checkpoint")
         {
             Utils.updateCheckpoint(col.transform.position);
-            //SaveLoad.Save();
+            SaveLoad.Save();
         }
         else if(col.tag == "collectable")
         {
