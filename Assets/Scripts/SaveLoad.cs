@@ -26,8 +26,6 @@ public static class SaveLoad
 
     public static bool Save()
     {
-        Debug.Log("attempting to save: C:/Users/s170837/Desktop/saveGame.fox");
-
         // store level name and position
         saveData.currentLevel = SceneManager.GetActiveScene().buildIndex;
         saveData.currentPosition = Utils.resetPos;
@@ -41,7 +39,7 @@ public static class SaveLoad
         surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
         bf.SurrogateSelector = surrogateSelector;
 
-        FileStream file = File.Create("C:/Users/s170837/Desktop/saveGame.fox");
+        FileStream file = File.Create(Application.persistentDataPath + "/saveGame.fox");
         bf.Serialize(file, saveData);
         file.Close();
 
@@ -50,10 +48,8 @@ public static class SaveLoad
 
     public static bool Load()
     {
-        Debug.Log("attempting to load: C:/Users/s170837/Desktop/saveGame.fox");
-
         // deserialize data from save file
-        if (File.Exists("C:/Users/s170837/Desktop/saveGame.fox"))
+        if (File.Exists(Application.persistentDataPath + "/saveGame.fox"))
         {
             BinaryFormatter bf = new BinaryFormatter();
 
@@ -63,11 +59,9 @@ public static class SaveLoad
             surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
             bf.SurrogateSelector = surrogateSelector;
 
-            FileStream file = File.Open("C:/Users/s170837/Desktop/saveGame.fox", FileMode.Open);
+            FileStream file = File.Open(Application.persistentDataPath + "/saveGame.fox", FileMode.Open);
             saveData = (SaveData)bf.Deserialize(file);
             file.Close();
-
-            Debug.Log("loaded");
 
             // load scene and place player
             //SceneManager.LoadScene(saveData.currentLevel);
@@ -76,7 +70,6 @@ public static class SaveLoad
             return true;
         }
 
-        Debug.Log("failed to load a save game");
         return false;
     }
 }
