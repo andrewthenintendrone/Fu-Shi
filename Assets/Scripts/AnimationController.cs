@@ -7,14 +7,14 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class AnimationController : MonoBehaviour
 {
-    //private Animator animator;
-    //private Player player;
+    private Animator animator;
+    private Player player;
 
 	// Use this for initialization
 	void Start ()
     {
-        //animator = GetComponent<Animator>();
-        //player = GetComponent<Player>();
+        animator = GetComponent<Animator>();
+        player = GetComponent<Player>();
 	}
 	
 	// FixedUpdate is called once per physics step
@@ -26,12 +26,6 @@ public class AnimationController : MonoBehaviour
     // update the animation state based on the AnimationState enum in Player
     void statecheck()
     {
-        //animator.SetInteger("state", (int)player.animationState);
-
-        //if(player.animationState == Player.AnimationState.DASH)
-        //{
-        //    player.animationState = Player.AnimationState.IDLE;
-        //    animator.SetTrigger("dash");
-        //}
+        animator.SetBool("run", (Mathf.Abs(player.velocity.x) > 0.01f));
     }
 }
