@@ -205,11 +205,6 @@ public class Player : MonoBehaviour
             jumpHeld = false;
         }
 
-        if(inkAxis == 1)
-        {
-            velocity.y = 0;
-        }
-
         character.move(velocity * Time.fixedDeltaTime);
 
         UpdateAppearance();
