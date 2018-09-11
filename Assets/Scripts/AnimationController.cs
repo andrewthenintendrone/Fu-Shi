@@ -23,7 +23,7 @@ public class AnimationController : MonoBehaviour
         statecheck();
 	}
 
-    // update the animation state based on the AnimationState enum in Player
+    // check state and set up animator to match
     void statecheck()
     {
         animator.SetBool("run", (Mathf.Abs(player.velocity.x) > 0.01f));

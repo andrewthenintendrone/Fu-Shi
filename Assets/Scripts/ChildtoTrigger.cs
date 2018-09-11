@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class ChildtoTrigger : MonoBehaviour
 {
-
-	// Use this for initialization
-	void Start ()
-    {
-		
-	}
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")
@@ -26,6 +19,4 @@ public class ChildtoTrigger : MonoBehaviour
             other.gameObject.transform.parent = null;
         }
     }
-
-
 }
