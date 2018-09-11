@@ -15,11 +15,10 @@ public class Abilityactivator : MonoBehaviour
     private bool inkHeld = false;
     private bool timeHeld = false;
 
-    [SerializeField]
-    private bool InkAbility = false;
-
-    [SerializeField]
-    private bool timeAbility = false;
+    [Tooltip("this is the switch determining wether the player can use the ink spray")]
+    public bool InkAbility = false;
+    [Tooltip("this is the switch determining wether the player can use the time warp")]
+    public bool timeAbility = false;
 
     private Material effectMaterial;
 
@@ -135,6 +134,20 @@ public class Abilityactivator : MonoBehaviour
             {
                 effectMaterial.SetFloat("_TimeWarpRadius", 0.0f);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "inkGiver")
+        {
+            InkAbility = true;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.name == "timeGiver")
+        {
+            timeAbility = true;
+            Destroy(collision.gameObject);
         }
     }
 
