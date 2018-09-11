@@ -285,9 +285,11 @@ public class Player : MonoBehaviour
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
         }
+        // sets the checkpoint and saves
         else if (col.tag == "checkpoint")
         {
             Utils.updateCheckpoint(col.transform.position);
+            //SaveLoad.Save();
         }
         else if(col.tag == "collectable")
         {

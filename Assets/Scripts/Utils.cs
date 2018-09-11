@@ -39,7 +39,11 @@ public static class Utils
     // Use this for initialization
     public static void Init()
     {
-        resetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        //if(!SaveLoad.Load())
+        //{
+            resetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        //}
+
         if(GameObject.Find("collectableText") != null)
         {
             collectableText = GameObject.Find("collectableText").GetComponent<Text>();

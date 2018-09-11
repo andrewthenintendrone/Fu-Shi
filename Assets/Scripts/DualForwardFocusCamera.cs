@@ -207,13 +207,6 @@ public class DualForwardFocusCamera : MonoBehaviour
 
     Vector3 getNormalizedCameraPosition()
     {
-        //Camera.main.ViewportToWorldPoint()
-#if UNITY_EDITOR
         return GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f));
-#else
-		return camera.ViewportToWorldPoint( new Vector3( 0.5f + horizontalOffset, 0.5f + verticalOffset, 0f ) );
-#endif
-
-
     }
 }
