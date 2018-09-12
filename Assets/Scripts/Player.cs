@@ -308,7 +308,7 @@ public class Player : MonoBehaviour
     public void UpdateAppearance()
     {
         // color red if on the ground
-        changeColor(character.isGrounded ? Color.red : Color.white);
+        // changeColor(character.isGrounded ? Color.red : Color.white);
 
         // scale the player model to match the direction of the players velocity
         if (Mathf.Abs(velocity.x) != 0)

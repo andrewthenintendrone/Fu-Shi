@@ -8,24 +8,30 @@ public class PostProcessing : MonoBehaviour
     [Tooltip("material to use for the effect")]
     public Material effectMaterial;
 
+    // transform of the player
     private Transform playerTransform;
 
+    // camera component reference
     private Camera cam;
 
     // called when this script is enabled
     private void OnEnable()
     {
+        // get component references
         cam = GetComponent<Camera>();
     }
 
     // called on the first frame that this script exists
     void Start()
     {
+        // enable depth texture on the camera component
         cam.depthTextureMode = DepthTextureMode.Depth;
+
+        // find player transform
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    // called at the last moment before blitting each frame to the screen
+    // called right before blitting each frame to the screen
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         // set _CameraPosition in the shader
