@@ -87,7 +87,6 @@ public class Abilityactivator : MonoBehaviour
         {
             if (timeAbility)
             {
-
                 if (!timeHeld)
                 {
                     int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
