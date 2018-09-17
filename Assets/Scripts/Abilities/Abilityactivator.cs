@@ -104,18 +104,15 @@ public class Abilityactivator : MonoBehaviour
                 if (!timeHeld)
                 {
                     int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
-                    bool hasReversed = false;
-                    for (int i = 0; i < numHits && !hasReversed; i++)
+                    for (int i = 0; i < numHits; i++)
                     {
                         if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
                         {
                             hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
-                            hasReversed = true;
                         }
                         if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
                         {
                             hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
-                            hasReversed = true;
                         }
                         if (hits[i].collider.gameObject.GetComponent<Door>() != null)
                         {
@@ -123,7 +120,6 @@ public class Abilityactivator : MonoBehaviour
                             {
                                 hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
                                 hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
-                                hasReversed = true;
                             }
                         }
                     }

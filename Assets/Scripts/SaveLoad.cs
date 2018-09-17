@@ -38,6 +38,8 @@ public static class SaveLoad
             currentEnemy.GetComponent<Renderer>().enabled = true;
             currentEnemy.GetComponent<BoxCollider2D>().enabled = true;
             currentEnemy.GetComponent<Enemy>().health = currentEnemy.GetComponent<Enemy>().maxHealth;
+            currentEnemy.GetComponent<Enemy>().CancelInvoke("checkPlayerDist");
+            currentEnemy.GetComponent<Enemy>().InvokeRepeating("checkPlayerDist", currentEnemy.GetComponent<Enemy>().shootInterval, currentEnemy.GetComponent<Enemy>().shootInterval);
         }
 
         // store position

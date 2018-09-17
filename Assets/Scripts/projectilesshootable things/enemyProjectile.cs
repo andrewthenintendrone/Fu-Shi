@@ -11,6 +11,8 @@ public class enemyProjectile : MonoBehaviour
 
     public float lifetime;
 
+    public bool reversed = false;
+
 
 	void Start ()
     {
@@ -34,8 +36,23 @@ public class enemyProjectile : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Enemy>() != null && reversed)
+        {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            enemy.health = Mathf.Max(enemy.health - 1, 0);
+            enemy.checkDead();
+            Destroy(gameObject);
+        }
+    }
+
     public void Reverse()
     {
-        direction = -direction;
+        if(!reversed)
+        {
+            reversed = true;
+            direction = -direction;
+        }
     }
 }
