@@ -6,14 +6,26 @@ public class Inkmeleeslash : MonoBehaviour {
 
     [SerializeField]
     private GameObject inkbulletprefab;
+
     [HideInInspector]
     public Vector2 direction;
-	//spawn the smaller inkprojectiles here
-	void Start ()
+
+    [Tooltip("how long the ink will persist")]
+    public float lifetime;
+
+    //spawn the smaller inkprojectiles here
+    void Start ()
     {
-       GameObject inkbullet1 = Instantiate(inkbulletprefab, transform.position, transform.rotation);
-        inkbullet1.GetComponent<inkBullet>().direction = transform.forward;
-	}
+        float rotation = Vector2.SignedAngle(Vector2.left, direction);
+        transform.eulerAngles = Vector3.forward * rotation;
+
+
+        GameObject inkbullet1 = Instantiate(inkbulletprefab, transform.position, transform.rotation);
+        inkbullet1.GetComponent<inkBullet>().direction = direction;
+
+
+        Destroy(gameObject, lifetime);
+    }
 	
 	
 	void Update ()

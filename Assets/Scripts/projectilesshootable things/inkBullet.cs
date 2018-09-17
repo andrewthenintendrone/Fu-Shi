@@ -37,10 +37,9 @@ public class inkBullet: MonoBehaviour
         if (collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<inkBullet>() == null && collision.gameObject.GetComponent<Player>() == null
             && collision.gameObject.GetComponent<Inkmeleeslash>() == null)
         {
-            if(direction.y < -0.25f)
-            {
-                Destroy(gameObject);
-            }
+        
+         Destroy(gameObject);
+          
         }
     }
 
