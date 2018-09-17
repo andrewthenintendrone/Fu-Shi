@@ -39,15 +39,6 @@ public struct MovementSettings
     public float maxFallSpeed;
 }
 
-public enum PlayerState
-{
-    IDLE,
-    RUN,
-    JUMP,
-    DOUBLEJUMP,
-    DAMAGE
-}
-
 public class Player : MonoBehaviour
 {
     [HideInInspector]
@@ -94,8 +85,6 @@ public class Player : MonoBehaviour
     // which way the player is facing
     [HideInInspector]
     public bool facingRight = true;
-
-    public PlayerState playerState = PlayerState.IDLE;
 
     private Animator animator;
 
@@ -334,6 +323,16 @@ public class Player : MonoBehaviour
             animator.SetFloat("absoluteXVelocity", Mathf.Abs(velocity.x));
             animator.SetFloat("yVelocity", velocity.y);
             animator.SetInteger("currentJumps", currentJumps);
+
+            // landing
+            if(character.collisionState.becameGroundedThisFrame)
+            {
+                animator.SetTrigger("land");
+            }
+            else
+            {
+                animator.ResetTrigger("land");
+            }
         }
 
         // scale the player model to match the direction of the players velocity

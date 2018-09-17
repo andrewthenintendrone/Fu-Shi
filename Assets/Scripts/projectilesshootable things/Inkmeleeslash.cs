@@ -14,8 +14,6 @@ public class Inkmeleeslash : MonoBehaviour {
     [SerializeField]
     private float lifetime;
 
-    private float offsetdistance;
-
     //spawn the smaller inkprojectiles here
     void Start ()
     {

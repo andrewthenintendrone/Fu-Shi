@@ -5,6 +5,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Tooltip("number of discrete hits it takes to kill the enemy")]
+    [SerializeField]
+    public int maxHealth;
+
+    [HideInInspector]
+    // current health
     public int health;
 
     [Tooltip("prefab of the projectile or bullet to shoot at the player goes here")]
@@ -28,6 +33,7 @@ public class Enemy : MonoBehaviour
 
     void Start ()
     {
+        health = maxHealth;
         InvokeRepeating("checkPlayerDist", shootInterval, shootInterval);
 	}
 	
@@ -40,7 +46,10 @@ public class Enemy : MonoBehaviour
     {
         if (health <= 0)
         {
-            Destroy(gameObject);
+            gameObject.GetComponent<Renderer>().enabled = false;
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            this.enabled = false;
+            CancelInvoke("checkPlayerDist");
         }
     }
 
@@ -53,7 +62,7 @@ public class Enemy : MonoBehaviour
 
     private void checkPlayerDist()
     {
-        if(gameObject == null)
+        if(!gameObject.activeSelf)
         {
             CancelInvoke();
             return;
