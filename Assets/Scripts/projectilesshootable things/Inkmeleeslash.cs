@@ -11,7 +11,10 @@ public class Inkmeleeslash : MonoBehaviour {
     public Vector2 direction;
 
     [Tooltip("how long the ink will persist")]
-    public float lifetime;
+    [SerializeField]
+    private float lifetime;
+
+    private float offsetdistance;
 
     //spawn the smaller inkprojectiles here
     void Start ()
