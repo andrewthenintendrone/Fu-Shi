@@ -34,6 +34,9 @@ public class Abilityactivator : MonoBehaviour
 
     // reference to the post processing effect
     private Material effectMaterial;
+    [SerializeField]
+    [Tooltip("the distance away from the fox's centre that the ink ability starts")]
+    private float offsetdistance = 0f;
 
 	void Start ()
     {
