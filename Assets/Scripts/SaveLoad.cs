@@ -38,7 +38,7 @@ public static class SaveLoad
 
         // find which collectables are active
         saveData.collectables.Clear();
-        foreach(Transform currentCollectable in GameObject.Find("collectables").GetComponentInChildren<Transform>())
+        foreach(Transform currentCollectable in GameObject.Find("collectables").GetComponentsInChildren<Transform>(true))
         {
             saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
         }
@@ -98,17 +98,15 @@ public static class SaveLoad
             if(GameObject.Find("collectables") != null)
             {
                 Transform[] collectables;
-                collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>();
+                collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>(true);
 
-                if (collectables.Length != saveData.collectables.Count)
+                if(collectables.Length != saveData.collectables.Count)
                 {
-                    Debug.Log("Collectables: " + collectables.Length);
-                    Debug.Log("Save Data bools: " + saveData.collectables.Count);
+                    Debug.Log("loaded the state of " + saveData.collectables.Count.ToString() + " collectables but there are " + collectables.Length.ToString() + " collectables in the scene");
                 }
                 else
                 {
-                    // activate / deactivate collectables
-                    for (int i = 0; i < collectables.Length; i++)
+                    for(int i = 0; i < collectables.Length; i++)
                     {
                         collectables[i].gameObject.SetActive(saveData.collectables[i]);
                     }
