@@ -29,6 +29,17 @@ public static class SaveLoad
 
     public static bool Save()
     {
+        // restore the health of all enemies
+        GameObject[] enemys = GameObject.FindGameObjectsWithTag("enemy");
+
+        foreach (GameObject currentEnemy in enemys)
+        {
+            currentEnemy.GetComponent<Enemy>().enabled = true;
+            currentEnemy.GetComponent<Renderer>().enabled = true;
+            currentEnemy.GetComponent<BoxCollider2D>().enabled = true;
+            currentEnemy.GetComponent<Enemy>().health = currentEnemy.GetComponent<Enemy>().maxHealth;
+        }
+
         // store position
         saveData.currentPosition = Utils.resetPos;
 
