@@ -160,7 +160,6 @@ GameObject:
   - component: {fileID: 61187455206652954}
   - component: {fileID: 50845562633837662}
   - component: {fileID: 114213161651225896}
-  - component: {fileID: 114688074954032672}
   - component: {fileID: 114036603869512214}
   m_Layer: 8
   m_Name: Player
@@ -3086,21 +3085,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeRadius: 6
-  inkwaveprefab: {fileID: 1130675752502808, guid: 3801c255bad76b04c92f16175e58dfcb,
-    type: 2}
-  InkAbility: 0
-  timeAbility: 0
---- !u!114 &114688074954032672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1155140366454962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 264a22ebde566584f814c1217cf2f1ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  inkSlashPrefab: {fileID: 0}
+  hasInkAbility: 0
+  hasTimeAbility: 0
 --- !u!114 &114962643873500584
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3133,6 +3120,7 @@ MonoBehaviour:
   isLaunching: 0
   canTurnIntoInkBlot: 1
   facingRight: 1
+  playerState: 0
 --- !u!137 &137681160179574586
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
