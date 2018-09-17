@@ -26,6 +26,12 @@ public class DualForwardFocusCamera : MonoBehaviour
     [Range(0f, 20f)]
     public float XThresholdExtents = 0.5f;
 
+
+    [Tooltip("height at which the camera enters panic mode and attempts to catch up to the player")]
+    [SerializeField]
+    private float panicModeThreshHold = 10f;
+
+
     // which side is being focused on
     private RectTransform.Edge currentFocus = RectTransform.Edge.Left;
 
@@ -160,6 +166,10 @@ public class DualForwardFocusCamera : MonoBehaviour
         Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
         Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
+
+        bounds.Expand(new Vector3(0, panicModeThreshHold));
+        Gizmos.color = Color.red;
+        //Gizmos.DrawLine(bounds.min)
     }
 
 #endif
