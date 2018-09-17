@@ -95,21 +95,25 @@ public static class SaveLoad
             }
 
             // disable already obtained collectables
-            Transform[] collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>();
-            if(collectables.Length != saveData.collectables.Count)
+            if(GameObject.Find("collectables") != null)
             {
-                Debug.Log("Collectables: " + collectables.Length);
-                Debug.Log("Save Data bools: " + saveData.collectables.Count);
-            }
-            else
-            {
-                // activate / deactivate collectables
-                for(int i = 0; i < collectables.Length; i++)
+                Transform[] collectables;
+                collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>();
+
+                if (collectables.Length != saveData.collectables.Count)
                 {
-                    collectables[i].gameObject.SetActive(saveData.collectables[i]);
+                    Debug.Log("Collectables: " + collectables.Length);
+                    Debug.Log("Save Data bools: " + saveData.collectables.Count);
+                }
+                else
+                {
+                    // activate / deactivate collectables
+                    for (int i = 0; i < collectables.Length; i++)
+                    {
+                        collectables[i].gameObject.SetActive(saveData.collectables[i]);
+                    }
                 }
             }
-
 
             return true;
         }
