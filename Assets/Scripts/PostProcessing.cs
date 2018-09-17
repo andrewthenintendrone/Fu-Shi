@@ -38,7 +38,8 @@ public class PostProcessing : MonoBehaviour
         effectMaterial.SetVector("_CameraPosition", transform.position);
 
         // set _OrthoScale in the shader
-        Vector2 canvasTextureOffset = transform.position / 16.0f;
+        float orthoSize = GetComponent<Camera>().orthographicSize;
+        Vector2 canvasTextureOffset = transform.position / orthoSize / 2.0f;
         canvasTextureOffset.x = canvasTextureOffset.x / 16.0f * 9.0f * effectMaterial.GetTextureScale("_CanvasTex").x;
         canvasTextureOffset.y = canvasTextureOffset.y * effectMaterial.GetTextureScale("_CanvasTex").y;
 
