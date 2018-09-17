@@ -7,24 +7,40 @@ using UnityEditor;
 
 public class Abilityactivator : MonoBehaviour
 {
-    public float timeRadius;
-    private RaycastHit2D[] hits = new RaycastHit2D[100];
-    private ContactFilter2D filter;
-    public GameObject inkwaveprefab;
+    [Tooltip("range of the time reverse ability")]
+    [SerializeField]
+    private float timeRadius;
 
+    // list of the objects that have currently been hit by the time reverse ability
+    private RaycastHit2D[] hits = new RaycastHit2D[100];
+
+    private ContactFilter2D filter;
+
+    [Tooltip("ink wave prefab gameobject")]
+    [SerializeField]
+    private GameObject inkwaveprefab;
+
+    // is the ink axis held
     private bool inkHeld = false;
+
+    // is the time axis held
     private bool timeHeld = false;
 
-    [Tooltip("this is the switch determining wether the player can use the ink spray")]
-    public bool InkAbility = false;
-    [Tooltip("this is the switch determining wether the player can use the time warp")]
-    public bool timeAbility = false;
+    [Tooltip("this is the switch determining whether the player can use the ink spray ability")]
+    public bool hasInkAbility = false;
 
+    [Tooltip("this is the switch determining whether the player can use the time reverse ability")]
+    public bool hasTimeAbility = false;
+
+    // reference to the post processing effect
     private Material effectMaterial;
 
 	void Start ()
     {
+        // only hit solid objects with the time reverse ability
         filter.layerMask = 1 << LayerMask.NameToLayer("Solid");
+
+        // get reference to screen space effect
         if(Camera.main.gameObject.GetComponent<PostProcessing>() != null)
         {
             effectMaterial = Camera.main.gameObject.GetComponent<PostProcessing>().effectMaterial;
@@ -40,10 +56,8 @@ public class Abilityactivator : MonoBehaviour
         {
             if (!inkHeld)
             {
-                if (InkAbility)
+                if (hasInkAbility)
                 {
-
-
                     //create a gameobject InkWave
                     GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
 
@@ -85,7 +99,7 @@ public class Abilityactivator : MonoBehaviour
 
         if (timeAxis > 0.5f)
         {
-            if (timeAbility)
+            if (hasTimeAbility)
             {
                 if (!timeHeld)
                 {
@@ -125,7 +139,7 @@ public class Abilityactivator : MonoBehaviour
         // set _TimeWarpRadius in the shader
         if(effectMaterial != null)
         {
-            if(timeAxis > 0.5f)
+            if(timeAxis > 0.5f && hasTimeAbility)
             {
                 effectMaterial.SetFloat("_TimeWarpRadius", 1.0f / 16.0f);
             }
@@ -140,12 +154,12 @@ public class Abilityactivator : MonoBehaviour
     {
         if (collision.gameObject.name == "inkGiver")
         {
-            InkAbility = true;
+            hasInkAbility = true;
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.name == "timeGiver")
         {
-            timeAbility = true;
+            hasTimeAbility = true;
             Destroy(collision.gameObject);
         }
     }

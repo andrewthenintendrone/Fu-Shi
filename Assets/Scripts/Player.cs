@@ -286,8 +286,12 @@ public class Player : MonoBehaviour
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
         }
-        // sets the checkpoint and saves
+        // sets the checkpoint
         else if (col.tag == "checkpoint")
+        {
+            Utils.updateCheckpoint(col.transform.position);
+        }
+        else if(col.tag == "savepoint")
         {
             Utils.updateCheckpoint(col.transform.position);
             SaveLoad.Save();
@@ -297,7 +301,7 @@ public class Player : MonoBehaviour
             Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
             Utils.numberOfCollectables++;
             Utils.updateCollectableText();
-            Destroy(col.gameObject);
+            col.gameObject.SetActive(false);
         }
         else if (col.tag == "levelDoor")
         {

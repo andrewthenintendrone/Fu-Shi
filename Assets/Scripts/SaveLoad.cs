@@ -12,13 +12,16 @@ public static class SaveLoad
     public class SaveData
     {
         public Vector3 currentPosition;
-
-        public int currentLevel;
+        public bool hasInkAbility;
+        public bool hasTimeAbility;
+        public List<bool> collectables;
 
         public SaveData()
         {
             currentPosition = Vector3.zero;
-            currentLevel = 0;
+            hasInkAbility = false;
+            hasTimeAbility = false;
+            collectables = new List<bool>();
         }
     }
 
@@ -26,9 +29,19 @@ public static class SaveLoad
 
     public static bool Save()
     {
-        // store level name and position
-        saveData.currentLevel = SceneManager.GetActiveScene().buildIndex;
+        // store position
         saveData.currentPosition = Utils.resetPos;
+
+        // store which abilities 
+        saveData.hasInkAbility = GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasInkAbility;
+        saveData.hasTimeAbility = GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasTimeAbility;
+
+        // find which collectables are active
+        saveData.collectables.Clear();
+        foreach(Transform currentCollectable in GameObject.Find("collectables").GetComponentInChildren<Transform>())
+        {
+            saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
+        }
 
         // serialize data to save file
         BinaryFormatter bf = new BinaryFormatter();
@@ -63,10 +76,41 @@ public static class SaveLoad
             saveData = (SaveData)bf.Deserialize(file);
             file.Close();
 
-            // load scene and place player
-            //SceneManager.LoadScene(saveData.currentLevel);
+            // place player
             Utils.resetPos = saveData.currentPosition;
             Utils.resetPlayer();
+
+            // set if abilities have been obtained
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasInkAbility = saveData.hasInkAbility;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasTimeAbility = saveData.hasTimeAbility;
+
+            // destroy ability givers
+            if(saveData.hasInkAbility)
+            {
+                GameObject.Destroy(GameObject.Find("inkGiver"));
+            }
+            if (saveData.hasTimeAbility)
+            {
+                GameObject.Destroy(GameObject.Find("timeGiver"));
+            }
+
+            // disable already obtained collectables
+            Transform[] collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>();
+            if(collectables.Length != saveData.collectables.Count)
+            {
+                Debug.Log("Collectables: " + collectables.Length);
+                Debug.Log("Save Data bools: " + saveData.collectables.Count);
+            }
+            else
+            {
+                // activate / deactivate collectables
+                for(int i = 0; i < collectables.Length; i++)
+                {
+                    collectables[i].gameObject.SetActive(saveData.collectables[i]);
+                }
+            }
+
+
             return true;
         }
 
