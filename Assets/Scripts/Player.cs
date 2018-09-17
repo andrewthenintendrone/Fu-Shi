@@ -39,6 +39,15 @@ public struct MovementSettings
     public float maxFallSpeed;
 }
 
+public enum PlayerState
+{
+    IDLE,
+    RUN,
+    JUMP,
+    DOUBLEJUMP,
+    DAMAGE
+}
+
 public class Player : MonoBehaviour
 {
     [HideInInspector]
@@ -86,10 +95,15 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool facingRight = true;
 
+    public PlayerState playerState = PlayerState.IDLE;
+
+    private Animator animator;
+
     private void Start()
     {
         Utils.Init();
         character = GetComponent<CharacterController2D>();
+        animator = GetComponent<Animator>();
         character.onTriggerEnterEvent += triggerFunction;
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
@@ -313,6 +327,14 @@ public class Player : MonoBehaviour
     {
         // color red if on the ground
         // changeColor(character.isGrounded ? Color.red : Color.white);
+
+        if(gameObject.activeSelf)
+        {
+            animator.SetBool("isGrounded", character.isGrounded);
+            animator.SetFloat("absoluteXVelocity", Mathf.Abs(velocity.x));
+            animator.SetFloat("yVelocity", velocity.y);
+            animator.SetInteger("currentJumps", currentJumps);
+        }
 
         // scale the player model to match the direction of the players velocity
         if (Mathf.Abs(velocity.x) != 0)
