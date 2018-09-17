@@ -26,7 +26,6 @@ public class AnimationController : MonoBehaviour
     // check state and set up animator to match
     void statecheck()
     {
-        animator.SetBool("run", (Mathf.Abs(player.velocity.x) > 0.01f));
-        animator.SetBool("turn", (Mathf.Sign(Input.GetAxis("Horizontal")) != Mathf.Sign(GetComponent<Player>().velocity.x)));
+        
     }
 }
