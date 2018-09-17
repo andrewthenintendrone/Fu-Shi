@@ -109,8 +109,15 @@ public static class SaveLoad
                     for(int i = 0; i < collectables.Length; i++)
                     {
                         collectables[i].gameObject.SetActive(saveData.collectables[i]);
+
+                        if(!saveData.collectables[i])
+                        {
+                            Utils.numberOfCollectables++;
+                        }
                     }
                 }
+
+                Utils.updateCollectableText();
             }
 
             return true;
