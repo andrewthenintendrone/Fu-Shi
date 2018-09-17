@@ -81,6 +81,9 @@ public class Abilityactivator : MonoBehaviour
                             {
                                 CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
                             }
+
+                            // ternary
+                            // CurrentInkwave.GetComponent<Inkmeleeslash>().direction = (gameObject.GetComponent<Player>().facingRight ? Vector2.right : Vector2.left);
                         }
                         else
                         {
