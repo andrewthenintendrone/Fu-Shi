@@ -30,6 +30,10 @@ public class Enemy : MonoBehaviour
     [Tooltip("how long between shots from this enemy")]
     public float shootInterval;
 
+    [SerializeField]
+    [Tooltip("how far away from the enemy the projectile starts at")]
+    private float projectileStartDistance;
+
 
     void Start ()
     {
@@ -55,9 +59,9 @@ public class Enemy : MonoBehaviour
 
    private void shootProjectile(Vector3 direction)
    {
-        GameObject projectileInstance = Instantiate(EnemyProjectile, transform.position, Quaternion.identity);
+        GameObject projectileInstance = Instantiate(EnemyProjectile, transform.position + direction * projectileStartDistance, Quaternion.identity);
 
-        projectileInstance.GetComponent<enemyProjectile>().direction = direction.normalized;
+        projectileInstance.GetComponent<enemyProjectile>().direction = direction;
    }
 
     private void checkPlayerDist()
@@ -72,7 +76,7 @@ public class Enemy : MonoBehaviour
 
         if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
         {
-            shootProjectile(direction);
+            shootProjectile(direction.normalized);
         }
     }
 
@@ -80,11 +84,15 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        UnityEditor.Handles.color = Color.red;
-
         if (drawDetectRadius)
         {
+            // draw detect radius
+            UnityEditor.Handles.color = Color.red;
             UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, detectDistance);
+
+            // draw projectile start distance
+            UnityEditor.Handles.color = Color.blue;
+            UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, projectileStartDistance);
         }
     }
 

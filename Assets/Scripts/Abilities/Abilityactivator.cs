@@ -38,6 +38,8 @@ public class Abilityactivator : MonoBehaviour
     [Tooltip("the distance away from the fox's centre that the ink ability starts")]
     private float offsetdistance = 0f;
 
+    private bool canInk = true;
+
 	void Start ()
     {
         // only hit solid objects with the time reverse ability
@@ -52,6 +54,11 @@ public class Abilityactivator : MonoBehaviour
 	
 	void Update ()
     {
+        if (gameObject.GetComponent<CharacterController2D>().isGrounded)
+        {
+            canInk = true;
+        }
+
         float inkAxis = Input.GetAxis("Ink");
         float timeAxis = Input.GetAxis("Time");
 
@@ -61,35 +68,43 @@ public class Abilityactivator : MonoBehaviour
             {
                 if (hasInkAbility)
                 {
-                    //create a gameobject InkWave
-                    GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
-
-                    //if player has R stick input use it
-                    //else use player facing
-                    Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
-                    Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
-
-                    if (RstickDir.sqrMagnitude == 0)
+                    if(canInk)
                     {
-                        if (LstickDir.sqrMagnitude == 0)
+                        canInk = false;
+
+                        //create a gameobject InkWave
+                        GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
+
+                        //if player has R stick input use it
+                        //else use player facing
+                        Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
+                        Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+
+                        if (RstickDir.sqrMagnitude == 0)
                         {
-                            if (gameObject.GetComponent<Player>().facingRight)
+                            if (LstickDir.sqrMagnitude == 0)
                             {
-                                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.right;
+                                if (gameObject.GetComponent<Player>().facingRight)
+                                {
+                                    CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.right;
+                                }
+                                else
+                                {
+                                    CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
+                                }
+
+                                // ternary
+                                // CurrentInkwave.GetComponent<Inkmeleeslash>().direction = (gameObject.GetComponent<Player>().facingRight ? Vector2.right : Vector2.left);
                             }
                             else
                             {
-                                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
+                                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = LstickDir;
                             }
                         }
                         else
                         {
-                            CurrentInkwave.GetComponent<Inkmeleeslash>().direction = LstickDir;
+                            CurrentInkwave.GetComponent<Inkmeleeslash>().direction = RstickDir;
                         }
-                    }
-                    else
-                    {
-                        CurrentInkwave.GetComponent<Inkmeleeslash>().direction = RstickDir;
                     }
                 }
             }

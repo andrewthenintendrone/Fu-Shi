@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64df695edf8941f4d8744741f1b369e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   health: 3
   EnemyProjectile: {fileID: 1867828709602008, guid: e037e336366b17341b38b4bb46045169,
     type: 2}
@@ -86,6 +87,7 @@ MonoBehaviour:
   damageAmt: 1
   shoot: 1
   shootInterval: 0.5
+  projectileStartDistance: 1.5
 --- !u!212 &212298657388459088
 SpriteRenderer:
   m_ObjectHideFlags: 1
