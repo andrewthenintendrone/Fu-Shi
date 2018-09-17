@@ -18,7 +18,7 @@ public class Abilityactivator : MonoBehaviour
 
     [Tooltip("ink wave prefab gameobject")]
     [SerializeField]
-    private GameObject inkwaveprefab;
+    private GameObject inkSlashPrefab;
 
     // is the ink axis held
     private bool inkHeld = false;
@@ -59,7 +59,7 @@ public class Abilityactivator : MonoBehaviour
                 if (hasInkAbility)
                 {
                     //create a gameobject InkWave
-                    GameObject CurrentInkwave = Instantiate(inkwaveprefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
+                    GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
 
                     //if player has R stick input use it
                     //else use player facing
@@ -72,21 +72,21 @@ public class Abilityactivator : MonoBehaviour
                         {
                             if (gameObject.GetComponent<Player>().facingRight)
                             {
-                                CurrentInkwave.GetComponent<inkWave>().direction = Vector2.right;
+                                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.right;
                             }
                             else
                             {
-                                CurrentInkwave.GetComponent<inkWave>().direction = Vector2.left;
+                                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
                             }
                         }
                         else
                         {
-                            CurrentInkwave.GetComponent<inkWave>().direction = LstickDir;
+                            CurrentInkwave.GetComponent<Inkmeleeslash>().direction = LstickDir;
                         }
                     }
                     else
                     {
-                        CurrentInkwave.GetComponent<inkWave>().direction = RstickDir;
+                        CurrentInkwave.GetComponent<Inkmeleeslash>().direction = RstickDir;
                     }
                 }
             }

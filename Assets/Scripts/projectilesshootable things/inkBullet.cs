@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class inkWave: MonoBehaviour
+public class inkBullet: MonoBehaviour
 {
     [HideInInspector]
     public Vector2 direction;
@@ -34,7 +34,8 @@ public class inkWave: MonoBehaviour
             collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
         }
 
-        if (collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<inkWave>() == null && collision.gameObject.GetComponent<Player>() == null)
+        if (collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<inkBullet>() == null && collision.gameObject.GetComponent<Player>() == null
+            && collision.gameObject.GetComponent<Inkmeleeslash>() == null)
         {
             if(direction.y < -0.25f)
             {

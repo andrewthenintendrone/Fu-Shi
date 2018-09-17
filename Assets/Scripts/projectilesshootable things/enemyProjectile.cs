@@ -28,7 +28,7 @@ public class enemyProjectile : MonoBehaviour
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
         }
-        if (collision.gameObject.GetComponent<inkWave>() == null && collision.gameObject.GetComponent<enemyProjectile>() == null)
+        if (collision.gameObject.GetComponent<inkBullet>() == null && collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<Inkmeleeslash>() == null)
         {
             Destroy(gameObject);
         }
