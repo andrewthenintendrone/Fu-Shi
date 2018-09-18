@@ -37,11 +37,19 @@ public class Abilityactivator : MonoBehaviour
     private float offsetdistance = 0f;
 
     // can the player use ink (only once in the air)
-    private bool canInk = true;
+    private bool canUseInkAbility = true;
 
     [SerializeField]
     [Tooltip("extra height gained by using ink ability in the air")]
     private float extraHeightFromInk;
+
+    [SerializeField]
+    [Tooltip("maximum duration that the time ability can be in use")]
+    private float maxTimeAbilityDuration;
+
+    [SerializeField]
+    [Tooltip("cooldown time between using the time ability")]
+    private float timeAbilityCooldown;
 
 	void Start ()
     {
@@ -58,7 +66,7 @@ public class Abilityactivator : MonoBehaviour
         // the player can always use ink when on the ground
         if (gameObject.GetComponent<CharacterController2D>().isGrounded)
         {
-            canInk = true;
+            canUseInkAbility = true;
         }
 
         if (inkAxis > 0.5f)
@@ -99,10 +107,10 @@ public class Abilityactivator : MonoBehaviour
     public void useInkAbility()
     {
         // to use the ink ability the player must have unlocked it
-        if (hasInkAbility && canInk)
+        if (hasInkAbility && canUseInkAbility)
         {
             // player can no longer ink until they touch the ground
-            canInk = false;
+            canUseInkAbility = false;
 
             //create a gameobject InkWave
             GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
