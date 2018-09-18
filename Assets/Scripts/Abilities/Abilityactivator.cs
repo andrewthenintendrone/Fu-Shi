@@ -38,7 +38,12 @@ public class Abilityactivator : MonoBehaviour
     [Tooltip("the distance away from the fox's centre that the ink ability starts")]
     private float offsetdistance = 0f;
 
+    // can the player use ink (only once in the air)
     private bool canInk = true;
+
+    [SerializeField]
+    [Tooltip("extra height gained by using ink ability in the air")]
+    private float extraHeightFromInk;
 
 	void Start ()
     {
@@ -152,6 +157,12 @@ public class Abilityactivator : MonoBehaviour
             else
             {
                 CurrentInkwave.GetComponent<Inkmeleeslash>().direction = RstickDir;
+            }
+
+            // add extra y velocity for a bit of air time
+            if(!GetComponent<CharacterController2D>().isGrounded)
+            {
+                GetComponent<Player>().velocity.y = extraHeightFromInk;
             }
         }
     }

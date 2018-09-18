@@ -5134,8 +5134,8 @@ MonoBehaviour:
   height: 3
   XThresholdExtents: 0.5
   panicModeThreshHold: 10
+  normalizedClampedDistance: 0
   smoothX: 0.3
-  smoothY: 0.3
 --- !u!1001 &1167948701
 Prefab:
   m_ObjectHideFlags: 0
@@ -7645,6 +7645,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1130675752502808, guid: 3801c255bad76b04c92f16175e58dfcb,
         type: 2}
+    - target: {fileID: 114213161651225896, guid: adb17bee90db16f41ad1923a05db6100,
+        type: 2}
+      propertyPath: extraHeightFromInk
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
