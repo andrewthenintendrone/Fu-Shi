@@ -27,12 +27,6 @@ public class Inkmeleeslash : MonoBehaviour {
 
         Destroy(gameObject, lifetime);
     }
-	
-	
-	void Update ()
-    {
-		
-	}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
