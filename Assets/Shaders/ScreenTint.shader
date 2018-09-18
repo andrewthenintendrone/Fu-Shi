@@ -54,8 +54,6 @@
 			float _ColorPower;
 
 			float3 _CameraPosition;
-			float3 _PlayerPosition;
-			float _TimeWarpRadius;
 			
 			v2f vert (appdata v)
 			{
@@ -81,17 +79,6 @@
 				float2 center = float2(0.5f, 0.5f);
 				float distanceFromCenter = length(i.uv - center);
 				float4 color = lerp(_InnerColor, _OuterColor, distanceFromCenter);
-
-				// calculate aspect ratio
-				float2 aspectRatio = float2(1, _MainTex_TexelSize.x / _MainTex_TexelSize.y);
-
-				// test time radius
-				float distanceFromPlayer = distance(_PlayerPosition * aspectRatio, i.uv * aspectRatio);
-
-				if (_TimeWarpRadius != 0 && distanceFromPlayer > _TimeWarpRadius && distanceFromPlayer < _TimeWarpRadius + 0.01)
-				{
-					return float4(0, 0, 0, 1);
-				}
 
 				return lerp(canvasBlend, color, _ColorPower);
 			}
