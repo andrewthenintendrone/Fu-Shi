@@ -54,61 +54,26 @@ public class Abilityactivator : MonoBehaviour
 	
 	void Update ()
     {
+        // read both ability axis
+        float inkAxis = Input.GetAxis("Ink");
+        float timeAxis = Input.GetAxis("Time");
+
+        // the player can always use ink when on the ground
         if (gameObject.GetComponent<CharacterController2D>().isGrounded)
         {
             canInk = true;
         }
 
-        float inkAxis = Input.GetAxis("Ink");
-        float timeAxis = Input.GetAxis("Time");
-
         if (inkAxis > 0.5f)
         {
             if (!inkHeld)
             {
-                if (hasInkAbility)
-                {
-                    if(canInk)
-                    {
-                        canInk = false;
+                // ink axis is now held
+                inkHeld = true;
 
-                        //create a gameobject InkWave
-                        GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
-
-                        //if player has R stick input use it
-                        //else use player facing
-                        Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
-                        Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
-
-                        if (RstickDir.sqrMagnitude == 0)
-                        {
-                            if (LstickDir.sqrMagnitude == 0)
-                            {
-                                if (gameObject.GetComponent<Player>().facingRight)
-                                {
-                                    CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.right;
-                                }
-                                else
-                                {
-                                    CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
-                                }
-
-                                // ternary
-                                // CurrentInkwave.GetComponent<Inkmeleeslash>().direction = (gameObject.GetComponent<Player>().facingRight ? Vector2.right : Vector2.left);
-                            }
-                            else
-                            {
-                                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = LstickDir;
-                            }
-                        }
-                        else
-                        {
-                            CurrentInkwave.GetComponent<Inkmeleeslash>().direction = RstickDir;
-                        }
-                    }
-                }
+                // attempt to use the ink ability
+                useInkAbility();
             }
-            inkHeld = true;
         }
         else
         {
@@ -117,31 +82,13 @@ public class Abilityactivator : MonoBehaviour
 
         if (timeAxis > 0.5f)
         {
-            if (hasTimeAbility)
+            if (!timeHeld)
             {
-                if (!timeHeld)
-                {
-                    int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
-                    for (int i = 0; i < numHits; i++)
-                    {
-                        if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
-                        {
-                            hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
-                        }
-                        if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
-                        {
-                            hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
-                        }
-                        if (hits[i].collider.gameObject.GetComponent<Door>() != null)
-                        {
-                            if (hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
-                            {
-                                hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
-                                hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
-                            }
-                        }
-                    }
-                }
+                // time axis is now held
+                timeHeld = true;
+
+                // attempt to use the time ability
+                useTimeAbility();
                 timeHeld = true;
             }
         }
@@ -160,6 +107,82 @@ public class Abilityactivator : MonoBehaviour
             else
             {
                 effectMaterial.SetFloat("_TimeWarpRadius", 0.0f);
+            }
+        }
+    }
+
+    // tries to use the ink ability
+    public void useInkAbility()
+    {
+        // to use the ink ability the player must have unlocked it
+        if (hasInkAbility && canInk)
+        {
+            // player can no longer ink until they touch the ground
+            canInk = false;
+
+            //create a gameobject InkWave
+            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
+
+            //if player has R stick input use it
+            //else use player facing
+            Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
+            Vector2 LstickDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+
+            if (RstickDir.sqrMagnitude == 0)
+            {
+                if (LstickDir.sqrMagnitude == 0)
+                {
+                    if (gameObject.GetComponent<Player>().facingRight)
+                    {
+                        CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.right;
+                    }
+                    else
+                    {
+                        CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
+                    }
+
+                    // ternary
+                    // CurrentInkwave.GetComponent<Inkmeleeslash>().direction = (gameObject.GetComponent<Player>().facingRight ? Vector2.right : Vector2.left);
+                }
+                else
+                {
+                    CurrentInkwave.GetComponent<Inkmeleeslash>().direction = LstickDir;
+                }
+            }
+            else
+            {
+                CurrentInkwave.GetComponent<Inkmeleeslash>().direction = RstickDir;
+            }
+        }
+    }
+
+    // tries to use the time ability
+    public void useTimeAbility()
+    {
+        if (hasTimeAbility)
+        {
+            int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
+            bool hasReversed = false;
+            for (int i = 0; i < numHits && !hasReversed; i++)
+            {
+                if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
+                {
+                    hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
+                    hasReversed = true;
+                }
+                if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
+                {
+                    hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
+                }
+                if (hits[i].collider.gameObject.GetComponent<Door>() != null)
+                {
+                    if (hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
+                    {
+                        hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
+                        hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
+                        hasReversed = true;
+                    }
+                }
             }
         }
     }
