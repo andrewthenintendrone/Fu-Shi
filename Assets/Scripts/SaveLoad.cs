@@ -30,16 +30,20 @@ public static class SaveLoad
     public static bool Save()
     {
         // restore the health of all enemies
-        GameObject[] enemys = GameObject.FindGameObjectsWithTag("enemy");
+        Enemy[] enemys = GameObject.FindObjectsOfType<Enemy>();
 
-        foreach (GameObject currentEnemy in enemys)
+        foreach (Enemy currentEnemy in enemys)
         {
-            currentEnemy.GetComponent<Enemy>().enabled = true;
-            currentEnemy.GetComponent<Renderer>().enabled = true;
-            currentEnemy.GetComponent<BoxCollider2D>().enabled = true;
-            currentEnemy.GetComponent<Enemy>().health = currentEnemy.GetComponent<Enemy>().maxHealth;
-            currentEnemy.GetComponent<Enemy>().CancelInvoke("checkPlayerDist");
-            currentEnemy.GetComponent<Enemy>().InvokeRepeating("checkPlayerDist", currentEnemy.GetComponent<Enemy>().shootInterval, currentEnemy.GetComponent<Enemy>().shootInterval);
+            currentEnemy.enabled = true;
+            currentEnemy.gameObject.GetComponent<Renderer>().enabled = true;
+            currentEnemy.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            currentEnemy.health = currentEnemy.GetComponent<Enemy>().maxHealth;
+
+            if(currentEnemy.shoot)
+            {
+                currentEnemy.CancelInvoke("checkPlayerDist");
+                currentEnemy.InvokeRepeating("checkPlayerDist", currentEnemy.shootInterval, currentEnemy.shootInterval);
+            }
         }
 
         // store position
