@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class PostProcessing : MonoBehaviour
 {
     [Tooltip("material to use for the effect")]
@@ -50,5 +49,11 @@ public class PostProcessing : MonoBehaviour
 
         // blit from render texture to the destination (the screen)
         Graphics.Blit(source, destination, effectMaterial);
+    }
+
+    void OnApplicationQuit()
+    {
+        // reset canvas texture offset on the material so github behaves
+        effectMaterial.SetTextureOffset("_CanvasTex", Vector3.zero);
     }
 }

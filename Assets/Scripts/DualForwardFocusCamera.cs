@@ -31,6 +31,8 @@ public class DualForwardFocusCamera : MonoBehaviour
     [Range(0f,60f)]
     public float panicModeThreshHold = 10f;
 
+    public float normalizedClampedDistance;
+
 
     // which side is being focused on
     private RectTransform.Edge currentFocus = RectTransform.Edge.Left;
@@ -38,11 +40,6 @@ public class DualForwardFocusCamera : MonoBehaviour
     [Tooltip("the lag or delay to smooth the camera on the X axis")]
     [SerializeField]
     private float smoothX;
-
-    [Tooltip("the lag or delay to smooth the camera on the Y axis")]
-    [SerializeField]
-    private float smoothY;
-
 
     // current velocity
     private Vector3 velocity;
@@ -67,7 +64,7 @@ public class DualForwardFocusCamera : MonoBehaviour
         // offset from the bounds
         Vector3 deltaPositionFromBounds = Vector3.zero;
 
-        // did the x or y edge focus change this frame
+        // did the x edge focus change this frame
         bool didLastXEdgeContactChange = false;
 
         // worldspace position of rect edges
@@ -86,10 +83,9 @@ public class DualForwardFocusCamera : MonoBehaviour
             rightEdge = leftEdge + XThresholdExtents * 0.5f;
         }
 
+        // calculate the y axis inner edges
         bottomEdge = basePosition.y - height * 0.5f;
         topEdge = basePosition.y + height * 0.5f;
-
-       
 
         // the player has left the focus area on the x axis
         if (targetBounds.center.x < leftEdge)
@@ -114,15 +110,10 @@ public class DualForwardFocusCamera : MonoBehaviour
                 currentFocus = RectTransform.Edge.Left;
             }
         }
-
-        
-        
         
         // calculate the desired position
         float desiredX = (currentFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
         desiredOffset.x = targetBounds.center.x - desiredX;
-
-        #endregion
 
         // if we didnt change focus this frame update the desired offset
         if (!didLastXEdgeContactChange)
@@ -130,21 +121,24 @@ public class DualForwardFocusCamera : MonoBehaviour
             desiredOffset.x = deltaPositionFromBounds.x;
         }
 
-        float desiredY = transform.position.y;
-        if (targetBounds.center.y < bottomEdge || targetBounds.center.y > topEdge)
-        {
-            desiredY = targetBounds.center.y;
-        }
-        
-        desiredOffset.y = desiredY - transform.position.y;
+        #endregion
+
+        // calculate player distance from center
+        float distanceFromCenter = Mathf.Abs(targetBounds.center.y - basePosition.y);
+        normalizedClampedDistance = Mathf.Clamp01((distanceFromCenter - (height * 0.5f)) / (panicModeThreshHold * 0.5f));
+
         // update the target position
         Vector3 targetPosition = transform.position + desiredOffset;
 
         // smooth the movement to the target position
         targetPosition.x = Mathf.SmoothDamp(transform.position.x, targetPosition.x, ref velocity.x, smoothX);
-        targetPosition.y = Mathf.SmoothDamp(transform.position.y, targetPosition.y, ref velocity.y, smoothY);
         // finally set position
         transform.position = targetPosition;
+
+        float desiredY = Mathf.Lerp(basePosition.y, targetBounds.center.y, normalizedClampedDistance);
+        Vector3 finalPosition = transform.position;
+        finalPosition.y = desiredY;
+        transform.position = finalPosition;
     }
 
 #if UNITY_EDITOR
