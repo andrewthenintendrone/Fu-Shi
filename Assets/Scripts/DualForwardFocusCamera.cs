@@ -28,16 +28,21 @@ public class DualForwardFocusCamera : MonoBehaviour
 
 
     [Tooltip("height at which the camera enters panic mode and attempts to catch up to the player")]
-    [SerializeField]
-    private float panicModeThreshHold = 10f;
+    [Range(0f,60f)]
+    public float panicModeThreshHold = 10f;
 
 
     // which side is being focused on
     private RectTransform.Edge currentFocus = RectTransform.Edge.Left;
 
-    [Tooltip("the lag or delay to smooth the camera")]
+    [Tooltip("the lag or delay to smooth the camera on the X axis")]
     [SerializeField]
-    private float smoothTime;
+    private float smoothX;
+
+    [Tooltip("the lag or delay to smooth the camera on the Y axis")]
+    [SerializeField]
+    private float smoothY;
+
 
     // current velocity
     private Vector3 velocity;
@@ -57,6 +62,8 @@ public class DualForwardFocusCamera : MonoBehaviour
         Vector3 desiredOffset = Vector3.zero;
         Vector3 basePosition = getNormalizedCameraPosition();
 
+        #region dualForwardFocusLogic
+
         // offset from the bounds
         Vector3 deltaPositionFromBounds = Vector3.zero;
 
@@ -65,6 +72,7 @@ public class DualForwardFocusCamera : MonoBehaviour
 
         // worldspace position of rect edges
         float leftEdge, rightEdge, topEdge, bottomEdge;
+
 
         // calculate the positions of the relevent edges on the x axis
         if (currentFocus == RectTransform.Edge.Left)
@@ -80,6 +88,8 @@ public class DualForwardFocusCamera : MonoBehaviour
 
         bottomEdge = basePosition.y - height * 0.5f;
         topEdge = basePosition.y + height * 0.5f;
+
+       
 
         // the player has left the focus area on the x axis
         if (targetBounds.center.x < leftEdge)
@@ -105,22 +115,14 @@ public class DualForwardFocusCamera : MonoBehaviour
             }
         }
 
-        // // the player has left the camera on the y axis
-        if (targetBounds.center.y < bottomEdge)
-        {
-            deltaPositionFromBounds.y = targetBounds.center.y - bottomEdge;
-        }
-        else if (targetBounds.center.y > topEdge)
-        {
-            deltaPositionFromBounds.y = targetBounds.center.y - topEdge;
-        }
-
+        
+        
+        
         // calculate the desired position
         float desiredX = (currentFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
         desiredOffset.x = targetBounds.center.x - desiredX;
 
-        float desiredY = bottomEdge;
-        desiredOffset.y = targetBounds.center.y - desiredY;
+        #endregion
 
         // if we didnt change focus this frame update the desired offset
         if (!didLastXEdgeContactChange)
@@ -128,12 +130,19 @@ public class DualForwardFocusCamera : MonoBehaviour
             desiredOffset.x = deltaPositionFromBounds.x;
         }
 
+        float desiredY = transform.position.y;
+        if (targetBounds.center.y < bottomEdge || targetBounds.center.y > topEdge)
+        {
+            desiredY = targetBounds.center.y;
+        }
+        
+        desiredOffset.y = desiredY - transform.position.y;
         // update the target position
         Vector3 targetPosition = transform.position + desiredOffset;
 
         // smooth the movement to the target position
-        targetPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
-
+        targetPosition.x = Mathf.SmoothDamp(transform.position.x, targetPosition.x, ref velocity.x, smoothX);
+        targetPosition.y = Mathf.SmoothDamp(transform.position.y, targetPosition.y, ref velocity.y, smoothY);
         // finally set position
         transform.position = targetPosition;
     }
@@ -160,16 +169,14 @@ public class DualForwardFocusCamera : MonoBehaviour
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
 
         //draw outer detection bounds
-        bounds.Expand(new Vector3(XThresholdExtents, 0));
+        bounds.Expand(new Vector3(XThresholdExtents, panicModeThreshHold));
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
         Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
 
-        bounds.Expand(new Vector3(0, panicModeThreshHold));
-        Gizmos.color = Color.red;
-        //Gizmos.DrawLine(bounds.min)
     }
 
 #endif
