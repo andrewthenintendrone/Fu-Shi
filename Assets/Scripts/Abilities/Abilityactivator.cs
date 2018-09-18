@@ -32,8 +32,6 @@ public class Abilityactivator : MonoBehaviour
     [Tooltip("this is the switch determining whether the player can use the time reverse ability")]
     public bool hasTimeAbility = false;
 
-    // reference to the post processing effect
-    private Material effectMaterial;
     [SerializeField]
     [Tooltip("the distance away from the fox's centre that the ink ability starts")]
     private float offsetdistance = 0f;
@@ -49,12 +47,6 @@ public class Abilityactivator : MonoBehaviour
     {
         // only hit solid objects with the time reverse ability
         filter.layerMask = 1 << LayerMask.NameToLayer("Solid");
-
-        // get reference to screen space effect
-        if(Camera.main.gameObject.GetComponent<PostProcessing>() != null)
-        {
-            effectMaterial = Camera.main.gameObject.GetComponent<PostProcessing>().effectMaterial;
-        }
     }
 	
 	void Update ()
@@ -100,19 +92,6 @@ public class Abilityactivator : MonoBehaviour
         else
         {
             timeHeld = false;
-        }
-
-        // set _TimeWarpRadius in the shader
-        if(effectMaterial != null)
-        {
-            if(timeAxis > 0.5f && hasTimeAbility)
-            {
-                effectMaterial.SetFloat("_TimeWarpRadius", 1.0f / 16.0f);
-            }
-            else
-            {
-                effectMaterial.SetFloat("_TimeWarpRadius", 0.0f);
-            }
         }
     }
 
