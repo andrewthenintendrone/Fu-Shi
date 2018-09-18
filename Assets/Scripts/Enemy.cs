@@ -38,7 +38,10 @@ public class Enemy : MonoBehaviour
     void Start ()
     {
         health = maxHealth;
-        InvokeRepeating("checkPlayerDist", shootInterval, shootInterval);
+        if(shoot)
+        {
+            InvokeRepeating("checkPlayerDist", shootInterval, shootInterval);
+        }
 	}
 	
 	void Update ()
