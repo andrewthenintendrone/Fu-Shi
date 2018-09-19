@@ -55,9 +55,13 @@ public static class SaveLoad
 
         // find which collectables are active
         saveData.collectables.Clear();
-        foreach(Transform currentCollectable in GameObject.Find("collectables").GetComponentsInChildren<Transform>(true))
+
+        if(GameObject.Find("collectables") != null)
         {
-            saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
+            foreach (Transform currentCollectable in GameObject.Find("collectables").GetComponentsInChildren<Transform>(true))
+            {
+                saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
+            }
         }
 
         // serialize data to save file

@@ -2942,7 +2942,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1155140366454962}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 22ff5f01e0c8c7b4a9be11a0bce5b06d, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 77d1d8b44e3d4034e9ed48fc98b00b32, type: 3}
   m_Controller: {fileID: 9100000, guid: 1f4d7b36c4bd46c4ea17d84858785240, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -3084,10 +3084,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b398f2b23b0433488960520122cc0f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeRadius: 6
-  inkSlashPrefab: {fileID: 0}
+  inkSlashPrefab: {fileID: 1130675752502808, guid: 3801c255bad76b04c92f16175e58dfcb,
+    type: 2}
+  timeAbilityPrefab: {fileID: 1048874235452718, guid: 8affd0e811d1b34489da70e6d2ef34f3,
+    type: 2}
   hasInkAbility: 0
   hasTimeAbility: 0
+  offsetdistance: 0
+  canUseInkAbility: 1
+  extraHeightFromInk: 25
 --- !u!114 &114962643873500584
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3120,7 +3125,6 @@ MonoBehaviour:
   isLaunching: 0
   canTurnIntoInkBlot: 1
   facingRight: 1
-  playerState: 0
 --- !u!137 &137681160179574586
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -3135,7 +3139,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 77d1d8b44e3d4034e9ed48fc98b00b32, type: 3}
+  - {fileID: 2100000, guid: e6cd73b0efab657449de06d0ca2f5a03, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -106,7 +106,7 @@ public class InkBlot : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.transform != transform.parent && collision.gameObject.GetComponent<enemyProjectile>() == null)
+        if(collision.gameObject.transform != transform.parent && collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<Inkmeleeslash>() == null && collision.gameObject.GetComponent<inkBullet>() == null)
         {
             launch();
         }

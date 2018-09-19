@@ -21,9 +21,6 @@ public class Enemy : MonoBehaviour
     [Tooltip("debugging / utility to show the range of detection")]
     public bool drawDetectRadius = false;
 
-    [Tooltip("amount of damage contacting this enemy will do")]
-    public int damageAmt;
-
     [Tooltip("whether the enemy will shoot at the player")]
     public bool shoot = false;
 
