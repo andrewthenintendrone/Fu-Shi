@@ -106,10 +106,50 @@ public class InkBlot : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        if(collision.gameObject.GetComponentInChildren<inkableSurface>() == null)
+        if(collision.gameObject.transform != transform.parent && collision.gameObject.GetComponent<enemyProjectile>() == null)
         {
             launch();
+        }
+    }
+
+    private void onTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "reset")
+        {
+            Utils.resetPlayer();
+        }
+        else if (col.tag == "enemy")
+        {
+            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+        }
+        else if (col.tag == "spikes")
+        {
+            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+            if (Utils.Health > 0)
+            {
+                Utils.resetPlayer();
+            }
+            else
+            {
+                SaveLoad.Load();
+            }
+        }
+        // sets the checkpoint
+        else if (col.tag == "checkpoint")
+        {
+            Utils.updateCheckpoint(col.transform.position);
+        }
+        else if (col.tag == "savepoint")
+        {
+            Utils.updateCheckpoint(col.transform.position);
+            SaveLoad.Save();
+        }
+        else if (col.tag == "collectable")
+        {
+            Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
+            Utils.numberOfCollectables++;
+            Utils.updateCollectableText();
+            col.gameObject.SetActive(false);
         }
     }
 }

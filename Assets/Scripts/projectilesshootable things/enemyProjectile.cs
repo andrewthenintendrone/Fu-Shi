@@ -26,7 +26,7 @@ public class enemyProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Player>() != null)
+        if (collision.gameObject.tag == "Player")
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
         }

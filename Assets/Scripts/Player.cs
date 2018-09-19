@@ -314,10 +314,6 @@ public class Player : MonoBehaviour
             Utils.updateCollectableText();
             col.gameObject.SetActive(false);
         }
-        else if (col.tag == "levelDoor")
-        {
-            Utils.loadScene(col.name);
-        }
     }
 
     public void UpdateAppearance()

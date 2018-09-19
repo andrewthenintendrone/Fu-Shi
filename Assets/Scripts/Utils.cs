@@ -66,6 +66,15 @@ public static class Utils
     public static void resetPlayer()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if(player.GetComponent<InkBlot>() != null)
+        {
+            player.GetComponent<InkBlot>().launch();
+
+            // TODO: remove spaghetti
+            player = GameObject.FindGameObjectsWithTag("Player")[1];
+        }
+
         player.transform.position = resetPos;
         player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
     }
