@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212289944267946658}
   - component: {fileID: 114085324805635156}
   - component: {fileID: 50439806772036570}
-  - component: {fileID: 61731583103640112}
+  - component: {fileID: 60205452852083870}
   m_Layer: 10
   m_Name: EnemyProjectile (TEMP)
   m_TagString: Untagged
@@ -63,8 +63,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!61 &61731583103640112
-BoxCollider2D:
+--- !u!60 &60205452852083870
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -85,9 +85,39 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.92, y: 1.15}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.45999998, y: -0.035}
+      - {x: 0.34, y: 0.074999996}
+      - {x: 0.13, y: 0.195}
+      - {x: 0.02, y: 0.345}
+      - {x: 0.12, y: 0.45499998}
+      - {x: 0.099999994, y: 0.525}
+      - {x: 0, y: 0.545}
+      - {x: -0.14, y: 0.545}
+      - {x: -0.21, y: 0.465}
+      - {x: -0.34, y: 0.255}
+      - {x: -0.38, y: 0.195}
+      - {x: -0.38, y: -0.13499999}
+      - {x: -0.32, y: -0.285}
+      - {x: -0.21, y: -0.39499998}
+      - {x: -0.01, y: -0.515}
+      - {x: 0.13, y: -0.575}
+      - {x: 0.25, y: -0.575}
+      - {x: 0.35999998, y: -0.49499997}
+      - {x: 0.45999998, y: -0.375}
+    - - {x: -0.16, y: -0.235}
+      - {x: -0.26, y: -0.114999995}
+      - {x: -0.29999998, y: -0.065}
+      - {x: -0.29, y: 0.095}
+      - {x: -0.29, y: 0.13499999}
+      - {x: -0.26999998, y: 0.155}
+      - {x: -0.28, y: 0.205}
+      - {x: -0.29, y: -0.074999996}
+      - {x: -0.19999999, y: -0.16499999}
+      - {x: -0.13, y: -0.205}
+      - {x: -0.08, y: -0.225}
+      - {x: 0.07, y: -0.225}
 --- !u!114 &114085324805635156
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -7,18 +7,13 @@ using UnityEditor;
 
 public class Abilityactivator : MonoBehaviour
 {
-    [Tooltip("range of the time reverse ability")]
-    [SerializeField]
-    private float timeRadius;
-
-    // list of the objects that have currently been hit by the time reverse ability
-    private RaycastHit2D[] hits = new RaycastHit2D[100];
-
-    private ContactFilter2D filter;
-
     [Tooltip("ink wave prefab gameobject")]
     [SerializeField]
     private GameObject inkSlashPrefab;
+
+    [Tooltip("time ability prefab gameobject")]
+    [SerializeField]
+    private GameObject timeAbilityPrefab;
 
     // is the ink axis held
     private bool inkHeld = false;
@@ -43,20 +38,6 @@ public class Abilityactivator : MonoBehaviour
     [SerializeField]
     [Tooltip("extra height gained by using ink ability in the air")]
     private float extraHeightFromInk;
-
-    [SerializeField]
-    [Tooltip("maximum duration that the time ability can be in use")]
-    private float maxTimeAbilityDuration;
-
-    [SerializeField]
-    [Tooltip("cooldown time between using the time ability")]
-    private float timeAbilityCooldown;
-
-	void Start ()
-    {
-        // only hit solid objects with the time reverse ability
-        filter.layerMask = 1 << LayerMask.NameToLayer("Solid");
-    }
 	
 	void Update ()
     {
@@ -160,29 +141,9 @@ public class Abilityactivator : MonoBehaviour
     {
         if (hasTimeAbility)
         {
-            int numHits = Physics2D.CircleCast(transform.position, timeRadius, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
-            bool hasReversed = false;
-            for (int i = 0; i < numHits && !hasReversed; i++)
-            {
-                if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
-                {
-                    hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
-                    hasReversed = true;
-                }
-                if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
-                {
-                    hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
-                }
-                if (hits[i].collider.gameObject.GetComponent<Door>() != null)
-                {
-                    if (hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
-                    {
-                        hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
-                        hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
-                        hasReversed = true;
-                    }
-                }
-            }
+            // spawn time ability object prefab
+            GameObject timeAbilityObject = Instantiate(timeAbilityPrefab, transform);
+            timeAbilityObject.transform.position = GetComponent<Collider2D>().bounds.center;
         }
     }
 
@@ -199,14 +160,4 @@ public class Abilityactivator : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-
-#if UNITY_EDITOR
-
-    private void OnDrawGizmos()
-    {
-        UnityEditor.Handles.color = Color.cyan;
-        UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, timeRadius);
-    }
-
-#endif
 }
