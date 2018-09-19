@@ -37,7 +37,8 @@ public class Abilityactivator : MonoBehaviour
     private float offsetdistance = 0f;
 
     // can the player use ink (only once in the air)
-    private bool canUseInkAbility = true;
+    [HideInInspector]
+    public bool canUseInkAbility = true;
 
     [SerializeField]
     [Tooltip("extra height gained by using ink ability in the air")]

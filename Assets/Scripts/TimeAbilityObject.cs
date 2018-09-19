@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TimeAbilityObject : MonoBehaviour
 {
+
     [SerializeField]
     [Tooltip("how the object grows and shrinks over its lifetime")]
     private AnimationCurve lifeTimeCurve;
@@ -15,13 +16,15 @@ public class TimeAbilityObject : MonoBehaviour
     // time that the object was created
     private float startTime;
 
-	void Start ()
+    void Start()
     {
         startTime = Time.time;
-	}
+    }
 
     private void Update()
     {
+        doReverseCheck();
+
         // time since the object was created
         float currentTime = Time.time - startTime;
 
@@ -30,9 +33,16 @@ public class TimeAbilityObject : MonoBehaviour
 
         float currentScale = lifeTimeCurve.Evaluate(normalizedTime);
 
-        if(normalizedTime == lifeTime)
+        transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+
+        if (normalizedTime == lifeTime)
         {
             Destroy(gameObject);
         }
+    }
+
+    private void doReverseCheck()
+    {
+        
     }
 }
