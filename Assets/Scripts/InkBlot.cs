@@ -85,6 +85,7 @@ public class InkBlot : MonoBehaviour
         player.SetActive(true);
         player.GetComponent<Player>().isLaunching = true;
         player.GetComponent<Player>().canTurnIntoInkBlot = false;
+        player.GetComponent<Abilityactivator>().canUseInkAbility = true;
 
         // stop the launch after launchTime
         player.GetComponent<Player>().Invoke("cancelLaunch", launchTime);
