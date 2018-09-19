@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        Vector3 direction = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>().bounds.center - transform.position;
+        Vector3 direction = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>().bounds.center - transform.position;
 
         if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
         {
