@@ -68,7 +68,7 @@ public class DualForwardFocusCamera : MonoBehaviour
         bool didLastXEdgeContactChange = false;
 
         // worldspace position of rect edges
-        float leftEdge, rightEdge, topEdge, bottomEdge;
+        float leftEdge, rightEdge;
 
 
         // calculate the positions of the relevent edges on the x axis
@@ -82,10 +82,6 @@ public class DualForwardFocusCamera : MonoBehaviour
             leftEdge = basePosition.x + width * 0.5f;
             rightEdge = leftEdge + XThresholdExtents * 0.5f;
         }
-
-        // calculate the y axis inner edges
-        bottomEdge = basePosition.y - height * 0.5f;
-        topEdge = basePosition.y + height * 0.5f;
 
         // the player has left the focus area on the x axis
         if (targetBounds.center.x < leftEdge)
