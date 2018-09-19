@@ -60,7 +60,7 @@
 				fixed4 finalColor = ink;
 
 				// calculate new alpha using cutoff
-				if (ink.a * perlin.r < _Cutoff)
+				if (ink.a * perlin.r * (1 - i.uv.x) < pow(_Cutoff, 2.0))
 				{
 					finalColor.a = 0;
 				}
