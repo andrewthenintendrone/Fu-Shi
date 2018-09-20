@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.IO;
 using System.Diagnostics;
+
+#if UNITY_EDITOR
 
 public class SaveDeleter : EditorWindow
 {
@@ -67,3 +71,5 @@ public class EverythingDeleter : EditorWindow
         }
     }
 }
+
+#endif
