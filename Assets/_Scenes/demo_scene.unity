@@ -3916,6 +3916,48 @@ Transform:
   m_PrefabParentObject: {fileID: 4113728894288662, guid: 081e1deab89348f43a6a2eb935482c85,
     type: 2}
   m_PrefabInternal: {fileID: 918646111}
+--- !u!1001 &925043858
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464954622552234, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3801c255bad76b04c92f16175e58dfcb, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &929931679
 GameObject:
   m_ObjectHideFlags: 0
@@ -5206,7 +5248,7 @@ MonoBehaviour:
   width: 8
   height: 3
   XThresholdExtents: 0.5
-  panicModeThreshHold: 10
+  YThresholdExtents: 10
   normalizedClampedDistance: 0
   smoothX: 0.3
 --- !u!1001 &1167948701

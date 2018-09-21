@@ -27,9 +27,11 @@ public class Abilityactivator : MonoBehaviour
     [Tooltip("this is the switch determining whether the player can use the time reverse ability")]
     public bool hasTimeAbility = false;
 
-    [SerializeField]
-    [Tooltip("the distance away from the fox's centre that the ink ability starts")]
-    private float offsetdistance = 0f;
+    // commented out until it gets used
+    // I hate errors
+    //[SerializeField]
+    //[Tooltip("the distance away from the fox's centre that the ink ability starts")]
+    //private float offsetdistance = 0f;
 
     // can the player use ink (only once in the air)
     [HideInInspector]
