@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DualForwardFocusCamera : MonoBehaviour
 {
+    #region variables
+
     // camera component
     [System.NonSerialized]
     [HideInInspector]
@@ -26,10 +28,9 @@ public class DualForwardFocusCamera : MonoBehaviour
     [Range(0f, 20f)]
     public float XThresholdExtents = 0.5f;
 
-
-    [Tooltip("height at which the camera enters panic mode and attempts to catch up to the player")]
-    [Range(0f,60f)]
-    public float panicModeThreshHold = 10f;
+    [Tooltip("height of outer lines")]
+    [Range(0f, 60f)]
+    public float YThresholdExtents = 10f;
 
     public float normalizedClampedDistance;
 
@@ -41,65 +42,69 @@ public class DualForwardFocusCamera : MonoBehaviour
     [SerializeField]
     private float smoothX;
 
-    // current velocity
-    private Vector3 velocity;
-    
+    // current x velocity
+    private float velocityX;
+
+    #endregion
+
     #region MonoBehaviour
 
     void Awake()
     {
         // store component references
         cam = GetComponent<Camera>();
-        targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
+        if(GameObject.FindGameObjectWithTag("Player") != null)
+        {
+            targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
+        }
     }
 
+    // called every physics step
     void FixedUpdate()
     {
         Bounds targetBounds = targetCollider.bounds;
-        Vector3 desiredOffset = Vector3.zero;
-        Vector3 basePosition = getNormalizedCameraPosition();
 
-        #region dualForwardFocusLogic
+        #region xAxisLogic
 
-        // offset from the bounds
-        Vector3 deltaPositionFromBounds = Vector3.zero;
+        // offset from the bounds on the x axis
+        float deltaPositionFromBoundsX = 0;
 
         // did the x edge focus change this frame
         bool didLastXEdgeContactChange = false;
 
-        // worldspace position of rect edges
+        // worldspace position of the edges of the focus area
         float leftEdge, rightEdge;
 
-
-        // calculate the positions of the relevent edges on the x axis
+        // calculate the left and right edges of the focus area
         if (currentFocus == RectTransform.Edge.Left)
         {
-            rightEdge = basePosition.x - width * 0.5f;
+            rightEdge = transform.position.x - width * 0.5f;
             leftEdge = rightEdge - XThresholdExtents * 0.5f;
         }
         else
         {
-            leftEdge = basePosition.x + width * 0.5f;
+            leftEdge = transform.position.x + width * 0.5f;
             rightEdge = leftEdge + XThresholdExtents * 0.5f;
         }
 
-        // the player has left the focus area on the x axis
+        // the player has left the focus area on the left
         if (targetBounds.center.x < leftEdge)
         {
-            deltaPositionFromBounds.x = targetBounds.center.x - leftEdge;
+            deltaPositionFromBoundsX = targetBounds.center.x - leftEdge;
 
-            // change focus edge
+            // change focus side
             if (currentFocus == RectTransform.Edge.Left)
             {
                 didLastXEdgeContactChange = true;
                 currentFocus = RectTransform.Edge.Right;
             }
         }
+        // the player has left the focus area on the right
         else if (targetBounds.center.x > rightEdge)
         {
-            deltaPositionFromBounds.x = targetBounds.center.x - rightEdge;
+            deltaPositionFromBoundsX = targetBounds.center.x - rightEdge;
 
-            // change focus edge
+            // change focus side
             if (currentFocus == RectTransform.Edge.Right)
             {
                 didLastXEdgeContactChange = true;
@@ -107,74 +112,75 @@ public class DualForwardFocusCamera : MonoBehaviour
             }
         }
         
-        // calculate the desired position
+        // calculate the desired x position
         float desiredX = (currentFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
-        desiredOffset.x = targetBounds.center.x - desiredX;
 
-        // if we didnt change focus this frame update the desired offset
+        // if we didnt change focus this frame update the desired X
         if (!didLastXEdgeContactChange)
         {
-            desiredOffset.x = deltaPositionFromBounds.x;
+            desiredX = transform.position.x + deltaPositionFromBoundsX;
         }
+
+        // smooth the desiredX using smoothdamp
+        desiredX = Mathf.SmoothDamp(transform.position.x, desiredX, ref velocityX, smoothX);
 
         #endregion
 
-        // calculate player distance from center
-        float distanceFromCenter = Mathf.Abs(targetBounds.center.y - basePosition.y);
-        normalizedClampedDistance = Mathf.Clamp01((distanceFromCenter - (height * 0.5f)) / (panicModeThreshHold * 0.5f));
+        #region yAxisLogic
 
-        // update the target position
-        Vector3 targetPosition = transform.position + desiredOffset;
+        // calculate player y distance from center
+        float distanceFromCenter = Mathf.Abs(targetBounds.center.y - transform.position.y);
 
-        // smooth the movement to the target position
-        targetPosition.x = Mathf.SmoothDamp(transform.position.x, targetPosition.x, ref velocity.x, smoothX);
-        // finally set position
-        transform.position = targetPosition;
+        // normalizedClampedDistance is a value from 0 to 1 used to lerp on the y axis
+        normalizedClampedDistance = Mathf.Clamp01((distanceFromCenter - (height * 0.5f)) / (YThresholdExtents * 0.5f));
 
-        float desiredY = Mathf.Lerp(basePosition.y, targetBounds.center.y, normalizedClampedDistance);
-        Vector3 finalPosition = transform.position;
-        finalPosition.y = desiredY;
-        transform.position = finalPosition;
+        // smooth the desiredY using lerp
+        float desiredY = Mathf.Lerp(transform.position.y, targetBounds.center.y, normalizedClampedDistance);
+
+        #endregion
+
+        // move to the desired position
+        transform.position = new Vector3(desiredX, desiredY, transform.position.z);
     }
+
+    #region editor
 
 #if UNITY_EDITOR
 
     void OnDrawGizmos()
     {
-        // calculate positions
-        Vector3 positionInFrontOfCamera = getNormalizedCameraPosition();
-        positionInFrontOfCamera.z = transform.position.z - 1;
+        // calculate the center of the camera
+        Vector3 positionInFrontOfCamera = transform.position;
+        positionInFrontOfCamera.z -= 1;
         
-        Gizmos.color = new Color(0f, 0.5f, 0.6f);
+        Gizmos.color = Color.cyan;
 
+        // create inner bounds at center
         Bounds bounds = new Bounds(positionInFrontOfCamera, new Vector3(width, height));
-        float lineWidth = Camera.main.orthographicSize;
 
-        bounds.center = new Vector3(bounds.center.x, positionInFrontOfCamera.y, bounds.center.z);
-
-        //draw inner bounding lines
+        // draw inner bounds
         Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
         Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
         Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
 
-        //draw outer detection bounds
-        bounds.Expand(new Vector3(XThresholdExtents, panicModeThreshHold));
+        // expand inner bounds to get outer bounds
+        bounds.Expand(new Vector3(XThresholdExtents, YThresholdExtents));
+
+        // draw outer bounds x axis lines
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
         Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
+
+        // draw outer bounds y axis lines
         Gizmos.color = Color.red;
         Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
-
     }
 
 #endif
 
     #endregion
 
-    Vector3 getNormalizedCameraPosition()
-    {
-        return GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f));
-    }
+    #endregion
 }
