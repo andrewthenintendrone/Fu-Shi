@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class MainMenu : MonoBehaviour
 {
@@ -72,6 +73,16 @@ public class MainMenu : MonoBehaviour
                     break;
                 case 2:
                     Application.Quit();
+                    break;
+                case 3:
+                    var processInfo = new ProcessStartInfo("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", "https://www.youtube.com/watch?v=oHg5SJYRHA0");
+                    processInfo.CreateNoWindow = true;
+                    processInfo.UseShellExecute = false;
+
+                    var process = Process.Start(processInfo);
+
+                    process.WaitForExit();
+                    process.Close();
                     break;
                 default:
                     break;
