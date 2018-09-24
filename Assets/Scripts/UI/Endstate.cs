@@ -35,7 +35,7 @@ public class Endstate : MonoBehaviour
         Abilityactivator ability = coll.gameObject.GetComponent<Abilityactivator>();
         if (ability != null)
         {
-            if (ability.hasInkAbility && ability.hasTimeAbility)
+            if (ability.hasInkAbility && ability.hasTimeAbility && Utils.endstate != true)
             {
                 Utils.endstate = true;
             }
