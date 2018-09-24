@@ -40,6 +40,9 @@ public struct MovementSettings
 
     [Tooltip("how long to stay invulnerable after taking damage")]
     public float invulnerabilityTime;
+
+    [Tooltip("how much knockback to apply when hitting things")]
+    public float knockBack;
 }
 
 public class Player : MonoBehaviour
@@ -292,6 +295,16 @@ public class Player : MonoBehaviour
         else if(col.tag == "enemy")
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+
+            // knockback
+            Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
+            velocity += direction * movementSettings.knockBack;
+        }
+        else if(col.tag == "spikes")
+        {
+            // only knockback (damage is handled in stay)
+            Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
+            velocity += direction * movementSettings.knockBack;
         }
         // sets the checkpoint
         else if (col.tag == "checkpoint")
