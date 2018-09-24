@@ -50,12 +50,18 @@ public class MainMenu : MonoBehaviour
             }
         }
 
+        buttons[selectedButton].GetComponentInChildren<Text>().color = Color.white;
+
         // select buttons
         for (int i = 0; i < buttons.Length; i++)
         {
             if (i == selectedButton)
             {
                 buttons[selectedButton].Select();
+            }
+            else
+            {
+                buttons[i].GetComponentInChildren<Text>().color = Color.black;
             }
         }
 
