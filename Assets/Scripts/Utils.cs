@@ -9,6 +9,8 @@ public static class Utils
     //the position to reset the player to when they die
     public static Vector3 resetPos;
 
+    public static bool endstate;
+
     // reference to health ui image
     private static Image healthImage;
 
