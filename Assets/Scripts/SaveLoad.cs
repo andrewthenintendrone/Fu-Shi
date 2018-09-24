@@ -80,10 +80,10 @@ public static class SaveLoad
         return true;
     }
 
-    public static bool Load()
+    public static bool OpenLevel(bool load)
     {
         // deserialize data from save file
-        if (File.Exists(Application.persistentDataPath + "/saveGame.fox"))
+        if (File.Exists(Application.persistentDataPath + "/saveGame.fox") && load)
         {
             BinaryFormatter bf = new BinaryFormatter();
 
@@ -143,6 +143,9 @@ public static class SaveLoad
 
             return true;
         }
+
+        // open level
+        SceneManager.LoadScene(1);
 
         return false;
     }

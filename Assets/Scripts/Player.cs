@@ -313,7 +313,6 @@ public class Player : MonoBehaviour
 
     public void triggerStayFunction(Collider2D col)
     {
-        Debug.Log("staying in trigger");
         if (col.tag == "spikes")
         {
             if (!isInvulnerable)

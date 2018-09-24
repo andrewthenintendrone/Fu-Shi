@@ -122,18 +122,6 @@ public class InkBlot : MonoBehaviour
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
         }
-        else if (col.tag == "spikes")
-        {
-            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-            if (Utils.Health > 0)
-            {
-                Utils.resetPlayer();
-            }
-            else
-            {
-                SaveLoad.Load();
-            }
-        }
         // sets the checkpoint
         else if (col.tag == "checkpoint")
         {
