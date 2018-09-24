@@ -2906,7 +2906,7 @@ Rigidbody2D:
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 7
 --- !u!61 &61187455206652954
@@ -3090,7 +3090,6 @@ MonoBehaviour:
     type: 2}
   hasInkAbility: 0
   hasTimeAbility: 0
-  offsetdistance: 0
   canUseInkAbility: 1
   extraHeightFromInk: 25
 --- !u!114 &114962643873500584
@@ -3120,6 +3119,7 @@ MonoBehaviour:
     fallSpeedMultiplier: -2.5
     lowJumpFallSpeedMultiplier: 11
     maxFallSpeed: 25
+    invulnerabilityTime: 1
   InkBlotPrefab: {fileID: 1983901096847096, guid: 6fa63f1dc9f763640869f05d20846b60,
     type: 2}
   isLaunching: 0
