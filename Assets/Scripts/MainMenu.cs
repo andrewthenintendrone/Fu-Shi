@@ -64,6 +64,7 @@ public class MainMenu : MonoBehaviour
             switch (selectedButton)
             {
                 case 0:
+                    SaveLoad.deleteSave();
                     SceneManager.LoadScene(1);
                     break;
                 case 1:

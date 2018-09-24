@@ -93,7 +93,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Utils.Init();
         character = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
         character.onTriggerEnterEvent += triggerEnterFunction;
@@ -101,6 +100,8 @@ public class Player : MonoBehaviour
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
         currentDeceleration = movementSettings.deceleration;
+
+        Utils.Init();
     }
 
     void FixedUpdate ()

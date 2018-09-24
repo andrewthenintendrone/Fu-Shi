@@ -25,13 +25,10 @@ public class SaveDeleter : EditorWindow
         GUILayout.Space(70);
         if (GUILayout.Button("Yes"))
         {
-            if (File.Exists(Application.persistentDataPath + "/saveGame.fox"))
-            {
-                File.Delete(Application.persistentDataPath + "./saveGame.fox");
-            }
+            SaveLoad.deleteSave();
             this.Close();
         }
-        if(GUILayout.Button("No"))
+        if (GUILayout.Button("No"))
         {
             this.Close();
         }

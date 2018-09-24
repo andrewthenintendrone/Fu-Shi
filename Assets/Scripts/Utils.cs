@@ -58,6 +58,11 @@ public static class Utils
 
         //set default health
         Health = maxHealth;
+
+        if (!SaveLoad.Load())
+        {
+            resetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        }
     }
 
     public static void resetPlayer()

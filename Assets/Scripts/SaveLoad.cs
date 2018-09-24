@@ -146,4 +146,13 @@ public static class SaveLoad
 
         return false;
     }
+
+    // deletes the save file
+    public static void deleteSave()
+    {
+        if(File.Exists(Application.persistentDataPath + "/saveGame.fox"))
+        {
+            File.Delete(Application.persistentDataPath + "/saveGame.fox");
+        }
+    }
 }
