@@ -37,6 +37,9 @@ public struct MovementSettings
 
     [Tooltip("terminal velocity")]
     public float maxFallSpeed;
+
+    [Tooltip("how long to stay invulnerable after taking damage")]
+    public float invulnerabilityTime;
 }
 
 public class Player : MonoBehaviour
@@ -85,12 +88,16 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
+    // is the player invulnerable
+    private bool isInvulnerable;
+
     private void Start()
     {
         Utils.Init();
         character = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
-        character.onTriggerEnterEvent += triggerFunction;
+        character.onTriggerEnterEvent += triggerEnterFunction;
+        character.onTriggerStayEvent += triggerStayFunction;
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
         currentDeceleration = movementSettings.deceleration;
@@ -275,7 +282,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void triggerFunction(Collider2D col)
+    public void triggerEnterFunction(Collider2D col)
     {
         if(col.tag == "reset")
         {
@@ -284,18 +291,6 @@ public class Player : MonoBehaviour
         else if(col.tag == "enemy")
         {
             Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-        }
-        else if (col.tag == "spikes")
-        {
-            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-            if(Utils.Health > 0)
-            {
-                Utils.resetPlayer();
-            }
-            else
-            {
-                SaveLoad.Load();
-            }
         }
         // sets the checkpoint
         else if (col.tag == "checkpoint")
@@ -313,6 +308,21 @@ public class Player : MonoBehaviour
             Utils.numberOfCollectables++;
             Utils.updateCollectableText();
             col.gameObject.SetActive(false);
+        }
+    }
+
+    public void triggerStayFunction(Collider2D col)
+    {
+        Debug.Log("staying in trigger");
+        if (col.tag == "spikes")
+        {
+            if (!isInvulnerable)
+            {
+                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                isInvulnerable = true;
+
+                Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+            }
         }
     }
 
@@ -345,5 +355,10 @@ public class Player : MonoBehaviour
             facingRight = velocity.x > 0;
             transform.localScale = (facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
         }
+    }
+
+    private void becomeVulnerable()
+    {
+        isInvulnerable = false;
     }
 }
