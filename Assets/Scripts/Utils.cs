@@ -58,27 +58,25 @@ public static class Utils
 
         //set default health
         Health = maxHealth;
-
-        if (!SaveLoad.Load())
-        {
-            resetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
-        }
     }
 
     public static void resetPlayer()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if(player.GetComponent<InkBlot>() != null)
+        if(GameObject.FindGameObjectWithTag("Player"))
         {
-            player.GetComponent<InkBlot>().launch();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-            // TODO: remove spaghetti
-            player = GameObject.FindGameObjectsWithTag("Player")[1];
+            if (player.GetComponent<InkBlot>() != null)
+            {
+                player.GetComponent<InkBlot>().launch();
+
+                // TODO: remove spaghetti
+                player = GameObject.FindGameObjectsWithTag("Player")[1];
+            }
+
+            player.transform.position = resetPos;
+            player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }
-
-        player.transform.position = resetPos;
-        player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
     }
 
     public static void updateCheckpoint(Vector3 position)

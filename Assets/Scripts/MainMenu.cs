@@ -22,6 +22,7 @@ public class MainMenu : MonoBehaviour
     private void Update()
     {
         float vertical = Input.GetAxis("Vertical");
+
         if(Mathf.Abs(vertical) > 0.5f)
         {
             currentVertical = (int)Mathf.Sign(vertical);
@@ -46,26 +47,27 @@ public class MainMenu : MonoBehaviour
             {
                 selectedButton = 0;
             }
+        }
 
-            for (int i = 0; i < buttons.Length; i++)
+        // select buttons
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (i == selectedButton)
             {
-                if (i == selectedButton)
-                {
-                    buttons[selectedButton].Select();
-                }
+                buttons[selectedButton].Select();
             }
         }
 
         // jump button confirms
-        if(Input.GetAxisRaw("Jump") > 0)
+        if (Input.GetAxisRaw("Jump") > 0)
         {
             switch (selectedButton)
             {
                 case 0:
-                    SaveLoad.OpenLevel(false);
+                    SceneManager.LoadScene(1);
                     break;
                 case 1:
-                    SaveLoad.OpenLevel(true);
+                    SceneManager.LoadScene(1);
                     break;
                 case 2:
                     Application.Quit();
