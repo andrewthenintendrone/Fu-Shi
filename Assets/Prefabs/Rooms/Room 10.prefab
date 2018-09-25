@@ -8863,7 +8863,7 @@ Transform:
   m_LocalScale: {x: 40, y: 4, z: 0.099999994}
   m_Children: []
   m_Father: {fileID: 4346190519300778}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4295758392010560
 Transform:
@@ -9227,7 +9227,7 @@ Transform:
   m_LocalScale: {x: 40, y: 4, z: 0.099999994}
   m_Children: []
   m_Father: {fileID: 4346190519300778}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4339014514804958
 Transform:
@@ -9277,10 +9277,10 @@ Transform:
   m_LocalPosition: {x: 53.862427, y: 168.31879, z: 0.028550804}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   - {fileID: 4155175696383306}
   - {fileID: 4174208384922868}
   - {fileID: 4194700011320212}
@@ -11263,7 +11263,7 @@ Transform:
   m_LocalScale: {x: 40, y: 4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 4346190519300778}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4726083779823150
 Transform:
@@ -12755,7 +12755,7 @@ Transform:
   m_LocalScale: {x: 40, y: 4, z: 0.099999994}
   m_Children: []
   m_Father: {fileID: 4346190519300778}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4958238596060662
 Transform:
@@ -18338,7 +18338,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -2.9113846, y: -126.123}
@@ -20013,7 +20013,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -10.410439, y: 0.24210358}
@@ -21742,10 +21742,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
@@ -21858,10 +21858,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
@@ -21912,15 +21912,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
   willCycle: 1
-  currPatrolPoint: 3
+  currPatrolPoint: 1
 --- !u!114 &114153743835104878
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -21947,10 +21947,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
@@ -22024,10 +22024,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
@@ -22171,15 +22171,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
   willCycle: 1
-  currPatrolPoint: 1
+  currPatrolPoint: 3
 --- !u!114 &114312743931185398
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -23152,10 +23152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
@@ -23273,10 +23273,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints:
-  - {fileID: 4724316075898144}
-  - {fileID: 4955737461106018}
-  - {fileID: 4337419482916874}
   - {fileID: 4295011601739560}
+  - {fileID: 4337419482916874}
+  - {fileID: 4955737461106018}
+  - {fileID: 4724316075898144}
   willPatrol: 1
   moveSpd: 10
   hangtime: 0
