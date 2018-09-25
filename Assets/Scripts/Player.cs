@@ -245,6 +245,17 @@ public class Player : MonoBehaviour
         {
             Utils.gamePaused = !Utils.gamePaused;
         }
+        if(Utils.DEVMODE)
+        {
+            if (Input.GetKeyDown(KeyCode.KeypadPlus))
+            {
+                Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
+            }
+            if (Input.GetKeyDown(KeyCode.KeypadMinus))
+            {
+                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+            }
+        }
     }
 
     void changeColor(Color color)
