@@ -36,18 +36,21 @@ public class Door : MonoBehaviour
 
     void FixedUpdate ()
     {
-        // if the door is not permenantly opened and has finished opening
-        if(!(stuckOpen && transform.position == openPosition.position))
+        if(!Utils.gamePaused)
         {
-            // opening
-            if (m_isOpen || stuckOpen)
+            // if the door is not permenantly opened and has finished opening
+            if (!(stuckOpen && transform.position == openPosition.position))
             {
-                transform.position = Vector3.Lerp(transform.position, openPosition.position, Time.time - lastChangeTime);
-            }
-            // closing
-            else
-            {
-                transform.position = Vector3.Lerp(transform.position, closedPosition, Time.time - lastChangeTime);
+                // opening
+                if (m_isOpen || stuckOpen)
+                {
+                    transform.position = Vector3.Lerp(transform.position, openPosition.position, Time.time - lastChangeTime);
+                }
+                // closing
+                else
+                {
+                    transform.position = Vector3.Lerp(transform.position, closedPosition, Time.time - lastChangeTime);
+                }
             }
         }
 	}

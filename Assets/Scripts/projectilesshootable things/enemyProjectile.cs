@@ -21,7 +21,10 @@ public class enemyProjectile : MonoBehaviour
 
     void FixedUpdate()
     {
-        gameObject.transform.Translate(direction * speed * Time.fixedDeltaTime);
+        if(!Utils.gamePaused)
+        {
+            gameObject.transform.Translate(direction * speed * Time.fixedDeltaTime);
+        }
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)

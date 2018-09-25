@@ -20,10 +20,13 @@ public class inkBullet: MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 traveldir = new Vector3(direction.x, direction.y) * speed * Time.fixedDeltaTime;
+        if(!Utils.gamePaused)
+        {
+            Vector3 traveldir = new Vector3(direction.x, direction.y) * speed * Time.fixedDeltaTime;
 
-        // travel along the direction vector at a speed float
-        transform.Translate(traveldir,Space.World);
+            // travel along the direction vector at a speed float
+            transform.Translate(traveldir, Space.World);
+        }
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)

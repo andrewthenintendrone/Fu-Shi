@@ -37,21 +37,24 @@ public class TimeAbilityObject : MonoBehaviour
 
     private void Update()
     {
-        doReverseCheck();
-
-        // time since the object was created
-        float currentTime = Time.time - startTime;
-
-        // move into the range 0-1
-        float normalizedTime = currentTime / lifeTime;
-
-        currentScale = lifeTimeCurve.Evaluate(normalizedTime) * timeRadius;
-
-        transform.localScale = new Vector3(currentScale, currentScale, currentScale);
-
-        if (normalizedTime >= lifeTime)
+        if(!Utils.gamePaused)
         {
-            Destroy(gameObject);
+            doReverseCheck();
+
+            // time since the object was created
+            float currentTime = Time.time - startTime;
+
+            // move into the range 0-1
+            float normalizedTime = currentTime / lifeTime;
+
+            currentScale = lifeTimeCurve.Evaluate(normalizedTime) * timeRadius;
+
+            transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+
+            if (normalizedTime >= lifeTime)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

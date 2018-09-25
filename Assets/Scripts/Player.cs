@@ -109,115 +109,128 @@ public class Player : MonoBehaviour
 
     void FixedUpdate ()
     {
-        #region get inputs
-
-        xAxis = Input.GetAxis("Horizontal");
-        yAxis = Input.GetAxis("Vertical");
-        jumpAxis = (int)Input.GetAxisRaw("Jump");
-
-        #endregion
-
-        // development movement overides everything else
-        if (Utils.DEVMODE)
+        if(!Utils.gamePaused)
         {
-            velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.maxAirSpeed * 2;
-            transform.position += velocity * Time.deltaTime;
+            animator.SetFloat("playSpeed", 1.0f);
+            GetComponent<DynamicBone>().enabled = true;
 
-            return;
-        }
+            #region get inputs
 
-        if(!isLaunching)
-        {
-            float maxSpeed = movementSettings.maxGroundSpeed;
+            xAxis = Input.GetAxis("Horizontal");
+            yAxis = Input.GetAxis("Vertical");
+            jumpAxis = (int)Input.GetAxisRaw("Jump");
 
-            if(!character.isGrounded)
+            #endregion
+
+            // development movement overides everything else
+            if (Utils.DEVMODE)
             {
-                maxSpeed = movementSettings.maxAirSpeed;
+                velocity = new Vector3(xAxis, yAxis, 0).normalized * movementSettings.maxAirSpeed * 2;
+                transform.position += velocity * Time.deltaTime;
+
+                return;
             }
 
-            // accelerate up to run speed
-            if (velocity.x < maxSpeed && xAxis > 0)
+            if (!isLaunching)
             {
-                velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
-            }
-            else if (velocity.x > -maxSpeed && xAxis < 0)
-            {
-                velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
-            }
-            // decelerate
-            if (xAxis == 0 && velocity.x != 0)
-            {
-                velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - currentDeceleration, 0.0f);
-            }
-        }
+                float maxSpeed = movementSettings.maxGroundSpeed;
 
-        // the player is on the ground
-        if (character.isGrounded)
-        {
-            // reset current number of jumps
-            currentJumps = movementSettings.jumpCount;
-
-            // set y velocity to a small negative value to keep grounded
-            if(!isLaunching)
-            {
-                velocity.y = -0.1f;
-            }
-
-            // finish launch
-            if (velocity.y < 0)
-            {
-                isLaunching = false;
-                velocity.x = Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x), movementSettings.maxGroundSpeed);
-            }
-        }
-        else
-        {
-            // only add gravity force until terminal velocity is reached
-            if (velocity.y > -movementSettings.maxFallSpeed)
-            {
-                // regular gravity
-                velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
-
-                // fall speed multiplied gravity
-                if(velocity.y < 0)
+                if (!character.isGrounded)
                 {
-                    velocity.y += Physics2D.gravity.y * movementSettings.fallSpeedMultiplier * Time.fixedDeltaTime;
+                    maxSpeed = movementSettings.maxAirSpeed;
                 }
 
-                if(!jumpHeld && velocity.y > 0)
+                // accelerate up to run speed
+                if (velocity.x < maxSpeed && xAxis > 0)
                 {
-                    velocity.y += Physics2D.gravity.y * movementSettings.lowJumpFallSpeedMultiplier * Time.fixedDeltaTime;
+                    velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
+                }
+                else if (velocity.x > -maxSpeed && xAxis < 0)
+                {
+                    velocity.x += xAxis * movementSettings.acceleration * Time.fixedDeltaTime;
+                }
+                // decelerate
+                if (xAxis == 0 && velocity.x != 0)
+                {
+                    velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - currentDeceleration, 0.0f);
                 }
             }
-        }
 
-        // update jump held
-        if (!jumpHeld && jumpAxis == 1)
-        {
-            jumpHeld = true;
-
-            if (yAxis <= -0.5f)
+            // the player is on the ground
+            if (character.isGrounded)
             {
-                character.ignoreOneWayPlatformsThisFrame = true;
-                Invoke("enableOneWayPlatforms", 0.25f);
+                // reset current number of jumps
+                currentJumps = movementSettings.jumpCount;
+
+                // set y velocity to a small negative value to keep grounded
+                if (!isLaunching)
+                {
+                    velocity.y = -0.1f;
+                }
+
+                // finish launch
+                if (velocity.y < 0)
+                {
+                    isLaunching = false;
+                    velocity.x = Mathf.Sign(velocity.x) * Mathf.Min(Mathf.Abs(velocity.x), movementSettings.maxGroundSpeed);
+                }
             }
             else
             {
-                if (currentJumps > 0 && !isLaunching)
+                // only add gravity force until terminal velocity is reached
+                if (velocity.y > -movementSettings.maxFallSpeed)
                 {
-                    velocity.y = movementSettings.jumpForce;
-                    currentJumps--;
+                    // regular gravity
+                    velocity.y += Physics.gravity.y * movementSettings.gravityScale * Time.fixedDeltaTime;
+
+                    // fall speed multiplied gravity
+                    if (velocity.y < 0)
+                    {
+                        velocity.y += Physics2D.gravity.y * movementSettings.fallSpeedMultiplier * Time.fixedDeltaTime;
+                    }
+
+                    if (!jumpHeld && velocity.y > 0)
+                    {
+                        velocity.y += Physics2D.gravity.y * movementSettings.lowJumpFallSpeedMultiplier * Time.fixedDeltaTime;
+                    }
                 }
             }
+
+            // update jump held
+            if (!jumpHeld && jumpAxis == 1)
+            {
+                jumpHeld = true;
+
+                if (yAxis <= -0.5f)
+                {
+                    character.ignoreOneWayPlatformsThisFrame = true;
+                    Invoke("enableOneWayPlatforms", 0.25f);
+                }
+                else
+                {
+                    if (currentJumps > 0 && !isLaunching)
+                    {
+                        velocity.y = movementSettings.jumpForce;
+                        currentJumps--;
+                    }
+                }
+            }
+            if (jumpHeld && jumpAxis == 0)
+            {
+                jumpHeld = false;
+            }
+
+            character.move(velocity * Time.fixedDeltaTime);
+
+            UpdateAppearance();
         }
-        if (jumpHeld && jumpAxis == 0)
+        else
         {
-            jumpHeld = false;
+            // disable animation and tail physics
+            animator.SetFloat("playSpeed", 0.0f);
+
+            GetComponent<DynamicBone>().enabled = false;
         }
-
-        character.move(velocity * Time.fixedDeltaTime);
-
-        UpdateAppearance();
     }
 
     void Update()
@@ -226,6 +239,11 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             Utils.toggleDevMode();
+        }
+        // 1 to test pausing
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Utils.gamePaused = !Utils.gamePaused;
         }
     }
 
@@ -251,90 +269,100 @@ public class Player : MonoBehaviour
 
     public void collisionFunction(RaycastHit2D hitInfo)
     {
-        // inkable surface
-        if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
+        if(!Utils.gamePaused)
         {
-            // inked
-            if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
+            // inkable surface
+            if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
             {
-                if(canTurnIntoInkBlot)
+                // inked
+                if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
                 {
-                    // ensure only one ink blot at a time
-                    if (GameObject.Find("inkblot") == null)
+                    if (canTurnIntoInkBlot)
                     {
-                        // disable this gameObject
-                        gameObject.SetActive(false);
-                        GameObject newInkBlot = Instantiate(InkBlotPrefab);
-                        newInkBlot.name = "inkblot";
-                        newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
-                        newInkBlot.transform.parent = hitInfo.transform;
-                        newInkBlot.GetComponent<InkBlot>().player = gameObject;
-                        newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+                        // ensure only one ink blot at a time
+                        if (GameObject.Find("inkblot") == null)
+                        {
+                            // disable this gameObject
+                            gameObject.SetActive(false);
+                            GameObject newInkBlot = Instantiate(InkBlotPrefab);
+                            newInkBlot.name = "inkblot";
+                            newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
+                            newInkBlot.transform.parent = hitInfo.transform;
+                            newInkBlot.GetComponent<InkBlot>().player = gameObject;
+                            newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+                        }
                     }
                 }
             }
-        }
 
-        // slippery surface
-        if(hitInfo.collider.gameObject.tag == "slippery")
-        {
-            currentDeceleration = movementSettings.slowDeceleration;
-        }
-        else
-        {
-            currentDeceleration = movementSettings.deceleration;
+            // slippery surface
+            if (hitInfo.collider.gameObject.tag == "slippery")
+            {
+                currentDeceleration = movementSettings.slowDeceleration;
+            }
+            else
+            {
+                currentDeceleration = movementSettings.deceleration;
+            }
         }
     }
 
     public void triggerEnterFunction(Collider2D col)
     {
-        if(col.tag == "reset")
+        if(!Utils.gamePaused)
         {
-            Utils.resetPlayer();
-        }
-        else if(col.tag == "enemy")
-        {
-            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+            if (col.tag == "reset")
+            {
+                Utils.resetPlayer();
+            }
+            else if (col.tag == "enemy")
+            {
+                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
 
-            // knockback
-            Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
-            velocity += direction * movementSettings.knockBack;
-        }
-        else if(col.tag == "spikes")
-        {
-            // only knockback (damage is handled in stay)
-            Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
-            velocity += direction * movementSettings.knockBack;
-        }
-        // sets the checkpoint
-        else if (col.tag == "checkpoint")
-        {
-            Utils.updateCheckpoint(col.transform.position);
-        }
-        else if(col.tag == "savepoint")
-        {
-            Utils.updateCheckpoint(col.transform.position);
-            SaveLoad.Save();
-        }
-        else if(col.tag == "collectable")
-        {
-            Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
-            Utils.numberOfCollectables++;
-            Utils.updateCollectableText();
-            col.gameObject.SetActive(false);
+                // knockback
+                Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
+                velocity += direction * movementSettings.knockBack;
+            }
+            else if (col.tag == "spikes")
+            {
+                // only knockback (damage is handled in stay)
+                Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
+                velocity += direction * movementSettings.knockBack;
+            }
+            // sets the checkpoint
+            else if (col.tag == "checkpoint")
+            {
+                Utils.updateCheckpoint(col.transform.position);
+            }
+            else if (col.tag == "savepoint")
+            {
+                Utils.updateCheckpoint(col.transform.position);
+                Utils.Health = Utils.maxHealth;
+                SaveLoad.Save();
+            }
+            else if (col.tag == "collectable")
+            {
+                Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
+                Utils.numberOfCollectables++;
+                Utils.updateCollectableText();
+                col.gameObject.SetActive(false);
+            }
         }
     }
 
     public void triggerStayFunction(Collider2D col)
     {
-        if (col.tag == "spikes")
+        if(!Utils.gamePaused)
         {
-            if (!isInvulnerable)
+            if (col.tag == "spikes")
             {
-                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-                isInvulnerable = true;
+                if (!isInvulnerable)
+                {
+                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    isInvulnerable = true;
 
-                Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+                }
             }
         }
     }

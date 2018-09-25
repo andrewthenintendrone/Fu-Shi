@@ -12,6 +12,9 @@ public class rotateObject : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        transform.Rotate(0, 0, rotationRate);
+        if(!Utils.gamePaused)
+        {
+            transform.Rotate(0, 0, rotationRate);
+        }
 	}
 }

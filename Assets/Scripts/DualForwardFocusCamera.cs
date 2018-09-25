@@ -62,85 +62,88 @@ public class DualForwardFocusCamera : MonoBehaviour
     // called every physics step
     void FixedUpdate()
     {
-        Bounds targetBounds = targetCollider.bounds;
-
-        #region xAxisLogic
-
-        // offset from the bounds on the x axis
-        float deltaPositionFromBoundsX = 0;
-
-        // did the x edge focus change this frame
-        bool didLastXEdgeContactChange = false;
-
-        // worldspace position of the edges of the focus area
-        float leftEdge, rightEdge;
-
-        // calculate the left and right edges of the focus area
-        if (currentFocus == RectTransform.Edge.Left)
+        if(!Utils.gamePaused)
         {
-            rightEdge = transform.position.x - width * 0.5f;
-            leftEdge = rightEdge - XThresholdExtents * 0.5f;
-        }
-        else
-        {
-            leftEdge = transform.position.x + width * 0.5f;
-            rightEdge = leftEdge + XThresholdExtents * 0.5f;
-        }
+            Bounds targetBounds = targetCollider.bounds;
 
-        // the player has left the focus area on the left
-        if (targetBounds.center.x < leftEdge)
-        {
-            deltaPositionFromBoundsX = targetBounds.center.x - leftEdge;
+            #region xAxisLogic
 
-            // change focus side
+            // offset from the bounds on the x axis
+            float deltaPositionFromBoundsX = 0;
+
+            // did the x edge focus change this frame
+            bool didLastXEdgeContactChange = false;
+
+            // worldspace position of the edges of the focus area
+            float leftEdge, rightEdge;
+
+            // calculate the left and right edges of the focus area
             if (currentFocus == RectTransform.Edge.Left)
             {
-                didLastXEdgeContactChange = true;
-                currentFocus = RectTransform.Edge.Right;
+                rightEdge = transform.position.x - width * 0.5f;
+                leftEdge = rightEdge - XThresholdExtents * 0.5f;
             }
-        }
-        // the player has left the focus area on the right
-        else if (targetBounds.center.x > rightEdge)
-        {
-            deltaPositionFromBoundsX = targetBounds.center.x - rightEdge;
-
-            // change focus side
-            if (currentFocus == RectTransform.Edge.Right)
+            else
             {
-                didLastXEdgeContactChange = true;
-                currentFocus = RectTransform.Edge.Left;
+                leftEdge = transform.position.x + width * 0.5f;
+                rightEdge = leftEdge + XThresholdExtents * 0.5f;
             }
+
+            // the player has left the focus area on the left
+            if (targetBounds.center.x < leftEdge)
+            {
+                deltaPositionFromBoundsX = targetBounds.center.x - leftEdge;
+
+                // change focus side
+                if (currentFocus == RectTransform.Edge.Left)
+                {
+                    didLastXEdgeContactChange = true;
+                    currentFocus = RectTransform.Edge.Right;
+                }
+            }
+            // the player has left the focus area on the right
+            else if (targetBounds.center.x > rightEdge)
+            {
+                deltaPositionFromBoundsX = targetBounds.center.x - rightEdge;
+
+                // change focus side
+                if (currentFocus == RectTransform.Edge.Right)
+                {
+                    didLastXEdgeContactChange = true;
+                    currentFocus = RectTransform.Edge.Left;
+                }
+            }
+
+            // calculate the desired x position
+            float desiredX = (currentFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
+
+            // if we didnt change focus this frame update the desired X
+            if (!didLastXEdgeContactChange)
+            {
+                desiredX = transform.position.x + deltaPositionFromBoundsX;
+            }
+
+            // smooth the desiredX using smoothdamp
+            desiredX = Mathf.SmoothDamp(transform.position.x, desiredX, ref velocityX, smoothX);
+
+            #endregion
+
+            #region yAxisLogic
+
+            // calculate player y distance from center
+            float distanceFromCenter = Mathf.Abs(targetBounds.center.y - transform.position.y);
+
+            // normalizedClampedDistance is a value from 0 to 1 used to lerp on the y axis
+            normalizedClampedDistance = Mathf.Clamp01((distanceFromCenter - (height * 0.5f)) / (YThresholdExtents * 0.5f));
+
+            // smooth the desiredY using lerp
+            float desiredY = Mathf.Lerp(transform.position.y, targetBounds.center.y, normalizedClampedDistance);
+
+            #endregion
+
+            // move to the desired position
+            transform.position = new Vector3(desiredX, desiredY, transform.position.z);
         }
-        
-        // calculate the desired x position
-        float desiredX = (currentFocus == RectTransform.Edge.Left ? rightEdge : leftEdge);
-
-        // if we didnt change focus this frame update the desired X
-        if (!didLastXEdgeContactChange)
-        {
-            desiredX = transform.position.x + deltaPositionFromBoundsX;
-        }
-
-        // smooth the desiredX using smoothdamp
-        desiredX = Mathf.SmoothDamp(transform.position.x, desiredX, ref velocityX, smoothX);
-
-        #endregion
-
-        #region yAxisLogic
-
-        // calculate player y distance from center
-        float distanceFromCenter = Mathf.Abs(targetBounds.center.y - transform.position.y);
-
-        // normalizedClampedDistance is a value from 0 to 1 used to lerp on the y axis
-        normalizedClampedDistance = Mathf.Clamp01((distanceFromCenter - (height * 0.5f)) / (YThresholdExtents * 0.5f));
-
-        // smooth the desiredY using lerp
-        float desiredY = Mathf.Lerp(transform.position.y, targetBounds.center.y, normalizedClampedDistance);
-
-        #endregion
-
-        // move to the desired position
-        transform.position = new Vector3(desiredX, desiredY, transform.position.z);
     }
 
     #region editor

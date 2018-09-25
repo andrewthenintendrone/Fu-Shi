@@ -41,14 +41,16 @@ public class patrolmove : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (willPatrol)
+        if(!Utils.gamePaused)
         {
-            patrol();
+            if (willPatrol)
+            {
+                patrol();
+            }
+
+
+            countdown();
         }
-        
-        
-        countdown();
     }
 
     private void patrol()

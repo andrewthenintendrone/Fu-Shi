@@ -43,17 +43,23 @@ public class Enemy : MonoBehaviour
 	
 	void Update ()
     {
-        checkDead();
+        if(!Utils.gamePaused)
+        {
+            checkDead();
+        }
 	}
 
     public void checkDead()
     {
-        if (health <= 0)
+        if(!Utils.gamePaused)
         {
-            gameObject.GetComponent<Renderer>().enabled = false;
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            this.enabled = false;
-            CancelInvoke("checkPlayerDist");
+            if (health <= 0)
+            {
+                gameObject.GetComponent<Renderer>().enabled = false;
+                gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                this.enabled = false;
+                CancelInvoke("checkPlayerDist");
+            }
         }
     }
 
@@ -66,17 +72,20 @@ public class Enemy : MonoBehaviour
 
     private void checkPlayerDist()
     {
-        if(!gameObject.activeSelf)
+        if(!Utils.gamePaused)
         {
-            CancelInvoke();
-            return;
-        }
+            if (!gameObject.activeSelf)
+            {
+                CancelInvoke();
+                return;
+            }
 
-        Vector3 direction = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>().bounds.center - transform.position;
+            Vector3 direction = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>().bounds.center - transform.position;
 
-        if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
-        {
-            shootProjectile(direction.normalized);
+            if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
+            {
+                shootProjectile(direction.normalized);
+            }
         }
     }
 

@@ -43,47 +43,50 @@ public class Abilityactivator : MonoBehaviour
 	
 	void Update ()
     {
-        // read both ability axis
-        float inkAxis = Input.GetAxis("Ink");
-        float timeAxis = Input.GetAxis("Time");
-
-        // the player can always use ink when on the ground
-        if (gameObject.GetComponent<CharacterController2D>().isGrounded)
+        if(!Utils.gamePaused)
         {
-            canUseInkAbility = true;
-        }
+            // read both ability axis
+            float inkAxis = Input.GetAxis("Ink");
+            float timeAxis = Input.GetAxis("Time");
 
-        if (inkAxis > 0.5f)
-        {
-            if (!inkHeld)
+            // the player can always use ink when on the ground
+            if (gameObject.GetComponent<CharacterController2D>().isGrounded)
             {
-                // ink axis is now held
-                inkHeld = true;
-
-                // attempt to use the ink ability
-                useInkAbility();
+                canUseInkAbility = true;
             }
-        }
-        else
-        {
-            inkHeld = false;
-        }
 
-        if (timeAxis > 0.5f)
-        {
-            if (!timeHeld)
+            if (inkAxis > 0.5f)
             {
-                // time axis is now held
-                timeHeld = true;
+                if (!inkHeld)
+                {
+                    // ink axis is now held
+                    inkHeld = true;
 
-                // attempt to use the time ability
-                useTimeAbility();
-                timeHeld = true;
+                    // attempt to use the ink ability
+                    useInkAbility();
+                }
             }
-        }
-        else
-        {
-            timeHeld = false;
+            else
+            {
+                inkHeld = false;
+            }
+
+            if (timeAxis > 0.5f)
+            {
+                if (!timeHeld)
+                {
+                    // time axis is now held
+                    timeHeld = true;
+
+                    // attempt to use the time ability
+                    useTimeAbility();
+                    timeHeld = true;
+                }
+            }
+            else
+            {
+                timeHeld = false;
+            }
         }
     }
 

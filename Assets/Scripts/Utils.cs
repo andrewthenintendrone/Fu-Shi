@@ -11,6 +11,9 @@ public static class Utils
 
     public static bool endstate;
 
+    // is the game paused
+    public static bool gamePaused = false;
+
     // reference to health ui image
     private static Image healthImage;
 

@@ -34,48 +34,56 @@ public class InkBlot : MonoBehaviour
 
     private void Update()
     {
-        player.transform.position = transform.position - new Vector3(player.GetComponent<Player>().character.boxCollider.offset.x, player.GetComponent<Player>().character.boxCollider.offset.y, 0);
-
-        // get inputs
-        float xAxis = Input.GetAxis("Horizontal");
-        float yAxis = Input.GetAxis("Vertical");
-        int jumpAxis = (int)Input.GetAxisRaw("Jump");
-
-        if(jumpAxis == 0)
+        if(!Utils.gamePaused)
         {
-            jumpHeld = false;
-        }
+            player.transform.position = transform.position - new Vector3(player.GetComponent<Player>().character.boxCollider.offset.x, player.GetComponent<Player>().character.boxCollider.offset.y, 0);
 
-        // get normalized launch direction
-        direction = (Vector3.right * xAxis + Vector3.up * yAxis).normalized;
+            // get inputs
+            float xAxis = Input.GetAxis("Horizontal");
+            float yAxis = Input.GetAxis("Vertical");
+            int jumpAxis = (int)Input.GetAxisRaw("Jump");
 
-        // if there is no input find a good direction
-        if (yAxis == 0 && xAxis == 0)
-        {
-            // get direction to the center of the object first
-            Vector3 directionToCenter = (transform.parent.position - transform.position).normalized;
-
-            RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, directionToCenter, 1 << LayerMask.NameToLayer("Player"));
-
-            if (hitInfo)
+            if (jumpAxis == 0)
             {
-                if (hitInfo.collider.gameObject.transform == transform.parent)
+                jumpHeld = false;
+            }
+
+            // get normalized launch direction
+            direction = (Vector3.right * xAxis + Vector3.up * yAxis).normalized;
+
+            // if there is no input find a good direction
+            if (yAxis == 0 && xAxis == 0)
+            {
+                // get direction to the center of the object first
+                Vector3 directionToCenter = (transform.parent.position - transform.position).normalized;
+
+                RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, directionToCenter, 1 << LayerMask.NameToLayer("Player"));
+
+                if (hitInfo)
                 {
-                    direction = hitInfo.normal.normalized;
+                    if (hitInfo.collider.gameObject.transform == transform.parent)
+                    {
+                        direction = hitInfo.normal.normalized;
+                    }
                 }
+            }
+
+            // reset line points and draw direction line
+            lr.positionCount = 2;
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, transform.position + direction * 3);
+            Debug.DrawLine(transform.position, transform.position + direction, Color.red);
+
+            // the jump button launches
+            if ((int)Input.GetAxisRaw("Jump") == 1 && !jumpHeld)
+            {
+                launch();
             }
         }
 
-        // reset line points and draw direction line
-        lr.positionCount = 2;
-        lr.SetPosition(0, transform.position);
-        lr.SetPosition(1, transform.position + direction * 3);
-        Debug.DrawLine(transform.position, transform.position + direction, Color.red);
-
-        // the jump button launches
-        if ((int)Input.GetAxisRaw("Jump") == 1 && !jumpHeld)
+        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            launch();
+            Utils.gamePaused = !Utils.gamePaused;
         }
     }
 
@@ -106,7 +114,7 @@ public class InkBlot : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.transform != transform.parent && collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<Inkmeleeslash>() == null && collision.gameObject.GetComponent<inkBullet>() == null)
+        if(collision.gameObject.GetComponent<inkableSurface>() != null && collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<Inkmeleeslash>() == null && collision.gameObject.GetComponent<inkBullet>() == null)
         {
             launch();
         }
