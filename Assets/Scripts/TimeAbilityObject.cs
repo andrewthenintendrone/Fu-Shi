@@ -27,6 +27,9 @@ public class TimeAbilityObject : MonoBehaviour
     // current scale of the object
     private float currentScale;
 
+    // gets turned off after one effect
+    private bool hasBeenUsed = false;
+
     void Start()
     {
         startTime = Time.time;
@@ -61,26 +64,32 @@ public class TimeAbilityObject : MonoBehaviour
     // circle cast and reverse objects
     private void doReverseCheck()
     {
-        int numHits = Physics2D.CircleCast(transform.position, currentScale, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
-        bool hasReversed = false;
-        for (int i = 0; i < numHits && !hasReversed; i++)
+        if(!hasBeenUsed)
         {
-            if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
+            int numHits = Physics2D.CircleCast(transform.position, currentScale, Vector2.zero, new ContactFilter2D(), hits, Mathf.Infinity);
+            bool hasReversed = false;
+            for (int i = 0; i < numHits && !hasReversed; i++)
             {
-                hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
-                hasReversed = true;
-            }
-            if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
-            {
-                hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
-            }
-            if (hits[i].collider.gameObject.GetComponent<Door>() != null)
-            {
-                if (hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
+                if (hits[i].collider.gameObject.GetComponentInParent<patrolmove>() != null)
                 {
-                    hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
-                    hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
+                    hits[i].collider.gameObject.GetComponentInParent<patrolmove>().reverse();
                     hasReversed = true;
+                    hasBeenUsed = true;
+                }
+                if (hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>() != null)
+                {
+                    hits[i].collider.gameObject.GetComponentInParent<enemyProjectile>().Reverse();
+                    hasBeenUsed = true;
+                }
+                if (hits[i].collider.gameObject.GetComponent<Door>() != null)
+                {
+                    if (hits[i].collider.gameObject.GetComponent<Door>().hasBeenOpened)
+                    {
+                        hits[i].collider.gameObject.GetComponent<Door>().isOpen = true;
+                        hits[i].collider.gameObject.GetComponent<Door>().stuckOpen = true;
+                        hasReversed = true;
+                        hasBeenUsed = true;
+                    }
                 }
             }
         }
