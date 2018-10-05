@@ -383,6 +383,19 @@ public class Player : MonoBehaviour
         // color red if on the ground
         // changeColor(character.isGrounded ? Color.red : Color.white);
 
+        // rotate to match slope
+        GameObject joints = GameObject.Find("JOINTS");
+        RaycastHit2D slopeHitInfo = Physics2D.Raycast(transform.position, Vector2.down, 1.0f, character.platformMask);
+        if (slopeHitInfo && character.isGrounded)
+        {
+            float angle = Vector2.SignedAngle(slopeHitInfo.normal, Vector2.up);
+            joints.transform.localEulerAngles = Vector3.forward * angle * (facingRight ? 1 : -1);
+        }
+        else
+        {
+            joints.transform.localEulerAngles = Vector3.zero;
+        }
+
         if(gameObject.activeSelf)
         {
             animator.SetBool("isGrounded", character.isGrounded);
@@ -405,7 +418,7 @@ public class Player : MonoBehaviour
         if (Mathf.Abs(velocity.x) != 0)
         {
             facingRight = velocity.x > 0;
-            transform.localScale = (facingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1));
+            transform.localScale = (facingRight ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1));
         }
     }
 
