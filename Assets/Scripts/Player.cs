@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using XInputDotNetPure;
 
 [System.Serializable]
 public struct MovementSettings
@@ -93,6 +94,15 @@ public class Player : MonoBehaviour
 
     // is the player invulnerable
     private bool isInvulnerable;
+
+    [SerializeField]
+    [Range(0, 1)]
+    [Tooltip("how strong to rumble when taking damage")]
+    private float rumblePower = 1.0f;
+
+    [SerializeField]
+    [Tooltip("how long to rumble for when taking damage")]
+    private float rumbleTime = 0.2f;
 
     private void Start()
     {
@@ -326,6 +336,9 @@ public class Player : MonoBehaviour
             {
                 Utils.Health = Mathf.Max(Utils.Health - 1, 0);
 
+                GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+                Invoke("stopRumble", rumbleTime);
+
                 // knockback
                 Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
                 velocity += direction * movementSettings.knockBack;
@@ -366,7 +379,10 @@ public class Player : MonoBehaviour
                 if (!isInvulnerable)
                 {
                     Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+
                     isInvulnerable = true;
+                    Invoke("stopRumble", rumbleTime);
 
                     Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
                 }
@@ -421,5 +437,10 @@ public class Player : MonoBehaviour
     private void becomeVulnerable()
     {
         isInvulnerable = false;
+    }
+
+    private void stopRumble()
+    {
+        GamePad.SetVibration(PlayerIndex.One, 0, 0);
     }
 }
