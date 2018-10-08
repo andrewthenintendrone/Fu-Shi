@@ -240,11 +240,7 @@ public class Player : MonoBehaviour
         {
             Utils.toggleDevMode();
         }
-        // 1 to test pausing
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Utils.gamePaused = !Utils.gamePaused;
-        }
+
         if(Utils.DEVMODE)
         {
             if (Input.GetKeyDown(KeyCode.KeypadPlus))

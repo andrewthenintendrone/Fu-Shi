@@ -10,6 +10,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject pauseScreen;
 
+    private bool pauseAxisHeld = false;
+
     private void Start()
     {
         endScreen.SetActive(false);
@@ -24,10 +26,26 @@ public class UIController : MonoBehaviour
             showEndstate();
         }
         SetPauseScreen();
+
 	}
 
     private void SetPauseScreen()
     {
+        
+        if ((int)Input.GetAxisRaw("Pause") != 0)
+        {
+            if (!pauseAxisHeld)
+            {
+                Utils.gamePaused = !Utils.gamePaused;
+                pauseAxisHeld = true;
+            }          
+        }
+        else
+        {
+            pauseAxisHeld = false;
+        }
+
+
         if (Utils.gamePaused)
         {
             pauseScreen.SetActive(true);
@@ -36,7 +54,7 @@ public class UIController : MonoBehaviour
         {
             pauseScreen.SetActive(false);
         }
-        
+
     }
 
     private void showEndstate()
