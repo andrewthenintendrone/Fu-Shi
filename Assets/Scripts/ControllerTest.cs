@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class ControllerTest : MonoBehaviour
 {
@@ -26,10 +27,12 @@ public class ControllerTest : MonoBehaviour
         if(stickPosition.magnitude >= deadZone)
         {
             stickSprite.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
         }
         else
         {
             stickSprite.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+            GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
         }
 
         stickSprite.transform.localPosition = stickPosition * stickSprite.transform.localScale.x;
