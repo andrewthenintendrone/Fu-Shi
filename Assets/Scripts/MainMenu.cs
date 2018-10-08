@@ -7,92 +7,20 @@ using System.Diagnostics;
 
 public class MainMenu : MonoBehaviour
 {
-    // child buttons
-    public Button[] buttons;
 
-    public int selectedButton = 0;
-
-    public int currentVertical;
-    public int previousVertical;
-
-    private void Start()
+    public void NewGame()
     {
-        buttons = GetComponentsInChildren<Button>();
+        SaveLoad.deleteSave();
+        SceneManager.LoadScene(1);
     }
 
-    private void Update()
+    public void LoadGame()
     {
-        float vertical = Input.GetAxis("Vertical");
+        SceneManager.LoadScene(1);
+    }
 
-        if(Mathf.Abs(vertical) > 0.5f)
-        {
-            currentVertical = (int)Mathf.Sign(vertical);
-        }
-        else
-        {
-            currentVertical = 0;
-        }
-
-        if (currentVertical != previousVertical)
-        {
-            selectedButton -= currentVertical;
-
-            previousVertical = currentVertical;
-
-            // wrap
-            if (selectedButton < 0)
-            {
-                selectedButton = buttons.Length - 1;
-            }
-            else if (selectedButton >= buttons.Length)
-            {
-                selectedButton = 0;
-            }
-        }
-
-        buttons[selectedButton].GetComponentInChildren<Text>().color = Color.white;
-
-        // select buttons
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (i == selectedButton)
-            {
-                buttons[selectedButton].Select();
-            }
-            else
-            {
-                buttons[i].GetComponentInChildren<Text>().color = Color.black;
-            }
-        }
-
-        // jump button confirms
-        if (Input.GetAxisRaw("Jump") > 0)
-        {
-            switch (selectedButton)
-            {
-                case 0:
-                    SaveLoad.deleteSave();
-                    SceneManager.LoadScene(1);
-                    break;
-                case 1:
-                    SceneManager.LoadScene(1);
-                    break;
-                case 2:
-                    Application.Quit();
-                    break;
-                case 3:
-                    var processInfo = new ProcessStartInfo("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", "https://www.youtube.com/watch?v=oHg5SJYRHA0");
-                    processInfo.CreateNoWindow = true;
-                    processInfo.UseShellExecute = false;
-
-                    var process = Process.Start(processInfo);
-
-                    process.WaitForExit();
-                    process.Close();
-                    break;
-                default:
-                    break;
-            }
-        }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
