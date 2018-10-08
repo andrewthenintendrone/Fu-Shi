@@ -241,7 +241,7 @@ public class Player : MonoBehaviour
             Utils.toggleDevMode();
         }
         // 1 to test pausing
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             Utils.gamePaused = !Utils.gamePaused;
         }
