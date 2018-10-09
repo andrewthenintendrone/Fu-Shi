@@ -5,17 +5,17 @@ using UnityEngine;
 public class GameFinishDetector : MonoBehaviour
 {
 
-    private void OnTriggerEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D colider)
     {
         
-        if (collision.gameObject.GetComponent<Abilityactivator>() != null )
+        if (colider.gameObject.GetComponent<Abilityactivator>() != null )
         {
-            Abilityactivator instance = collision.gameObject.GetComponent<Abilityactivator>();
+            Abilityactivator instance = colider.gameObject.GetComponent<Abilityactivator>();
+
             if (instance.hasTimeAbility && instance.hasInkAbility)
             {
                 Utils.endstate = true;
             }
-            
         }
     }
 
