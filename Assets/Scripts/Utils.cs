@@ -83,6 +83,7 @@ public static class Utils
             }
 
             player.transform.position = resetPos;
+            player.GetComponent<Player>().velocity = Vector3.zero;
             player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         }
     }

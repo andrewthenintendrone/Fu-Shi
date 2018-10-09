@@ -109,7 +109,6 @@ public class Player : MonoBehaviour
         character = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
         character.onTriggerEnterEvent += triggerEnterFunction;
-        character.onTriggerStayEvent += triggerStayFunction;
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
         currentDeceleration = movementSettings.deceleration;
@@ -334,20 +333,50 @@ public class Player : MonoBehaviour
             }
             else if (col.tag == "enemy")
             {
-                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                // damage
+                if (!isInvulnerable)
+                {
+                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    isInvulnerable = true;
+                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+                }
 
+                // rumble
                 GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
                 Invoke("stopRumble", rumbleTime);
 
                 // knockback
-                Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
-                velocity += direction * movementSettings.knockBack;
+                Vector3 directionToEnemy = (col.gameObject.transform.position - transform.position).normalized;
+                RaycastHit2D hitInfo = Physics2D.Raycast(col.bounds.center, directionToEnemy, 10.0f, 1 << LayerMask.NameToLayer("Trigger"));
+                if(hitInfo)
+                {
+                    velocity = hitInfo.normal * movementSettings.knockBack;
+                }
             }
             else if (col.tag == "spikes")
             {
-                // only knockback (damage is handled in stay)
-                Vector3 direction = (transform.position - col.gameObject.transform.position).normalized;
-                velocity += direction * movementSettings.knockBack;
+                // damage
+                if(!isInvulnerable)
+                {
+                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    isInvulnerable = true;
+                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+                }
+
+                // rumble
+                GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+                Invoke("stopRumble", rumbleTime);
+
+                // knockback
+                Vector3 directionToSpikes = (col.gameObject.transform.position - character.boxCollider.bounds.center).normalized;
+                RaycastHit2D hitInfo = Physics2D.Raycast(character.boxCollider.bounds.center, directionToSpikes, 10.0f, 1 << LayerMask.NameToLayer("Trigger"));
+                if (hitInfo)
+                {
+                    velocity = hitInfo.normal * movementSettings.knockBack;
+                }
+
+                // add an extra jump for fairness
+                currentJumps = Mathf.Min(currentJumps + 1, movementSettings.jumpCount);
             }
             // sets the checkpoint
             else if (col.tag == "checkpoint")
@@ -370,46 +399,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void triggerStayFunction(Collider2D col)
-    {
-        if(!Utils.gamePaused)
-        {
-            if (col.tag == "spikes")
-            {
-                if (!isInvulnerable)
-                {
-                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-                    GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
-
-                    isInvulnerable = true;
-                    Invoke("stopRumble", rumbleTime);
-
-                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
-                }
-            }
-        }
-    }
-
     public void UpdateAppearance()
     {
         // color red if on the ground
         // changeColor(character.isGrounded ? Color.red : Color.white);
-
-        // rotate to match slope
-        GameObject joints = GameObject.Find("JOINTS");
-        RaycastHit2D slopeHitInfo = Physics2D.Raycast(transform.position, Vector2.down, 1.0f, character.platformMask);
-        if (slopeHitInfo && character.isGrounded)
-        {
-            float angle = Vector2.SignedAngle(slopeHitInfo.normal, Vector2.up);
-            joints.transform.localEulerAngles = Vector3.forward * angle * (facingRight ? 1 : -1);
-        }
-        else
-        {
-            joints.transform.localEulerAngles = Vector3.zero;
-        }
-
         if(gameObject.activeSelf)
         {
+            // rotate to match slope
+            GameObject joints = GameObject.Find("JOINTS");
+            RaycastHit2D slopeHitInfo = Physics2D.Raycast(transform.position, Vector2.down, 1.0f, character.platformMask);
+            if (slopeHitInfo && character.isGrounded)
+            {
+                float angle = Vector2.SignedAngle(slopeHitInfo.normal, Vector2.up);
+                joints.transform.localEulerAngles = Vector3.forward * angle * (facingRight ? 1 : -1);
+            }
+            else
+            {
+                joints.transform.localEulerAngles = Vector3.zero;
+            }
+
             animator.SetBool("isGrounded", character.isGrounded);
             animator.SetFloat("absoluteXVelocity", Mathf.Abs(velocity.x));
             animator.SetFloat("yVelocity", velocity.y);
