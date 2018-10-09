@@ -18,9 +18,6 @@ public struct MovementSettings
     [Tooltip("speed at which to reach zero horizontal speed from maximum horizontal speed")]
     public float deceleration;
 
-    [Tooltip("speed at which to reach zero horizontal speed from maximum horizontal speed while on a slippery surface")]
-    public float slowDeceleration;
-
     [Tooltip("force to apply when jumping")]
     public float jumpForce;
 
@@ -75,9 +72,6 @@ public class Player : MonoBehaviour
     [Tooltip("ink blot prefab")]
     public GameObject InkBlotPrefab;
 
-    // the current deceleration value to use (regular or slippery)
-    private float currentDeceleration;
-
     [HideInInspector]
     // is the player launching
     public bool isLaunching = false;
@@ -111,7 +105,6 @@ public class Player : MonoBehaviour
         character.onTriggerEnterEvent += triggerEnterFunction;
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
-        currentDeceleration = movementSettings.deceleration;
 
         Utils.Init();
     }
@@ -161,7 +154,7 @@ public class Player : MonoBehaviour
                 // decelerate
                 if (xAxis == 0 && velocity.x != 0)
                 {
-                    velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - currentDeceleration, 0.0f);
+                    velocity.x = Mathf.Sign(velocity.x) * Mathf.Max(Mathf.Abs(velocity.x) - movementSettings.deceleration, 0.0f);
                 }
             }
 
@@ -309,16 +302,6 @@ public class Player : MonoBehaviour
                         }
                     }
                 }
-            }
-
-            // slippery surface
-            if (hitInfo.collider.gameObject.tag == "slippery")
-            {
-                currentDeceleration = movementSettings.slowDeceleration;
-            }
-            else
-            {
-                currentDeceleration = movementSettings.deceleration;
             }
         }
     }
