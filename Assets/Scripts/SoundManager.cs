@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private float highPitchRange = 1.05f;
 
+    public AudioClip music;
 
     public static SoundManager instance = null;
 
@@ -62,6 +63,12 @@ public class SoundManager : MonoBehaviour
         efxSource.Play();
     }
 
-
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+        {
+            playSingle(music);
+        }
+    }
 
 }
