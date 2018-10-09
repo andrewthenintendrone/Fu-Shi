@@ -815,6 +815,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114962643873500584, guid: adb17bee90db16f41ad1923a05db6100,
+        type: 2}
+      propertyPath: rumbleTime
+      value: 0.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: adb17bee90db16f41ad1923a05db6100, type: 2}
   m_IsPrefabParent: 0
@@ -1039,6 +1044,10 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1969166694401616, guid: 13a430b6345207349b6d38c9efbeacef, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1831923210174016, guid: 13a430b6345207349b6d38c9efbeacef, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1511,7 +1520,8 @@ Prefab:
       propertyPath: m_Name
       value: Going down
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114086986549442872, guid: fb9ca01c8f222064ca8922e83a192178, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: fb9ca01c8f222064ca8922e83a192178, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &2017228306
