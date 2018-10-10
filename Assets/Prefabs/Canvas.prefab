@@ -390,7 +390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1926370089965290
 GameObject:
   m_ObjectHideFlags: 1
@@ -930,7 +930,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114528926396501184}
-        m_MethodName: Unpause
+        m_MethodName: QuitToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1098,8 +1098,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af9352684a95e045b26642ee25bde49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStartPosition: {x: -252, y: -7.1, z: 0}
-  scale: 100
+  cameraPosition: {x: 0, y: 0}
+  cameraOrthoScale: 0
 --- !u!114 &114845267922520172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1300,7 +1300,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114528926396501184}
-        m_MethodName: Unpause
+        m_MethodName: quitToDesktop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

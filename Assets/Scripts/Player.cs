@@ -391,7 +391,6 @@ public class Player : MonoBehaviour
 
             if(Input.GetKeyDown(KeyCode.B))
             {
-                Debug.Log("in save oint");
                 SaveLoad.Save();
             }
         }
