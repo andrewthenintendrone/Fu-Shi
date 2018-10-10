@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 50845562633837662}
   - component: {fileID: 114213161651225896}
   - component: {fileID: 114036603869512214}
-  - component: {fileID: 210826858089037448}
+  - component: {fileID: 210962002197847602}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -3143,7 +3143,6 @@ MonoBehaviour:
     maxAirSpeed: 16
     acceleration: 70
     deceleration: 2
-    slowDeceleration: 0
     jumpForce: 22
     jumpCount: 2
     gravityScale: 7
@@ -3158,7 +3157,7 @@ MonoBehaviour:
   canTurnIntoInkBlot: 1
   facingRight: 1
   rumblePower: 1
-  rumbleTime: 0.2
+  rumbleTime: 0.3
 --- !u!137 &137681160179574586
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -3256,7 +3255,7 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.14768839, y: -0.32446006, z: 0.0028008223}
     m_Extent: {x: 1.8070207, y: 0.7731818, z: 0.38290048}
   m_DirtyAABB: 0
---- !u!210 &210826858089037448
+--- !u!210 &210962002197847602
 SortingGroup:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
