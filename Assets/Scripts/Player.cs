@@ -103,6 +103,8 @@ public class Player : MonoBehaviour
         character = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
         character.onTriggerEnterEvent += triggerEnterFunction;
+        character.onTriggerStayEvent += triggerStayFunction;
+        character.onTriggerExitEvent += triggerExitFunction;
         character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
 
@@ -370,7 +372,6 @@ public class Player : MonoBehaviour
             {
                 Utils.updateCheckpoint(col.transform.position);
                 Utils.Health = Utils.maxHealth;
-                SaveLoad.Save();
             }
             else if (col.tag == "collectable")
             {
@@ -379,6 +380,28 @@ public class Player : MonoBehaviour
                 Utils.updateCollectableText();
                 col.gameObject.SetActive(false);
             }
+        }
+    }
+
+    public void triggerStayFunction(Collider2D col)
+    {
+        if(col.tag == "savepoint")
+        {
+            col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+
+            if(Input.GetKeyDown(KeyCode.B))
+            {
+                Debug.Log("in save oint");
+                SaveLoad.Save();
+            }
+        }
+    }
+
+    public void triggerExitFunction(Collider2D col)
+    {
+        if (col.tag == "savepoint")
+        {
+            col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
         }
     }
 
