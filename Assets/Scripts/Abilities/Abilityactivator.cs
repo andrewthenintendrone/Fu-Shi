@@ -27,12 +27,6 @@ public class Abilityactivator : MonoBehaviour
     [Tooltip("this is the switch determining whether the player can use the time reverse ability")]
     public bool hasTimeAbility = false;
 
-    // commented out until it gets used
-    // I hate errors
-    //[SerializeField]
-    //[Tooltip("the distance away from the fox's centre that the ink ability starts")]
-    //private float offsetdistance = 0f;
-
     // can the player use ink (only once in the air)
     [HideInInspector]
     public bool canUseInkAbility = true;
@@ -40,7 +34,15 @@ public class Abilityactivator : MonoBehaviour
     [SerializeField]
     [Tooltip("extra height gained by using ink ability in the air")]
     private float extraHeightFromInk;
-	
+
+    [SerializeField]
+    [Tooltip("how long after using the time ability before it can be used again")]
+    private float timeAbilityCooldown;
+
+    // can the player use the time ability (cooldown)
+    [HideInInspector]
+    private bool canUseTimeAbility = true;
+
 	void Update ()
     {
         if(!Utils.gamePaused)
@@ -144,12 +146,20 @@ public class Abilityactivator : MonoBehaviour
     // tries to use the time ability
     public void useTimeAbility()
     {
-        if (hasTimeAbility)
+        if (hasTimeAbility && canUseTimeAbility)
         {
             // spawn time ability object prefab
             GameObject timeAbilityObject = Instantiate(timeAbilityPrefab, transform);
             timeAbilityObject.transform.position = GetComponent<Collider2D>().bounds.center;
+
+            canUseTimeAbility = false;
+            Invoke("enableTimeAbility", timeAbilityCooldown);
         }
+    }
+
+    private void enableTimeAbility()
+    {
+        canUseTimeAbility = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
