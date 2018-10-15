@@ -2,42 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public static class SoundManager
 {
     [Tooltip("the source for playing effects on the player")]
-    public AudioSource efxSource;   
+    public static AudioSource efxSource;   
     [Tooltip("the source for playing music")]
-    public AudioSource MusicSource;
+    public static AudioSource MusicSource;
     [Tooltip("lowest pitch the effects will be modulated to")]
     [SerializeField]
-    private float lowPitchRange = .95f;
+    private static float lowPitchRange = .95f;
     [Tooltip("highest pitch the effects will be modulated to")]
     [SerializeField]
-    private float highPitchRange = 1.05f;
+    private static float highPitchRange = 1.05f;
     [SerializeField]
-    private float MusicLoopPoint = 5.142f;
+    private static float MusicLoopPoint = 5.142f;
     
-    public bool playMusic = false;
+    public static bool playMusic = false;
 
-    public AudioClip music;
-
-    public static SoundManager instance = null;
+    public static AudioClip music;
 
 
-    private void Awake()
+
+    private static void Init()
     {
-        //singleton setup
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-        //prevent this object from self destructing on startup in case it thinks it already exists
 
-        DontDestroyOnLoad(gameObject);
+        efxSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponents<AudioSource>()[0];
+        MusicSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponents<AudioSource>()[1];
 
         if (!MusicSource.isPlaying && playMusic)
         {
@@ -47,14 +37,14 @@ public class SoundManager : MonoBehaviour
     }
 
     //play one audioclip at normal pitch once
-    public void playSingle(AudioClip clip)
+    public static void playSingle(AudioClip clip)
     {
         efxSource.clip = clip;
 
         efxSource.Play();
     }
 
-    public void RandomizeSFX(params AudioClip[] clips)
+    public static void PlayRandomSFX(params AudioClip[] clips)
     {
 
         //Generate a random number between 0 and the length of our array of clips passed in.
@@ -73,7 +63,7 @@ public class SoundManager : MonoBehaviour
         efxSource.Play();
     }
 
-    public void Update()
+    public static void Update()
     {
 
         if(!MusicSource.isPlaying && playMusic)
