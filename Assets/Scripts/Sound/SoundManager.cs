@@ -23,7 +23,7 @@ public static class SoundManager
 
 
 
-    private static void Init()
+    public static void Init()
     {
 
         efxSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponents<AudioSource>()[0];
