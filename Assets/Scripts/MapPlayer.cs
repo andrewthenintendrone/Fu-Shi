@@ -18,7 +18,7 @@ public class MapPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.tag == "Player")
+        if(collider.gameObject == Utils.getPlayer())
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GameObject.Find("MapCam").transform.position = new Vector3(transform.position.x + cameraPosition.x, transform.position.y + cameraPosition.y, -10);
@@ -28,7 +28,7 @@ public class MapPlayer : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.tag == "Player")
+        if (collider.gameObject == Utils.getPlayer())
         {
             GetComponent<SpriteRenderer>().enabled = false;
         }

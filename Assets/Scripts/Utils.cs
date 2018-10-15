@@ -20,6 +20,9 @@ public static class Utils
     // current player health value
     private static int health;
 
+    // player reference
+    private static GameObject player = null;
+
     public static int Health
     {
         get { return health; }
@@ -64,28 +67,22 @@ public static class Utils
 
         if (!SaveLoad.Load())
         {
-            resetPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+            resetPos = getPlayer().transform.position;
         }
     }
 
     public static void resetPlayer()
     {
-        if(GameObject.FindGameObjectWithTag("Player"))
+        if (player.GetComponent<InkBlot>() != null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<InkBlot>().launch();
 
-            if (player.GetComponent<InkBlot>() != null)
-            {
-                player.GetComponent<InkBlot>().launch();
-
-                // TODO: remove spaghetti
-                player = GameObject.FindGameObjectsWithTag("Player")[1];
-            }
-
-            player.transform.position = resetPos;
-            player.GetComponent<Player>().velocity = Vector3.zero;
-            player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+            player = GameObject.FindGameObjectsWithTag("Player")[1];
         }
+
+        player.transform.position = resetPos;
+        player.GetComponent<Player>().velocity = Vector3.zero;
+        player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
     }
 
     public static void updateCheckpoint(Vector3 position)
@@ -150,5 +147,20 @@ public static class Utils
     public static void loadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+
+    // returns the player
+    public static GameObject getPlayer()
+    {
+        // find the current player gameobject
+        if(player == null)
+        {
+            if(GameObject.FindGameObjectWithTag("Player") != null)
+            {
+                player = GameObject.FindGameObjectWithTag("Player");
+            }
+        }
+
+        return player;
     }
 }

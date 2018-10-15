@@ -53,10 +53,7 @@ public class DualForwardFocusCamera : MonoBehaviour
     {
         // store component references
         cam = GetComponent<Camera>();
-        if(GameObject.FindGameObjectWithTag("Player") != null)
-        {
-            targetCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
-        }
+        targetCollider = Utils.getPlayer().GetComponent<Collider2D>();
     }
 
     // called every physics step
