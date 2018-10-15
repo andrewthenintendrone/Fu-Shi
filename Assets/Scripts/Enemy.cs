@@ -31,7 +31,6 @@ public class Enemy : MonoBehaviour
     [Tooltip("how far away from the enemy the projectile starts at")]
     private float projectileStartDistance;
 
-
     void Start ()
     {
         health = maxHealth;
@@ -80,7 +79,7 @@ public class Enemy : MonoBehaviour
                 return;
             }
 
-            Vector3 direction = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>().bounds.center - transform.position;
+            Vector3 direction = Utils.getPlayer().GetComponent<Collider2D>().bounds.center - transform.position;
 
             if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
             {

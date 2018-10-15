@@ -6,6 +6,7 @@
 		_Color1 ("Color 1", Color) = (0, 0, 0, 1)
 		_Color2("Color 2", Color) = (1, 1, 1, 1)
 		_Center("Center", Range(0, 1)) = 0.5
+		[KeywordEnum(Vertical, Horizontal, Radial)] _GradientType("GradientType", Float) = 0
 	}
 	SubShader
 	{
@@ -38,11 +39,11 @@
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 
-			// Colors
+			// Properties
 			float4 _Color1;
 			float4 _Color2;
-
 			float _Center;
+			float _GradientType;
 			
 			v2f vert (appdata v)
 			{
@@ -57,8 +58,24 @@
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv);
 
-				// create gradient using colors and uvs
-				float4 colorBlend = lerp(_Color1, _Color2, clamp(i.uv.y + _Center * 2 - 1, 0, 1));
+				float4 colorBlend = float4(1, 0, 1, 1);
+
+				// vertical gradient
+				if (_GradientType == 0)
+				{
+					colorBlend = lerp(_Color2, _Color1, clamp(i.uv.y - _Center * 2 + 1, 0, 1));
+				}
+				// horizontal gradient
+				else if (_GradientType == 1)
+				{
+					colorBlend = lerp(_Color2, _Color1, clamp(i.uv.x - _Center * 2 + 1, 0, 1));
+				}
+				// radial gradient
+				else if (_GradientType == 2)
+				{
+					float distanceFromCenter = distance(i.uv, float2(0.5, 0.5));
+					colorBlend = lerp(_Color2, _Color1, clamp(distanceFromCenter - _Center * 2 + 1, 0, 1));
+				}
 
 				return col * colorBlend;
 			}
