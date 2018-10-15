@@ -37,8 +37,7 @@ public class SoundManager : MonoBehaviour
             //Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
             Destroy(gameObject);
 
-        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
-        DontDestroyOnLoad(gameObject);
+        
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
