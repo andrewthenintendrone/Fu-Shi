@@ -10,9 +10,18 @@
 	}
 	SubShader
 	{
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+		Tags
+		{
+			"Queue"="Transparent"
+			"IgnoreProjector"="True"
+			"RenderType"="Transparent"
+			"PreviewType"="Plane"
+			"CanUseSpriteAtlas"="True"
+		}
 		LOD 100
 
+		Cull Off
+		Lighting Off
 		ZWrite Off
 		Blend SrcAlpha OneMinusSrcAlpha
 
