@@ -4,22 +4,29 @@ using UnityEngine;
 
 public class patrolmove : MonoBehaviour
 {
-    public Transform[] patrolPoints = new Transform[0];
+    [SerializeField]
+    private Transform[] patrolPoints = new Transform[0];
+
+    [SerializeField]
     [Tooltip("wether the unit will patrol or not")]
-    public bool willPatrol = false;
+    private bool willPatrol = false;
 
-   
+    [SerializeField]
     [Tooltip("speed of the unit as it moves on patrol")]
-    public float moveSpd;
-    [Tooltip("time unit waits at each patrol point position")]
-    public float hangtime = 1.0f;
-    [Tooltip ("defines how the platform will return to the start position, reversing or looping")]
-    public bool willCycle = false;
+    private float moveSpd;
 
+    [SerializeField]
+    [Tooltip("time unit waits at each patrol point position")]
+    private float hangtime = 1.0f;
+
+    [SerializeField]
+    [Tooltip ("defines how the platform will return to the start position, reversing or looping")]
+    private bool willCycle = false;
     
-    //default patrol point that object will move towards on start if moving
-  
-    public int currPatrolPoint = 0;
+    [SerializeField]
+    [Tooltip("default patrol point that object will move towards on start if moving")]
+    private int currPatrolPoint = 0;
+
     //what point is the platform trying to reach
     //private int endpoint;
     private bool freeze = false;
@@ -34,7 +41,6 @@ public class patrolmove : MonoBehaviour
             Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
             willPatrol = false;
         }
-
     }
 
 
@@ -96,7 +102,7 @@ public class patrolmove : MonoBehaviour
     {
         if (freeze)
         {
-            hangcount -= 1 * Time.fixedDeltaTime;
+            hangcount -= Time.fixedDeltaTime;
         }
         if (hangcount <= 0)
         {
@@ -111,9 +117,13 @@ public class patrolmove : MonoBehaviour
     {
         if (transform.parent == null)
         {
+            hangcount = hangtime - hangcount;
+
             goingForward = !goingForward;
 
             findNextNode();
+
+            flash(Color.blue);
         }
         else
         {
@@ -122,8 +132,11 @@ public class patrolmove : MonoBehaviour
                 if (Child.gameObject.GetComponent<patrolmove>() != null && Child.gameObject.GetComponent<patrolmove>().willPatrol)
                 {
                     patrolmove currScript = Child.gameObject.GetComponent<patrolmove>();
+                    currScript.hangcount = currScript.hangtime - currScript.hangcount;
                     currScript.goingForward = !currScript.goingForward;
                     currScript.findNextNode();
+
+                    currScript.flash(Color.blue);
                 }
                 
             }
@@ -187,4 +200,15 @@ public class patrolmove : MonoBehaviour
         }
     }
 
+    private void flash(Color color)
+    {
+        GetComponentInChildren<Renderer>().material.color = color;
+
+        Invoke("endFlash", 0.5f);
+    }
+
+    private void endFlash()
+    {
+        GetComponentInChildren<Renderer>().material.color = Color.white;
+    }
 }
