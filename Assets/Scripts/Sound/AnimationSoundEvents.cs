@@ -25,6 +25,6 @@ public class AnimationSoundEvents : MonoBehaviour {
     public void playWalkSound()
     {
         Debug.Log("Step");
-        SoundManager.PlayRandomSFX(walkPiece1,walkPiece2);
+        SoundManager.instance.PlayRandomSFX(walkPiece1,walkPiece2);
     }
 }

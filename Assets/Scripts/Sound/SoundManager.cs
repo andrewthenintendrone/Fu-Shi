@@ -5,13 +5,16 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     [Tooltip("the source for playing effects on the player")]
-    public AudioSource efxSource;   
+    private AudioSource efxSource;   
     [Tooltip("the source for playing music")]
-    public AudioSource MusicSource;
+    private AudioSource MusicSource;
     [Tooltip("lowest pitch the effects will be modulated to")]
     [SerializeField]
     private float lowPitchRange = .95f;
     [Tooltip("highest pitch the effects will be modulated to")]
+
+    public static SoundManager instance = null;
+
     [SerializeField]
     private float highPitchRange = 1.05f;
     [SerializeField]
@@ -25,9 +28,20 @@ public class SoundManager : MonoBehaviour
 
     public void Awake()
     {
+        //Check if there is already an instance of SoundManager
+        if (instance == null)
+            //if not, set it to this.
+            instance = this;
+        //If instance already exists:
+        else if (instance != this)
+            //Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
+            Destroy(gameObject);
 
-        efxSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponents<AudioSource>()[0];
-        MusicSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponents<AudioSource>()[1];
+        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
+        DontDestroyOnLoad(gameObject);
+
+        efxSource = gameObject.GetComponents<AudioSource>()[0];
+        MusicSource = gameObject.GetComponents<AudioSource>()[1];
 
         if (!MusicSource.isPlaying && playMusic)
         {
