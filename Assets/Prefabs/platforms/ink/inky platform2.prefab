@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4274424561892360}
   - component: {fileID: 61124194104865366}
   m_Layer: 9
-  m_Name: inky platform1
+  m_Name: inky platform2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1254350491267168}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36.9326, y: -9.391737, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4048608807189836}
@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inked: 0
-  inkedSurface: {fileID: 2100000, guid: c84fbc33edb85e04d86922deafed1363, type: 2}
-  cleanSurface: {fileID: 2100000, guid: f4996301c9ebbcc4da0e44478777910c, type: 2}
+  inkedSurface: {fileID: 2100000, guid: 3865808ef0898d946998690796c7861b, type: 2}
+  cleanSurface: {fileID: 2100000, guid: f249741ac00c27f49b96fe718e41b99d, type: 2}
 --- !u!212 &212384924367732530
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -124,7 +124,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: f4996301c9ebbcc4da0e44478777910c, type: 2}
+  - {fileID: 2100000, guid: f249741ac00c27f49b96fe718e41b99d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +144,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d2fd06630232fc4479b520ebdf2dc80a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7577b01798d73964aaf580ed283ff3f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
