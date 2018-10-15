@@ -27,7 +27,7 @@ public static class Utils
     {
         get { return health; }
         // update UI health sprite whenever health is set
-        set { health = value; updateHealthSprite(); }
+        set { health = Mathf.Min(value, maxHealth); updateHealthSprite(); }
     }
 
     // maximum player health

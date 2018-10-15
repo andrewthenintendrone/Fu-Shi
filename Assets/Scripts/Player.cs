@@ -373,12 +373,18 @@ public class Player : MonoBehaviour
                 Utils.updateCheckpoint(col.transform.position);
                 Utils.Health = Utils.maxHealth;
             }
+            // collectable
             else if (col.tag == "collectable")
             {
-                Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
                 Utils.numberOfCollectables++;
                 Utils.updateCollectableText();
                 col.gameObject.SetActive(false);
+            }
+            // health pickup
+            else if(col.tag == "health")
+            {
+                Utils.Health++;
+                Destroy(col.gameObject);
             }
         }
     }
