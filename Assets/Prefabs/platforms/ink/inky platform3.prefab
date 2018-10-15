@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4274424561892360}
-  - component: {fileID: 61124194104865366}
+  - component: {fileID: 60994123455225410}
   m_Layer: 9
   m_Name: inky platform3
   m_TagString: Untagged
@@ -71,8 +71,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61124194104865366
-BoxCollider2D:
+--- !u!60 &60994123455225410
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -83,7 +83,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -1.18}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -93,9 +93,20 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 4.4985332, y: 2.9122174}
+      - {x: 2.425928, y: 3.377098}
+      - {x: 0.29568672, y: 2.252336}
+      - {x: -1.8829317, y: 2.1266766}
+      - {x: -5.0432854, y: 0.8560549}
+      - {x: -1.1523933, y: 0.83424413}
+      - {x: -1.7958069, y: -0.32755888}
+      - {x: -1.2281017, y: -0.8791944}
+      - {x: 0.72784615, y: -0.7127253}
+      - {x: 1.8788543, y: 0.2708341}
+      - {x: 4.229309, y: 0.10053122}
+      - {x: 5.109105, y: 0.8167373}
 --- !u!114 &114669295532833776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4605ea4a0fbc7944bb7e26de82d21996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inked: 1
+  inked: 0
   inkedSurface: {fileID: 2100000, guid: 825859c4b6d52f74fbf09189320413d1, type: 2}
   cleanSurface: {fileID: 2100000, guid: 230018f354e79574b9ce917513eef35b, type: 2}
 --- !u!212 &212384924367732530
@@ -124,7 +135,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 825859c4b6d52f74fbf09189320413d1, type: 2}
+  - {fileID: 2100000, guid: 230018f354e79574b9ce917513eef35b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
