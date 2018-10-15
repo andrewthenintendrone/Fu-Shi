@@ -49,6 +49,8 @@ public class Fade : MonoBehaviour
 
     public void triggerFade()
     {
+        currentColor.a = 0.0f;
+
         fadingOut = true;
     }
 }
