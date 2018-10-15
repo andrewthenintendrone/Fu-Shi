@@ -24,6 +24,10 @@ public class AnimationSoundEvents : MonoBehaviour {
 
     public void playWalkSound()
     {
-        SoundManager.instance.PlayRandomSFX(walkPiece1,walkPiece2);
+        if (walkPiece1 != null)
+        {
+            SoundManager.instance.PlayRandomSFX(walkPiece1, walkPiece2);
+        }
+        
     }
 }
