@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SoundManager
+public class SoundManager : MonoBehaviour
 {
     [Tooltip("the source for playing effects on the player")]
-    public static AudioSource efxSource;   
+    public AudioSource efxSource;   
     [Tooltip("the source for playing music")]
-    public static AudioSource MusicSource;
+    public AudioSource MusicSource;
     [Tooltip("lowest pitch the effects will be modulated to")]
     [SerializeField]
-    private static float lowPitchRange = .95f;
+    private float lowPitchRange = .95f;
     [Tooltip("highest pitch the effects will be modulated to")]
     [SerializeField]
-    private static float highPitchRange = 1.05f;
+    private float highPitchRange = 1.05f;
     [SerializeField]
-    private static float MusicLoopPoint = 5.142f;
+    private float MusicLoopPoint = 5.142f;
     
-    public static bool playMusic = false;
+    public bool playMusic = false;
 
-    public static AudioClip music;
+    public AudioClip music;
 
 
 
-    public static void Init()
+    public void Awake()
     {
 
         efxSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponents<AudioSource>()[0];
@@ -37,14 +37,14 @@ public static class SoundManager
     }
 
     //play one audioclip at normal pitch once
-    public static void playSingle(AudioClip clip)
+    public void playSingle(AudioClip clip)
     {
         efxSource.clip = clip;
 
         efxSource.Play();
     }
 
-    public static void PlayRandomSFX(params AudioClip[] clips)
+    public void PlayRandomSFX(params AudioClip[] clips)
     {
 
         //Generate a random number between 0 and the length of our array of clips passed in.
@@ -63,7 +63,7 @@ public static class SoundManager
         efxSource.Play();
     }
 
-    public static void Update()
+    public void Update()
     {
 
         if(!MusicSource.isPlaying && playMusic)
