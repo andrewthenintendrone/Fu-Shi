@@ -1,6 +1,4 @@
-﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
-
-Shader "Transparent/Cutout/Diffuse Shake"
+﻿Shader "Transparent/Cutout/Diffuse Shake"
 {
 	//originally from austin Richards on unity forums
 	//https://forum.unity.com/threads/shader-moving-trees-grass-in-wind-outside-of-terrain.230911/
@@ -19,6 +17,8 @@ Shader "Transparent/Cutout/Diffuse Shake"
 	{
 		Tags{ "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
 		LOD 200
+
+		Cull Off
 
 		CGPROGRAM
 #pragma target 3.0
