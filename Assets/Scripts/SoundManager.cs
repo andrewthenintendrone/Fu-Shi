@@ -14,6 +14,10 @@ public class SoundManager : MonoBehaviour
     [Tooltip("highest pitch the effects will be modulated to")]
     [SerializeField]
     private float highPitchRange = 1.05f;
+    [SerializeField]
+    private float MusicLoopPoint = 5.142f;
+    
+    public bool playMusic = false;
 
     public AudioClip music;
 
@@ -34,6 +38,12 @@ public class SoundManager : MonoBehaviour
         //prevent this object from self destructing on startup in case it thinks it already exists
 
         DontDestroyOnLoad(gameObject);
+
+        if (!MusicSource.isPlaying && playMusic)
+        {
+            MusicSource.Play();
+        }
+
     }
 
     //play one audioclip at normal pitch once
@@ -65,10 +75,14 @@ public class SoundManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) == true)
+
+        if(!MusicSource.isPlaying && playMusic)
         {
-            playSingle(music);
+            MusicSource.time = MusicLoopPoint;
+            MusicSource.Play();
         }
     }
+
+
 
 }
