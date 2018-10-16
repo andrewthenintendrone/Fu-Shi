@@ -91,6 +91,16 @@ public class TimeAbilityObject : MonoBehaviour
                         hasBeenUsed = true;
                     }
                 }
+                if (hits[i].collider.gameObject.GetComponentInParent<PressurePlate>() != null)
+                {
+                    if (hits[i].collider.gameObject.GetComponentInParent<PressurePlate>().linkedDoor.hasBeenOpened)
+                    {
+                        hits[i].collider.gameObject.GetComponentInParent<PressurePlate>().linkedDoor.isOpen = true;
+                        hits[i].collider.gameObject.GetComponentInParent<PressurePlate>().linkedDoor.stuckOpen = true;
+                        hasReversed = true;
+                        hasBeenUsed = true;
+                    }
+                }
             }
         }
     }
