@@ -44,6 +44,7 @@ public class SoundManager : MonoBehaviour
 
         if (!MusicSource.isPlaying && playMusic)
         {
+            MusicSource.clip = music;
             MusicSource.Play();
         }
 
