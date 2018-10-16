@@ -22,7 +22,7 @@ public class MapPlayer : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GameObject.Find("MapCam").transform.position = new Vector3(transform.position.x + cameraPosition.x, transform.position.y + cameraPosition.y, -10);
-            GameObject.Find("MapCam").GetComponent<Camera>().orthographicSize = Mathf.Floor(cameraOrthoScale);
+            GameObject.Find("MapCam").GetComponent<Camera>().orthographicSize = Mathf.Floor(cameraOrthoScale) / 2;
         }
     }
 
