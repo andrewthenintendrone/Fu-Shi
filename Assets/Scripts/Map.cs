@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class MapPlayer : MonoBehaviour
+public class Map : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("map camera position for this room.")]
@@ -18,7 +18,7 @@ public class MapPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject == Utils.getPlayer())
+        if(collider.tag == "Player")
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GameObject.Find("MapCam").transform.position = new Vector3(transform.position.x + cameraPosition.x, transform.position.y + cameraPosition.y, -10);
@@ -28,7 +28,7 @@ public class MapPlayer : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject == Utils.getPlayer())
+        if (collider.tag == "Player")
         {
             GetComponent<SpriteRenderer>().enabled = false;
         }
