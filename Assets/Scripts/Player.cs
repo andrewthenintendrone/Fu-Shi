@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
         character.onTriggerEnterEvent += triggerEnterFunction;
         character.onTriggerStayEvent += triggerStayFunction;
         character.onTriggerExitEvent += triggerExitFunction;
-        character.onControllerCollidedEvent += collisionFunction;
+        //character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
 
         Utils.Init();
@@ -278,7 +278,7 @@ public class Player : MonoBehaviour
         canTurnIntoInkBlot = true;
     }
 
-    public void collisionFunction(RaycastHit2D hitInfo)
+    public void OnCollisionEnter2D(Collision2D hitInfo)
     {
         if(!Utils.gamePaused)
         {
