@@ -11,16 +11,15 @@ public static class SaveLoad
     [System.Serializable]
     public class SaveData
     {
-        public Vector3 currentPosition;
+        public float xPosition, yPosition;
         public bool hasInkAbility;
         public bool hasTimeAbility;
         public List<bool> collectables;
 
         public SaveData()
         {
-            currentPosition = Vector3.zero;
-            hasInkAbility = false;
-            hasTimeAbility = false;
+            xPosition = yPosition = 0;
+            hasInkAbility = hasTimeAbility = false;
             collectables = new List<bool>();
         }
     }
@@ -47,7 +46,8 @@ public static class SaveLoad
         }
 
         // store position
-        saveData.currentPosition = Utils.resetPos;
+        saveData.xPosition = Utils.resetPos.x;
+        saveData.yPosition = Utils.resetPos.y;
 
         // store which abilities 
         saveData.hasInkAbility = GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasInkAbility;
@@ -67,12 +67,6 @@ public static class SaveLoad
         // serialize data to save file
         BinaryFormatter bf = new BinaryFormatter();
 
-        // use surrogate selector (otherwise Vectors won't serialize)
-        SurrogateSelector surrogateSelector = new SurrogateSelector();
-        Vector3SerializationSurrogate vector3SS = new Vector3SerializationSurrogate();
-        surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
-        bf.SurrogateSelector = surrogateSelector;
-
         FileStream file = File.Create(Application.persistentDataPath + "/saveGame.fox");
         bf.Serialize(file, saveData);
         file.Close();
@@ -87,18 +81,12 @@ public static class SaveLoad
         {
             BinaryFormatter bf = new BinaryFormatter();
 
-            // use surrogate selector (otherwise Vectors won't serialize)
-            SurrogateSelector surrogateSelector = new SurrogateSelector();
-            Vector3SerializationSurrogate vector3SS = new Vector3SerializationSurrogate();
-            surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
-            bf.SurrogateSelector = surrogateSelector;
-
             FileStream file = File.Open(Application.persistentDataPath + "/saveGame.fox", FileMode.Open);
             saveData = (SaveData)bf.Deserialize(file);
             file.Close();
 
             // place player
-            Utils.resetPos = saveData.currentPosition;
+            Utils.resetPos = new Vector3(saveData.xPosition, saveData.yPosition, 0);
             Utils.resetPlayer();
 
             // set if abilities have been obtained
