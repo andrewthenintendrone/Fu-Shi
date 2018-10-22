@@ -402,7 +402,7 @@ public class Player : MonoBehaviour
     {
         if(col.tag == "savepoint")
         {
-            col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            col.GetComponent<SavePoint>().nearPlayer = true;
 
             if(Input.GetKeyDown(KeyCode.B))
             {
@@ -415,7 +415,7 @@ public class Player : MonoBehaviour
     {
         if (col.tag == "savepoint")
         {
-            col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+            col.gameObject.GetComponent<SavePoint>().nearPlayer = false;
         }
     }
 
