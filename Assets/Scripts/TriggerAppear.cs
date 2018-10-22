@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class TriggerAppear : MonoBehaviour
 {
-    public GameObject Text;
+    [SerializeField]
+    [Tooltip("distance to be completely invisible")]
+    private float transparentDistance;
 
+    [SerializeField]
+    [Tooltip("distance to be completely opaque")]
+    private float opaqueDistance;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    [SerializeField]
+    private Color color;
+
+    private void Start()
     {
-        if (collision.gameObject.tag == ("Player"))
-        {
-            Text.SetActive(true);
-
-        
-        }
+        color = GetComponent<Renderer>().material.color;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void Update()
     {
-        if (collision.gameObject.tag == ("Player"))
-        {
-            Text.SetActive(false);
-        }
+        float distToPlayer = Vector3.Magnitude(Utils.getPlayer().transform.position - transform.position);
+
+        color.a = 1 - Mathf.Clamp01((distToPlayer - opaqueDistance) / (transparentDistance - opaqueDistance));
+
+        GetComponent<Renderer>().material.color = color;
     }
-
-
 }
