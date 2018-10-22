@@ -8,10 +8,16 @@ public class AnimationSoundEvents : MonoBehaviour {
     private AudioClip walkPiece1;
     [SerializeField]
     private AudioClip walkPiece2;
+    [SerializeField]
+    private AudioClip walkPiece3;
+    [SerializeField]
+    private AudioClip walkPiece4;
 
+    [SerializeField]
+    private AudioClip jumpPiece;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
 		
 	}
@@ -26,8 +32,13 @@ public class AnimationSoundEvents : MonoBehaviour {
     {
         if (walkPiece1 != null)
         {
-            SoundManager.instance.PlayRandomSFX(walkPiece1, walkPiece2);
+            SoundManager.instance.PlayRandomSFX(walkPiece1, walkPiece2,walkPiece3,walkPiece4);
         }
         
+    }
+
+    public void playJumpSound()
+    {
+        SoundManager.instance.PlayRandomSFX(jumpPiece);
     }
 }
