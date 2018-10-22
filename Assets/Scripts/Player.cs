@@ -372,6 +372,7 @@ public class Player : MonoBehaviour
             {
                 Utils.updateCheckpoint(col.transform.position);
                 Utils.Health = Utils.maxHealth;
+                SaveLoad.Save();
             }
             // collectable
             else if (col.tag == "collectable")
@@ -403,11 +404,6 @@ public class Player : MonoBehaviour
         if(col.tag == "savepoint")
         {
             col.GetComponent<SavePoint>().nearPlayer = true;
-
-            if(Input.GetKeyDown(KeyCode.B))
-            {
-                SaveLoad.Save();
-            }
         }
     }
 
