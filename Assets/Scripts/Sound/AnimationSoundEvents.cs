@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class AnimationSoundEvents : MonoBehaviour {
 
-    [SerializeField]
-    private AudioClip walkPiece1;
-    [SerializeField]
-    private AudioClip walkPiece2;
-    [SerializeField]
-    private AudioClip walkPiece3;
-    [SerializeField]
-    private AudioClip walkPiece4;
+    private AudioClip[] walkSounds;
+    private AudioClip[] jumpSounds;
+    
 
     [SerializeField]
     private AudioClip jumpPiece;
@@ -19,7 +14,8 @@ public class AnimationSoundEvents : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-		
+        walkSounds = Resources.LoadAll<AudioClip>("walk");
+        jumpSounds = Resources.LoadAll<AudioClip>("jump");
 	}
 	
 	// Update is called once per frame
@@ -30,15 +26,11 @@ public class AnimationSoundEvents : MonoBehaviour {
 
     public void playWalkSound()
     {
-        if (walkPiece1 != null)
-        {
-            SoundManager.instance.PlayRandomSFX(walkPiece1, walkPiece2,walkPiece3,walkPiece4);
-        }
-        
+        SoundManager.instance.PlayRandomSFX(walkSounds);
     }
 
     public void playJumpSound()
     {
-        SoundManager.instance.PlayRandomSFX(jumpPiece);
+        SoundManager.instance.PlayRandomSFX(jumpSounds);
     }
 }

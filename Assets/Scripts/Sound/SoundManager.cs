@@ -58,7 +58,7 @@ public class SoundManager : MonoBehaviour
         efxSource.Play();
     }
 
-    public void PlayRandomSFX(params AudioClip[] clips)
+    public void PlayRandomSFX(AudioClip[] clips)
     {
 
         //Generate a random number between 0 and the length of our array of clips passed in.
