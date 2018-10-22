@@ -8,14 +8,12 @@ public class AnimationOnLanding : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-       //Debug.Log("stepped");
-        animator.SetTrigger("JumpedOn");
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        animator.SetTrigger("JumpedOn");
+        if (collision.gameObject.transform.position.y >= GetComponent<Collider2D>().bounds.center.y)
+        {
+            animator.SetTrigger("JumpedOn");
+        }
     }
 }
