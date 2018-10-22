@@ -87,6 +87,14 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void setFXVolume()
+    {
 
+    }
+
+    public void setMusicVolume()
+    {
+
+    }
 
 }
