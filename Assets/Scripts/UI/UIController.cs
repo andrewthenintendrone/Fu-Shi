@@ -19,6 +19,12 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject controlsPanel;
 
+    private GameObject autoSaveIcon;
+
+    [SerializeField]
+    [Tooltip("how long to show the fake autosave icon for")]
+    private float autosaveTime;
+
     private bool pauseAxisHeld = false;
 
     enum EXITTYPE
@@ -35,6 +41,8 @@ public class UIController : MonoBehaviour
         pauseScreen.SetActive(false);
         confirmationScreen.SetActive(false);
         controlsPanel.SetActive(false);
+        autoSaveIcon = GameObject.Find("FakeSaveIcon");
+        autoSaveIcon.SetActive(false);
     }
 
     void Update ()
@@ -142,5 +150,16 @@ public class UIController : MonoBehaviour
     {
         GameObject.Find("resume button").GetComponent<Button>().Select();
         confirmationScreen.SetActive(false);
+    }
+
+    public void showFakeSave()
+    {
+        autoSaveIcon.SetActive(true);
+        Invoke("hideFakeSaveIcon", autosaveTime);
+    }
+
+    private void hideFakeSaveIcon()
+    {
+        autoSaveIcon.SetActive(false);
     }
 }

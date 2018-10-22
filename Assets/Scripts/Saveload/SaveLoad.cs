@@ -76,6 +76,9 @@ public static class SaveLoad
         bf.Serialize(file, saveData);
         file.Close();
 
+        // show fake autosave icon
+        GameObject.FindObjectOfType<UIController>().showFakeSave();
+
         return true;
     }
 
