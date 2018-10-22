@@ -383,8 +383,17 @@ public class Player : MonoBehaviour
             // health pickup
             else if(col.tag == "health")
             {
-                Utils.Health++;
-                Destroy(col.gameObject);
+                if(col.name == "extraHealth")
+                {
+                    Utils.maxHealth = 6;
+                    Utils.Health = 6;
+                    Destroy(col.gameObject);
+                }
+                else
+                {
+                    Utils.Health++;
+                    Destroy(col.gameObject);
+                }
             }
         }
     }

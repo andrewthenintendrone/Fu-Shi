@@ -15,12 +15,14 @@ public static class SaveLoad
         public bool hasInkAbility;
         public bool hasTimeAbility;
         public List<bool> collectables;
+        public bool hasExtraHealth;
 
         public SaveData()
         {
             xPosition = yPosition = 0;
             hasInkAbility = hasTimeAbility = false;
             collectables = new List<bool>();
+            hasExtraHealth = false;
         }
     }
 
@@ -63,6 +65,9 @@ public static class SaveLoad
                 saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
             }
         }
+
+        // determine if the player has unlocked extra health
+        saveData.hasExtraHealth = Utils.maxHealth > 3;
 
         // serialize data to save file
         BinaryFormatter bf = new BinaryFormatter();
@@ -127,6 +132,18 @@ public static class SaveLoad
                 }
 
                 Utils.updateCollectableText();
+            }
+
+            // apply max health
+            Utils.maxHealth = saveData.hasExtraHealth ? 6 : 3;
+
+            // remove the extra health object
+            if(saveData.hasExtraHealth)
+            {
+                if(GameObject.Find("extraHealth") != null)
+                {
+                    GameObject.Destroy(GameObject.Find("extraHealth"));
+                }
             }
 
             return true;

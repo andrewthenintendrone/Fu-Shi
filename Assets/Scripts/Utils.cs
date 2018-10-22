@@ -15,7 +15,8 @@ public static class Utils
     public static bool gamePaused = false;
 
     // reference to health ui image
-    private static Image healthImage;
+    private static Image healthImage1;
+    private static Image healthImage2;
 
     // current player health value
     private static int health;
@@ -51,13 +52,17 @@ public static class Utils
         {
             collectableText = GameObject.Find("collectableText").GetComponent<Text>();
         }
-        if (GameObject.Find("Health") != null)
+        if (GameObject.Find("Health1") != null)
         {
-            healthImage = GameObject.Find("Health").GetComponent<Image>();
+            healthImage1 = GameObject.Find("Health1").GetComponent<Image>();
+        }
+        if (GameObject.Find("Health2") != null)
+        {
+            healthImage2 = GameObject.Find("Health2").GetComponent<Image>();
         }
 
         // load the health sprites
-        healthImages = Resources.LoadAll<Sprite>("health_strip");
+        healthImages = Resources.LoadAll<Sprite>("newHealthUI");
 
         // maximum health is determined y how many health sprites there are
         maxHealth = healthImages.Length - 1;
@@ -123,7 +128,7 @@ public static class Utils
 
     private static void updateHealthSprite()
     {
-        if (healthImage != null)
+        if (healthImage1 != null && healthImage2 != null)
         {
             if(Health <= 0)
             {
@@ -132,9 +137,26 @@ public static class Utils
                 return;
             }
 
-            if (Health > 0 && Health <= maxHealth)
+            // adjust if the player has the extra health
+            if(maxHealth > 3)
             {
-                healthImage.sprite = healthImages[Health];
+                healthImage1.GetComponent<RectTransform>().anchoredPosition = Vector3.left * 128;
+                healthImage2.enabled = true;
+            }
+            else
+            {
+                healthImage1.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+                healthImage2.enabled = false;
+            }
+
+            if (Health > 0 && Health < 3)
+            {
+                healthImage1.sprite = healthImages[Health];
+            }
+            else if(Health >= 3 && Health <= maxHealth)
+            {
+                healthImage1.sprite = healthImages[3];
+                healthImage2.sprite = healthImages[health - 3];
             }
             else
             {
