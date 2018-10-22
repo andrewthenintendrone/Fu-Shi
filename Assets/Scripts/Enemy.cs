@@ -42,10 +42,7 @@ public class Enemy : MonoBehaviour
 	
 	void Update ()
     {
-        if(!Utils.gamePaused)
-        {
-            checkDead();
-        }
+        checkDead();
 	}
 
     public void checkDead()

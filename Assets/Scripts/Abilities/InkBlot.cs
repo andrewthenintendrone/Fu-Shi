@@ -80,11 +80,6 @@ public class InkBlot : MonoBehaviour
                 launch();
             }
         }
-
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Utils.gamePaused = !Utils.gamePaused;
-        }
     }
 
     public void launch()
