@@ -882,6 +882,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4164789785419290}
+  - component: {fileID: 114904373441953084}
   m_Layer: 8
   m_Name: Spine_01_JNT
   m_TagString: Untagged
@@ -2015,7 +2016,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1155140366454962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.3, y: -9, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children:
   - {fileID: 4319899132915956}
@@ -3036,18 +3037,37 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Radius: 0
+  m_Radius: 0.36
   m_RadiusDistrib:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0.041625977
+      value: 0.2960632
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+    - serializedVersion: 2
+      time: 0.4825083
+      value: 0.80793506
+      inSlope: 0.3400519
+      outSlope: 0.3400519
+      tangentMode: 136
+    - serializedVersion: 2
+      time: 0.95381457
+      value: 0.8854829
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   m_EndLength: 0
   m_EndOffset: {x: 0, y: 0, z: 0}
   m_Gravity: {x: 0, y: 0, z: 0}
   m_Force: {x: 0, y: 0, z: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 114904373441953084}
   m_Exclusions:
   - {fileID: 4788422472185564}
   m_FreezeAxis: 0
@@ -3135,11 +3155,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a4fac96723ec943a07e583571a7b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkPiece1: {fileID: 8300000, guid: 46fc3c35653324c4d9bbb2e194dd6bb1, type: 3}
-  walkPiece2: {fileID: 8300000, guid: 04b1c3a8cadad9441bf10d1bc4734775, type: 3}
-  walkPiece3: {fileID: 8300000, guid: 05e8e00d28cd4be4d9750a18bd267afb, type: 3}
-  walkPiece4: {fileID: 8300000, guid: 7afd13412c3cb754694b28ba579bdce9, type: 3}
   jumpPiece: {fileID: 8300000, guid: 788e6e972053d074ba751759583a15f0, type: 3}
+--- !u!114 &114904373441953084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1539532357336902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baedd976e12657241bf7ff2d1c685342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Direction: 0
+  m_Center: {x: -0.45, y: -0.38, z: 0}
+  m_Bound: 0
+  m_Radius: 0.49
+  m_Height: 1.84
 --- !u!114 &114962643873500584
 MonoBehaviour:
   m_ObjectHideFlags: 1
