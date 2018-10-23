@@ -79,8 +79,9 @@ public static class Utils
     public static void KillPlayer()
     {
         // make sure the player is a fox not an ink blot
-        if (player.GetComponent<InkBlot>() != null)
+        if (getPlayer().GetComponent<InkBlot>() != null)
         {
+            Debug.Log(player.name);
             player.GetComponent<InkBlot>().launch();
 
             player = GameObject.FindObjectOfType<Player>().gameObject;
@@ -193,12 +194,9 @@ public static class Utils
     public static GameObject getPlayer()
     {
         // find the current player gameobject
-        if(player == null)
+        if(GameObject.FindGameObjectWithTag("Player") != null)
         {
-            if(GameObject.FindGameObjectWithTag("Player") != null)
-            {
-                player = GameObject.FindGameObjectWithTag("Player");
-            }
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         return player;

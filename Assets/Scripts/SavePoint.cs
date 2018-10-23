@@ -13,7 +13,12 @@ public class SavePoint : MonoBehaviour
     private float fade = 0.0f;
 
     [SerializeField]
-    private float fadeSpeed;
+    [Tooltip("how many seconds it takes to fade in")]
+    private float fadeInSpeed;
+
+    [SerializeField]
+    [Tooltip("how many seconds it takes to fade out")]
+    private float fadeOutSpeed;
 
     [HideInInspector]
     public bool nearPlayer = false;
@@ -28,11 +33,11 @@ public class SavePoint : MonoBehaviour
     {
         if(nearPlayer)
         {
-            fade = Mathf.Min(1.0f, fade + Time.deltaTime * fadeSpeed);
+            fade = Mathf.Min(1.0f, fade + Time.deltaTime / fadeInSpeed);
         }
         else
         {
-            fade = Mathf.Max(0.0f, fade - Time.deltaTime * fadeSpeed);
+            fade = Mathf.Max(0.0f, fade - Time.deltaTime / fadeOutSpeed);
         }
 
         GetComponent<SpriteRenderer>().material.SetFloat("_Fade", fade);

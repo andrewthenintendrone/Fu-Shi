@@ -108,9 +108,6 @@ public class InkBlot : MonoBehaviour
         // play the animation on the leaf
         transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
 
-        // ???
-        Utils.Health = Utils.Health;
-
         // destroy this gameobject
         Destroy(gameObject);
     }

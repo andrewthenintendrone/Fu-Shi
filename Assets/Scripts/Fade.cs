@@ -19,8 +19,12 @@ public class Fade : MonoBehaviour
     private FADETYPE currentFadeType = FADETYPE.IN;
 
     [SerializeField]
-    [Tooltip("time it takes to fade in / out in seconds")]
-    private float fadeTime = 1.0f;
+    [Tooltip("time it takes to fade out seconds")]
+    private float fadeOutTime = 1.0f;
+
+    [SerializeField]
+    [Tooltip("time it takes to fade in in seconds")]
+    private float fadeInTime = 1.0f;
 
     private void Start()
     {
@@ -37,7 +41,7 @@ public class Fade : MonoBehaviour
         switch (currentFadeType)
         {
             case FADETYPE.IN:
-                currentColor.a = Mathf.Max(currentColor.a - Time.deltaTime / fadeTime, 0.0f);
+                currentColor.a = Mathf.Max(currentColor.a - Time.deltaTime / fadeInTime, 0.0f);
 
                 if (currentColor.a == 0.0f)
                 {
@@ -45,7 +49,7 @@ public class Fade : MonoBehaviour
                 }
                 break;
             case FADETYPE.OUT:
-                currentColor.a = Mathf.Min(currentColor.a + Time.deltaTime / fadeTime, 1.0f);
+                currentColor.a = Mathf.Min(currentColor.a + Time.deltaTime / fadeOutTime, 1.0f);
 
                 if (currentColor.a == 1.0f)
                 {
