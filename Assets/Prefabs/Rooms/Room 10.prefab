@@ -1576,6 +1576,7 @@ GameObject:
   - component: {fileID: 4667551751445918}
   - component: {fileID: 212348262169850500}
   - component: {fileID: 61779955590059112}
+  - component: {fileID: 114927330838892722}
   m_Layer: 10
   m_Name: savepoint
   m_TagString: savepoint
@@ -31733,6 +31734,21 @@ MonoBehaviour:
   inked: 0
   inkedSurface: {fileID: 2100000, guid: c84fbc33edb85e04d86922deafed1363, type: 2}
   cleanSurface: {fileID: 2100000, guid: f4996301c9ebbcc4da0e44478777910c, type: 2}
+--- !u!114 &114927330838892722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1148479458324354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a8a43fb5e77634797ad42926de3781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite1: {fileID: 2800000, guid: 42a0e9f6df8622e4092bd69ac37432aa, type: 3}
+  sprite2: {fileID: 2800000, guid: 1371efc81675547449ab139658de8b99, type: 3}
+  fadeSpeed: 0
+  nearPlayer: 0
 --- !u!114 &114927496182731956
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -33163,7 +33179,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -36507,7 +36523,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40775,7 +40791,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41875,7 +41891,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -42183,7 +42199,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

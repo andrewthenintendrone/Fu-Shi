@@ -1575,6 +1575,7 @@ GameObject:
   - component: {fileID: 4908456379240626}
   - component: {fileID: 212175817281457682}
   - component: {fileID: 61856626905084884}
+  - component: {fileID: 114948728475340270}
   m_Layer: 10
   m_Name: savepoint (1)
   m_TagString: savepoint
@@ -2509,6 +2510,7 @@ GameObject:
   - component: {fileID: 4313554673496752}
   - component: {fileID: 212329948789967740}
   - component: {fileID: 61359249174791756}
+  - component: {fileID: 114854887757059942}
   m_Layer: 10
   m_Name: savepoint (2)
   m_TagString: savepoint
@@ -3626,6 +3628,7 @@ GameObject:
   - component: {fileID: 4692017143285276}
   - component: {fileID: 212116733775446262}
   - component: {fileID: 61270124946864150}
+  - component: {fileID: 114616874955062374}
   m_Layer: 10
   m_Name: savepoint (3)
   m_TagString: savepoint
@@ -15939,6 +15942,21 @@ MonoBehaviour:
   inked: 1
   inkedSurface: {fileID: 2100000, guid: c84fbc33edb85e04d86922deafed1363, type: 2}
   cleanSurface: {fileID: 2100000, guid: f4996301c9ebbcc4da0e44478777910c, type: 2}
+--- !u!114 &114616874955062374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1490084323405916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a8a43fb5e77634797ad42926de3781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite1: {fileID: 2800000, guid: 42a0e9f6df8622e4092bd69ac37432aa, type: 3}
+  sprite2: {fileID: 2800000, guid: 1371efc81675547449ab139658de8b99, type: 3}
+  fadeSpeed: 1
+  nearPlayer: 0
 --- !u!114 &114652437246182126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16054,6 +16072,21 @@ MonoBehaviour:
   inked: 1
   inkedSurface: {fileID: 2100000, guid: c84fbc33edb85e04d86922deafed1363, type: 2}
   cleanSurface: {fileID: 2100000, guid: f4996301c9ebbcc4da0e44478777910c, type: 2}
+--- !u!114 &114854887757059942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1332772613327632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a8a43fb5e77634797ad42926de3781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite1: {fileID: 2800000, guid: 42a0e9f6df8622e4092bd69ac37432aa, type: 3}
+  sprite2: {fileID: 2800000, guid: 1371efc81675547449ab139658de8b99, type: 3}
+  fadeSpeed: 1
+  nearPlayer: 0
 --- !u!114 &114920301790509256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16077,6 +16110,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41c7a7d0a4af9e45b50ad380a85a156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114948728475340270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1210881196590918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a8a43fb5e77634797ad42926de3781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite1: {fileID: 2800000, guid: 42a0e9f6df8622e4092bd69ac37432aa, type: 3}
+  sprite2: {fileID: 2800000, guid: 1371efc81675547449ab139658de8b99, type: 3}
+  fadeSpeed: 1
+  nearPlayer: 0
 --- !u!212 &212006071151094762
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -18115,7 +18163,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18863,7 +18911,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21415,7 +21463,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
