@@ -31,16 +31,17 @@ public class enemyProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if(Utils.Health > 0)
         {
-            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+            if (collision.gameObject.tag == "Player")
+            {
+                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+            }
+            if (collision.gameObject.GetComponent<inkBullet>() == null && collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<Inkmeleeslash>() == null)
+            {
+                Destroy(gameObject);
+            }
         }
-        if (collision.gameObject.GetComponent<inkBullet>() == null && collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<Inkmeleeslash>() == null)
-        {
-            Destroy(gameObject);
-        }
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

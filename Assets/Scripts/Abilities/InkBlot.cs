@@ -36,7 +36,7 @@ public class InkBlot : MonoBehaviour
 
     private void Update()
     {
-        if(!Utils.gamePaused)
+        if(!Utils.gamePaused && Utils.Health > 0)
         {
             player.transform.position = transform.position - new Vector3(player.GetComponent<Player>().character.boxCollider.offset.x, player.GetComponent<Player>().character.boxCollider.offset.y, 0);
 
@@ -63,7 +63,6 @@ public class InkBlot : MonoBehaviour
 
                 if (hitInfo)
                 {
-                    Debug.Log(hitInfo.collider.gameObject.name);
                     if (hitInfo.collider.gameObject.transform == transform.parent)
                     {
                         direction = hitInfo.normal.normalized;
@@ -109,6 +108,9 @@ public class InkBlot : MonoBehaviour
         // play the animation on the leaf
         transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
 
+        // ???
+        Utils.Health = Utils.Health;
+
         // destroy this gameobject
         Destroy(gameObject);
     }
@@ -123,30 +125,33 @@ public class InkBlot : MonoBehaviour
 
     private void onTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "reset")
+        if(!Utils.gamePaused && Utils.Health > 0)
         {
-            Utils.resetPlayer();
-        }
-        else if (col.tag == "enemy")
-        {
-            Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-        }
-        // sets the checkpoint
-        else if (col.tag == "checkpoint")
-        {
-            Utils.updateCheckpoint(col.transform.position);
-        }
-        else if (col.tag == "savepoint")
-        {
-            Utils.updateCheckpoint(col.transform.position);
-            SaveLoad.Save();
-        }
-        else if (col.tag == "collectable")
-        {
-            Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
-            Utils.numberOfCollectables++;
-            Utils.updateCollectableText();
-            col.gameObject.SetActive(false);
+            if (col.tag == "reset")
+            {
+                Utils.KillPlayer();
+            }
+            else if (col.tag == "enemy")
+            {
+                Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+            }
+            // sets the checkpoint
+            else if (col.tag == "checkpoint")
+            {
+                Utils.updateCheckpoint(col.transform.position);
+            }
+            else if (col.tag == "savepoint")
+            {
+                Utils.updateCheckpoint(col.transform.position);
+                SaveLoad.Save();
+            }
+            else if (col.tag == "collectable")
+            {
+                Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
+                Utils.numberOfCollectables++;
+                Utils.updateCollectableText();
+                col.gameObject.SetActive(false);
+            }
         }
     }
 }

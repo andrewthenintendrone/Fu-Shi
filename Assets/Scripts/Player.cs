@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate ()
     {
-        if(!Utils.gamePaused)
+        if(!Utils.gamePaused && Utils.Health > 0)
         {
             animator.SetFloat("playSpeed", 1.0f);
             GetComponent<DynamicBone>().enabled = true;
@@ -279,7 +279,7 @@ public class Player : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D hitInfo)
     {
-        if(!Utils.gamePaused)
+        if(!Utils.gamePaused && Utils.Health > 0)
         {
             // inkable surface
             if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
@@ -309,11 +309,11 @@ public class Player : MonoBehaviour
 
     public void triggerEnterFunction(Collider2D col)
     {
-        if(!Utils.gamePaused)
+        if(!Utils.gamePaused && Utils.Health > 0)
         {
             if (col.tag == "reset")
             {
-                Utils.resetPlayer();
+                Utils.ResetPlayer();
             }
             else if (col.tag == "enemy")
             {

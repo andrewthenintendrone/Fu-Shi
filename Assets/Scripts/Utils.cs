@@ -76,18 +76,38 @@ public static class Utils
         }
     }
 
-    public static void resetPlayer()
+    public static void KillPlayer()
     {
+        // make sure the player is a fox not an ink blot
         if (player.GetComponent<InkBlot>() != null)
         {
             player.GetComponent<InkBlot>().launch();
 
-            player = GameObject.FindGameObjectsWithTag("Player")[1];
+            player = GameObject.FindObjectOfType<Player>().gameObject;
         }
 
+        // play the death animation
+        player.gameObject.GetComponent<Animator>().SetTrigger("death");
+
+        // trigger a fade out
+        GameObject.FindObjectOfType<Fade>().triggerFadeOut();
+    }
+
+    public static void ResetPlayer()
+    {
+        // reset the players position and velocity to the last checkpoint
         player.transform.position = resetPos;
         player.GetComponent<Player>().velocity = Vector3.zero;
         player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+
+        // restore health
+        Health = maxHealth;
+
+        // teleport camera as well
+        GameObject.FindObjectOfType<DualForwardFocusCamera>().TeleportToPlayer();
+
+        // trigger the fade in
+        GameObject.FindObjectOfType<Fade>().triggerFadeIn();
     }
 
     public static void updateCheckpoint(Vector3 position)
@@ -130,13 +150,6 @@ public static class Utils
     {
         if (healthImage1 != null && healthImage2 != null)
         {
-            if(Health <= 0)
-            {
-                resetPlayer();
-                Health = maxHealth;
-                return;
-            }
-
             // adjust if the player has the extra health
             if(maxHealth > 3)
             {
@@ -149,7 +162,7 @@ public static class Utils
                 healthImage2.enabled = false;
             }
 
-            if (Health > 0 && Health < 3)
+            if (Health >= 0 && Health < 3)
             {
                 healthImage1.sprite = healthImages[Health];
             }
@@ -161,6 +174,11 @@ public static class Utils
             else
             {
                 Debug.Log("Tried to set health to " + Health.ToString() + ". Was this a mistake?");
+            }
+
+            if (Health <= 0)
+            {
+                KillPlayer();
             }
         }
     }

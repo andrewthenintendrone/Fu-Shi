@@ -143,6 +143,13 @@ public class DualForwardFocusCamera : MonoBehaviour
         }
     }
 
+    // teleports to the player when it dies
+    public void TeleportToPlayer()
+    {
+        transform.position = targetCollider.transform.position;
+        transform.position += Vector3.back * 10;
+    }
+
     #region editor
 
 #if UNITY_EDITOR

@@ -95,7 +95,7 @@ public static class SaveLoad
 
             // place player
             Utils.resetPos = new Vector3(saveData.xPosition, saveData.yPosition, 0);
-            Utils.resetPlayer();
+            Utils.ResetPlayer();
 
             // set if abilities have been obtained
             GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasInkAbility = saveData.hasInkAbility;
