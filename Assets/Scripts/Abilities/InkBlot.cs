@@ -30,6 +30,8 @@ public class InkBlot : MonoBehaviour
     {
         // get debug line renderer
         lr = GetComponent<LineRenderer>();
+
+        transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
     }
 
     private void Update()
@@ -57,10 +59,11 @@ public class InkBlot : MonoBehaviour
                 // get direction to the center of the object first
                 Vector3 directionToCenter = (transform.parent.position - transform.position).normalized;
 
-                RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, directionToCenter, 1 << LayerMask.NameToLayer("Player"));
+                RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, directionToCenter, 10, 1 << LayerMask.NameToLayer("Solid"));
 
                 if (hitInfo)
                 {
+                    Debug.Log(hitInfo.collider.gameObject.name);
                     if (hitInfo.collider.gameObject.transform == transform.parent)
                     {
                         direction = hitInfo.normal.normalized;
@@ -102,6 +105,9 @@ public class InkBlot : MonoBehaviour
         player.GetComponent<Player>().currentJumps = 1;
 
         player.GetComponent<Player>().jumpHeld = true;
+
+        // play the animation on the leaf
+        transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
 
         // destroy this gameobject
         Destroy(gameObject);

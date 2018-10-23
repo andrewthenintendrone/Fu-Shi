@@ -105,7 +105,6 @@ public class Player : MonoBehaviour
         character.onTriggerEnterEvent += triggerEnterFunction;
         character.onTriggerStayEvent += triggerStayFunction;
         character.onTriggerExitEvent += triggerExitFunction;
-        //character.onControllerCollidedEvent += collisionFunction;
         currentJumps = movementSettings.jumpCount;
 
         Utils.Init();

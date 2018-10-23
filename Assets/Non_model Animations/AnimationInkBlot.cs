@@ -9,7 +9,7 @@ public class AnimationInkBlot : MonoBehaviour {
 
     public void PlayAnimation()
     {
-        animator.SetTrigger("leaf");
+        animator.SetTrigger("Leaf");
     }
 
 }

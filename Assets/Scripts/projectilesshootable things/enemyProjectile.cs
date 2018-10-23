@@ -47,7 +47,6 @@ public class enemyProjectile : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Enemy>() != null && reversed)
         {
-            Debug.Log("hit enemy back");
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             enemy.health = Mathf.Max(enemy.health - 1, 0);
             enemy.checkDead();
