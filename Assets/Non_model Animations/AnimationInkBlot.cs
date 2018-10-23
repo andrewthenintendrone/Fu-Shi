@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class AnimationInkBlot : MonoBehaviour {
 
-    [SerializeField]
+ 
     private Animator animator;
+
+    private void Start()
+    {
+        animator = gameObject.GetComponent<Animator>();
+    }
 
     public void PlayAnimation()
     {
