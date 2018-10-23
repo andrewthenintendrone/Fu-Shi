@@ -76,7 +76,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4393943204822360}
   - component: {fileID: 20988273031054900}
-  - component: {fileID: 114375904029524638}
   m_Layer: 0
   m_Name: MapCam
   m_TagString: Untagged
@@ -90,8 +89,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1627784878632042}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -138.34908, y: -7.679817, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -15.896629, y: -8.269053, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4393943204822360}
@@ -431,20 +430,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectMaterial: {fileID: 2100000, guid: e9ae2d1c7b96944479f254a07d4dd4ab, type: 2}
---- !u!114 &114375904029524638
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1735604579250770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7120cc789688b24db439522c154d3ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layerScrollSpeed1: {x: 0.0025, y: 0}
-  layerScrollSpeed2: {x: 0.005, y: 0}
-  layerScrollSpeed3: {x: 0.01, y: 0}
 --- !u!114 &114509007905459178
 MonoBehaviour:
   m_ObjectHideFlags: 1
