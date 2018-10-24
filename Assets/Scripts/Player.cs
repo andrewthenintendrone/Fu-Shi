@@ -254,12 +254,27 @@ public class Player : MonoBehaviour
             {
                 Utils.Health = Mathf.Max(Utils.Health - 1, 0);
             }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                GetComponent<Abilityactivator>().hasInkAbility = !GetComponent<Abilityactivator>().hasInkAbility;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                GetComponent<Abilityactivator>().hasTimeAbility = !GetComponent<Abilityactivator>().hasTimeAbility;
+            }
+
+            changeColor(new Color(UnityEngine.Random.Range(0, 255) / 255.0f, UnityEngine.Random.Range(0, 255) / 255.0f, UnityEngine.Random.Range(0, 255) / 255.0f));
+        }
+        else
+        {
+            changeColor(Color.white);
         }
     }
 
     void changeColor(Color color)
     {
-        GetComponentInChildren<Renderer>().material.color = color;
+        GetComponentInChildren<SkinnedMeshRenderer>().material.color = color;
     }
 
     void enableOneWayPlatforms()
@@ -421,8 +436,6 @@ public class Player : MonoBehaviour
 
     public void UpdateAppearance()
     {
-        // color red if on the ground
-        // changeColor(character.isGrounded ? Color.red : Color.white);
         if(gameObject.activeSelf)
         {
             // rotate to match slope
