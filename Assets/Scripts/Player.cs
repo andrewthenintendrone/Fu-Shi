@@ -292,14 +292,19 @@ public class Player : MonoBehaviour
                         // ensure only one ink blot at a time
                         if (GameObject.Find("inkblot") == null)
                         {
-                            // disable this gameObject
-                            gameObject.SetActive(false);
                             GameObject newInkBlot = Instantiate(InkBlotPrefab);
                             newInkBlot.name = "inkblot";
                             newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
                             newInkBlot.transform.parent = hitInfo.transform;
                             newInkBlot.GetComponent<InkBlot>().player = gameObject;
                             newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+
+                            // disable this gameObject
+                            animator.enabled = false;
+                            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                            GetComponent<Abilityactivator>().enabled = false;
+                            GetComponent<Collider2D>().enabled = false;
+                            this.enabled = false;
                         }
                     }
                 }
