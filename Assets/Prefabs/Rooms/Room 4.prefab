@@ -112,23 +112,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1029251475083536
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4148086076756944}
-  - component: {fileID: 23904264098808806}
-  - component: {fileID: 102765967945906572}
-  m_Layer: 9
-  m_Name: Tutorial text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1033015123582524
 GameObject:
   m_ObjectHideFlags: 0
@@ -3739,6 +3722,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1951343147717598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4459508858576866}
+  - component: {fileID: 23805132468825034}
+  - component: {fileID: 102907405671966092}
+  - component: {fileID: 114552098573782754}
+  - component: {fileID: 210963462440036696}
+  m_Layer: 0
+  m_Name: Tutorial_Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1952036632016732
 GameObject:
   m_ObjectHideFlags: 1
@@ -4246,19 +4248,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4410351598567362}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4148086076756944
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1029251475083536}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -38.87, y: -9.85, z: 1.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4701969027341636}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4151211851855660
 Transform:
@@ -5308,6 +5297,19 @@ Transform:
   m_Father: {fileID: 4540100199161796}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4459508858576866
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951343147717598}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -27.87, y: -12.933334, z: 0.42144918}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4701969027341636}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4466404402431570
 Transform:
   m_ObjectHideFlags: 1
@@ -6102,7 +6104,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1702654590431456}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 377.20007, y: 152.771, z: 0}
+  m_LocalPosition: {x: 377.20007, y: 152.771, z: -0.42144918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4168950453338158}
@@ -6112,7 +6114,7 @@ Transform:
   - {fileID: 4670612644082450}
   - {fileID: 4061662065556966}
   - {fileID: 4393765574691954}
-  - {fileID: 4148086076756944}
+  - {fileID: 4459508858576866}
   - {fileID: 4817742901815558}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -7258,12 +7260,12 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!23 &23904264098808806
+--- !u!23 &23805132468825034
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1029251475083536}
+  m_GameObject: {fileID: 1951343147717598}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -8448,7 +8450,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.05311525, y: 0.05990638}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -8459,7 +8461,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1062303, y: 0.8801873}
   m_EdgeRadius: 0
 --- !u!61 &61824118768560140
 BoxCollider2D:
@@ -8934,19 +8936,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!102 &102765967945906572
+--- !u!102 &102907405671966092
 TextMesh:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1029251475083536}
+  m_GameObject: {fileID: 1951343147717598}
   m_Text: 'Press Right trigger to shoot ink '
   m_OffsetZ: 0
   m_CharacterSize: 0.1
   m_LineSpacing: 1
-  m_Anchor: 0
-  m_Alignment: 0
+  m_Anchor: 4
+  m_Alignment: 1
   m_TabSize: 4
   m_FontSize: 128
   m_FontStyle: 0
@@ -8954,7 +8956,7 @@ TextMesh:
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Color:
     serializedVersion: 2
-    rgba: 4278255422
+    rgba: 4278190080
 --- !u!114 &114016303990699198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9304,6 +9306,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e41c7a7d0a4af9e45b50ad380a85a156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114552098573782754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951343147717598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26657d2e2d566b1408e09ed784501527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparentDistance: 10.03
+  opaqueDistance: 8.02
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114562915424342872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12969,6 +12985,16 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!210 &210963462440036696
+SortingGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951343147717598}
+  m_Enabled: 1
+  m_SortingLayerID: 1373225473
+  m_SortingLayer: 3
+  m_SortingOrder: 0
 --- !u!212 &212008526330095702
 SpriteRenderer:
   m_ObjectHideFlags: 1
