@@ -87,7 +87,12 @@ public class InkBlot : MonoBehaviour
     public void launch()
     {
         // reactivate the player gameobject and set isLaunching to true
-        player.SetActive(true);
+        player.GetComponent<Animator>().enabled = true;
+        player.GetComponent<Player>().enabled = true;
+        player.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        player.GetComponent<Abilityactivator>().enabled = true;
+        player.GetComponent<Collider2D>().enabled = true;
+
         player.GetComponent<Player>().isLaunching = true;
         player.GetComponent<Player>().canTurnIntoInkBlot = false;
         player.GetComponent<Abilityactivator>().canUseInkAbility = true;

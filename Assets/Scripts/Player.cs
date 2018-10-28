@@ -254,12 +254,27 @@ public class Player : MonoBehaviour
             {
                 Utils.Health = Mathf.Max(Utils.Health - 1, 0);
             }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                GetComponent<Abilityactivator>().hasInkAbility = !GetComponent<Abilityactivator>().hasInkAbility;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                GetComponent<Abilityactivator>().hasTimeAbility = !GetComponent<Abilityactivator>().hasTimeAbility;
+            }
+
+            changeColor(new Color(UnityEngine.Random.Range(0, 255) / 255.0f, UnityEngine.Random.Range(0, 255) / 255.0f, UnityEngine.Random.Range(0, 255) / 255.0f));
+        }
+        else
+        {
+            changeColor(Color.white);
         }
     }
 
     void changeColor(Color color)
     {
-        GetComponentInChildren<Renderer>().material.color = color;
+        GetComponentInChildren<SkinnedMeshRenderer>().material.color = color;
     }
 
     void enableOneWayPlatforms()
@@ -292,14 +307,19 @@ public class Player : MonoBehaviour
                         // ensure only one ink blot at a time
                         if (GameObject.Find("inkblot") == null)
                         {
-                            // disable this gameObject
-                            gameObject.SetActive(false);
                             GameObject newInkBlot = Instantiate(InkBlotPrefab);
                             newInkBlot.name = "inkblot";
                             newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
                             newInkBlot.transform.parent = hitInfo.transform;
                             newInkBlot.GetComponent<InkBlot>().player = gameObject;
                             newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+
+                            // disable this gameObject
+                            animator.enabled = false;
+                            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                            GetComponent<Abilityactivator>().enabled = false;
+                            GetComponent<Collider2D>().enabled = false;
+                            this.enabled = false;
                         }
                     }
                 }
@@ -416,8 +436,6 @@ public class Player : MonoBehaviour
 
     public void UpdateAppearance()
     {
-        // color red if on the ground
-        // changeColor(character.isGrounded ? Color.red : Color.white);
         if(gameObject.activeSelf)
         {
             // rotate to match slope
