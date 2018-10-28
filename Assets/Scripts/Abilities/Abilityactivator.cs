@@ -43,6 +43,13 @@ public class Abilityactivator : MonoBehaviour
     [HideInInspector]
     private bool canUseTimeAbility = true;
 
+    private AudioClip inkSound;
+
+    void Start()
+    {
+        inkSound = Resources.Load<AudioClip>("Spray");
+    }
+
 	void Update ()
     {
         if(!Utils.gamePaused)
@@ -140,6 +147,9 @@ public class Abilityactivator : MonoBehaviour
             {
                 GetComponent<Player>().velocity.y = extraHeightFromInk;
             }
+
+            // play sound effect
+            SoundManager.instance.playSingle(inkSound);
         }
     }
 
