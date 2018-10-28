@@ -149,7 +149,6 @@ public class Abilityactivator : MonoBehaviour
             }
 
             // play sound effect
-            Debug.Log("playing sound");
             SoundManager.instance.playSingle(inkSound);
         }
     }

@@ -211,4 +211,21 @@ public class patrolmove : MonoBehaviour
     {
         GetComponentInChildren<Renderer>().material.color = Color.white;
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+
+        if(patrolPoints.Length > 1 && willPatrol)
+        {
+            for(int i = 1; i < patrolPoints.Length; i++)
+            {
+                Gizmos.DrawLine(patrolPoints[i - 1].position, patrolPoints[i].position);
+            }
+            if(willCycle)
+            {
+                Gizmos.DrawLine(patrolPoints[patrolPoints.Length - 1].position, patrolPoints[0].position);
+            }
+        }
+    }
 }
