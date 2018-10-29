@@ -455,16 +455,6 @@ public class Player : MonoBehaviour
             animator.SetFloat("absoluteXVelocity", Mathf.Abs(velocity.x));
             animator.SetFloat("yVelocity", velocity.y);
             animator.SetInteger("currentJumps", currentJumps);
-
-            // landing
-            if(character.collisionState.becameGroundedThisFrame)
-            {
-                animator.SetTrigger("land");
-            }
-            else
-            {
-                animator.ResetTrigger("land");
-            }
         }
 
         // scale the player model to match the direction of the players velocity

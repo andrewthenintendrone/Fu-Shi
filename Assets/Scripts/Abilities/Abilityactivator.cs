@@ -150,6 +150,9 @@ public class Abilityactivator : MonoBehaviour
 
             // play sound effect
             SoundManager.instance.playSingle(inkSound);
+
+            // play animation
+            GetComponent<Animator>().SetTrigger("inkSpray");
         }
     }
 
