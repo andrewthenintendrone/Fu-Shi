@@ -110,8 +110,11 @@ public class InkBlot : MonoBehaviour
 
         player.GetComponent<Player>().jumpHeld = true;
 
-        // play the animation on the leaf
-        transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
+        // play the animation on the leaf (if it is a leaf)
+        if(transform.parent.GetComponent<AnimationInkBlot>() != null)
+        {
+            transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
+        }
 
         // destroy this gameobject
         Destroy(gameObject);
