@@ -15,6 +15,7 @@ public static class SaveLoad
         public bool hasInkAbility;
         public bool hasTimeAbility;
         public List<bool> collectables;
+        public List<bool> wisps;
         public bool hasExtraHealth;
 
         public SaveData()
@@ -22,6 +23,7 @@ public static class SaveLoad
             xPosition = yPosition = 0;
             hasInkAbility = hasTimeAbility = false;
             collectables = new List<bool>();
+            wisps = new List<bool>();
             hasExtraHealth = false;
         }
     }
@@ -63,6 +65,16 @@ public static class SaveLoad
             foreach (Transform currentCollectable in GameObject.Find("collectables").GetComponentsInChildren<Transform>(true))
             {
                 saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
+            }
+        }
+
+        // find which wisps are active
+        saveData.wisps.Clear();
+        if (GameObject.Find("WispManager") != null)
+        {
+            foreach (WispController currentWisp in GameObject.Find("WispManager").GetComponentsInChildren<WispController>(true))
+            {
+                saveData.wisps.Add(currentWisp.gameObject.activeSelf);
             }
         }
 
@@ -135,6 +147,25 @@ public static class SaveLoad
                 }
 
                 Utils.updateCollectableText();
+            }
+
+            // disable already seen wisps
+            if (GameObject.Find("WispManager") != null)
+            {
+                WispController[] wisps;
+                wisps = GameObject.Find("WispManager").GetComponentsInChildren<WispController>(true);
+
+                if (wisps.Length != saveData.wisps.Count)
+                {
+                    Debug.Log("loaded the state of " + saveData.wisps.Count.ToString() + " wisps but there are " + wisps.Length.ToString() + " wisps in the scene");
+                }
+                else
+                {
+                    for (int i = 0; i < wisps.Length; i++)
+                    {
+                        wisps[i].gameObject.SetActive(saveData.wisps[i]);
+                    }
+                }
             }
 
             // apply max health
