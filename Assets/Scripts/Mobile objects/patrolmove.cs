@@ -20,34 +20,54 @@ public class patrolmove : MonoBehaviour
     private float hangtime = 1.0f;
 
     [SerializeField]
-    [Tooltip ("defines how the platform will return to the start position, reversing or looping")]
+    [Tooltip("defines how the platform will return to the start position, reversing or looping")]
     private bool willCycle = false;
-    
+
     [SerializeField]
     [Tooltip("default patrol point that object will move towards on start if moving")]
     private int currPatrolPoint = 0;
+
+    [SerializeField]
+    private int prevPatrolPoint;
 
     //what point is the platform trying to reach
     //private int endpoint;
     private bool freeze = false;
     private float hangcount;
     private bool goingForward = true;
+
+    private float t = 0.0f;
+
+    float InOutQuadBlend(float t)
+    {
+        if (t <= 0.5f)
+        {
+            return 2.0f * Mathf.Pow(t, 2.0f);
+        }
+        t -= 0.5f;
+        return 2.0f * t * (1.0f - t) + 0.5f;
+    }
+
     // Use this for initialization
     void Start()
     {
         hangcount = hangtime;
-        if (willPatrol == true  && patrolPoints.Length < 2)
+        if (willPatrol == true && patrolPoints.Length < 2)
         {
             Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
             willPatrol = false;
         }
-    }
 
+        if (willPatrol)
+        {
+            findNextNode();
+        }
+    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(!Utils.gamePaused)
+        if (!Utils.gamePaused)
         {
             if (willPatrol)
             {
@@ -62,36 +82,32 @@ public class patrolmove : MonoBehaviour
     private void patrol()
     {
 
-        Vector3 target;
-        float distanceCutoff = 0.05f;
-
-        target = patrolPoints[currPatrolPoint].position;
-
-
-
         //check distance to nearest patrol point
-        float distCheck = (transform.position - target).magnitude;
-        if (distCheck <= distanceCutoff)
+        if (t >= 1.0f)
         {
-         
+
             //need it to pause here for a short delay
 
             freeze = true;
-            
+
 
             // update target to next position
 
             findNextNode();
 
+            t = 0;
         }
 
 
-        
+
         //move to next position
         if (!freeze)
         {
-            float step = moveSpd * Time.fixedDeltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target, step);
+            float distance = Vector3.Distance(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position);
+
+            t += 1.0f / (distance / moveSpd) * Time.fixedDeltaTime;
+
+            transform.position = Vector3.Lerp(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position, InOutQuadBlend(t));
         }
 
 
@@ -123,6 +139,8 @@ public class patrolmove : MonoBehaviour
 
             findNextNode();
 
+            t = 1.0f - t;
+
             flash(Color.blue);
         }
         else
@@ -138,19 +156,20 @@ public class patrolmove : MonoBehaviour
 
                     currScript.flash(Color.blue);
                 }
-                
+
             }
         }
     }
 
     void findNextNode()
     {
+        prevPatrolPoint = currPatrolPoint;
 
-        if(willCycle)
+        if (willCycle)
         {
             if (goingForward)//looping down the list
             {
-                if(currPatrolPoint == patrolPoints.Length - 1)
+                if (currPatrolPoint == patrolPoints.Length - 1)
                 {
                     currPatrolPoint = 0;
                 }
@@ -161,7 +180,7 @@ public class patrolmove : MonoBehaviour
             }
             else//looping up the list
             {
-                if(currPatrolPoint == 0)
+                if (currPatrolPoint == 0)
                 {
                     currPatrolPoint = patrolPoints.Length - 1;
                 }
@@ -173,9 +192,9 @@ public class patrolmove : MonoBehaviour
         }
         else
         {
-            if(goingForward)//not looping down the list
+            if (goingForward)//not looping down the list
             {
-                if(currPatrolPoint == patrolPoints.Length - 1)
+                if (currPatrolPoint == patrolPoints.Length - 1)
                 {
                     goingForward = !goingForward;
                     currPatrolPoint--;
@@ -187,7 +206,7 @@ public class patrolmove : MonoBehaviour
             }
             else//not looping up the list
             {
-                if(currPatrolPoint == 0)
+                if (currPatrolPoint == 0)
                 {
                     goingForward = !goingForward;
                     currPatrolPoint++;
@@ -212,17 +231,57 @@ public class patrolmove : MonoBehaviour
         GetComponentInChildren<Renderer>().material.color = Color.white;
     }
 
+    void FindPrevNode()
+    {
+        if (goingForward)
+        {
+            if (currPatrolPoint == 0)
+            {
+                if (willCycle)
+                {
+                    prevPatrolPoint = patrolPoints.Length - 1;
+                }
+                else
+                {
+                    prevPatrolPoint = 1;
+                }
+            }
+            else
+            {
+                prevPatrolPoint = currPatrolPoint - 1;
+            }
+        }
+        else
+        {
+            if (currPatrolPoint == patrolPoints.Length - 1)
+            {
+                if (willCycle)
+                {
+                    prevPatrolPoint = 0;
+                }
+                else
+                {
+                    prevPatrolPoint = patrolPoints.Length - 2;
+                }
+            }
+            else
+            {
+                prevPatrolPoint = currPatrolPoint + 1;
+            }
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
 
-        if(patrolPoints.Length > 1 && willPatrol)
+        if (patrolPoints.Length > 1 && willPatrol)
         {
-            for(int i = 1; i < patrolPoints.Length; i++)
+            for (int i = 1; i < patrolPoints.Length; i++)
             {
                 Gizmos.DrawLine(patrolPoints[i - 1].position, patrolPoints[i].position);
             }
-            if(willCycle)
+            if (willCycle)
             {
                 Gizmos.DrawLine(patrolPoints[patrolPoints.Length - 1].position, patrolPoints[0].position);
             }
