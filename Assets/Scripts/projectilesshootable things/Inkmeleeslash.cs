@@ -7,7 +7,7 @@ public class Inkmeleeslash : MonoBehaviour {
     [SerializeField]
     private GameObject inkbulletprefab;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Vector2 direction;
 
     [Tooltip("how long the ink will persist")]
