@@ -11,7 +11,7 @@ public class AnimationOnLanding : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.transform.position.y >= GetComponent<Collider2D>().bounds.center.y)
+        if (collision.gameObject.transform.position.y >= GetComponent<Collider2D>().bounds.center.y && collision.gameObject == Utils.getPlayer())
         {
             animator.SetTrigger("JumpedOn");
         }
