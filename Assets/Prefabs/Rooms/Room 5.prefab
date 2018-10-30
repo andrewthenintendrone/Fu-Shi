@@ -6646,7 +6646,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1081685322516064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 34.764526, y: 1.4967041, z: 0}
+  m_LocalPosition: {x: 34.764526, y: 1.4967041, z: 1}
   m_LocalScale: {x: 8.4097595, y: 8.4097595, z: 0.7008133}
   m_Children: []
   m_Father: {fileID: 4846376568177896}
@@ -7042,7 +7042,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1444830252921400}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -62.735474, y: -0.3032837, z: 0}
+  m_LocalPosition: {x: -62.735474, y: -0.3032837, z: 1}
   m_LocalScale: {x: 4.8906703, y: 4.8906703, z: 0.40755585}
   m_Children: []
   m_Father: {fileID: 4846376568177896}
@@ -8138,7 +8138,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1875264934644664}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6354675, y: -21.40329, z: 0}
+  m_LocalPosition: {x: -0.6354675, y: -21.40329, z: 1}
   m_LocalScale: {x: 8.4097595, y: 8.4097595, z: 0.70080996}
   m_Children: []
   m_Father: {fileID: 4846376568177896}
@@ -10203,7 +10203,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1777291459563312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4207899601676678}
@@ -10555,7 +10555,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1284719887914494}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -147.03546, y: -26.603287, z: 0}
+  m_LocalPosition: {x: -147.03546, y: -26.603287, z: 1}
   m_LocalScale: {x: 4.89067, y: 4.89067, z: 0.40756}
   m_Children: []
   m_Father: {fileID: 4846376568177896}
@@ -12223,6 +12223,10 @@ MonoBehaviour:
   willCycle: 0
   currPatrolPoint: 0
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114069076133027860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12392,6 +12396,10 @@ MonoBehaviour:
   willCycle: 0
   currPatrolPoint: 0
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114412650449671286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12518,6 +12526,10 @@ MonoBehaviour:
   willCycle: 0
   currPatrolPoint: 0
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114805196527737330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12578,6 +12590,10 @@ MonoBehaviour:
   willCycle: 0
   currPatrolPoint: 0
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114856930000144002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -12695,6 +12711,10 @@ MonoBehaviour:
   willCycle: 0
   currPatrolPoint: 0
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!212 &212002749031582564
 SpriteRenderer:
   m_ObjectHideFlags: 1
