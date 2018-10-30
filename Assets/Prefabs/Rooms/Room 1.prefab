@@ -85,7 +85,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4790126230324594}
-  - component: {fileID: 114623429582679638}
   m_Layer: 10
   m_Name: OneWayPlatform
   m_TagString: Untagged
@@ -180,7 +179,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4434006659829348}
-  - component: {fileID: 114527790080449540}
   m_Layer: 10
   m_Name: OneWayPlatform (1)
   m_TagString: Untagged
@@ -376,7 +374,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4106364546853118}
-  - component: {fileID: 114095080060103986}
   m_Layer: 10
   m_Name: OneWayPlatform
   m_TagString: Untagged
@@ -893,7 +890,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4458733385619396}
-  - component: {fileID: 114671719372656160}
   m_Layer: 10
   m_Name: OneWayPlatform (2)
   m_TagString: Untagged
@@ -6055,7 +6051,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transparentDistance: 8
   opaqueDistance: 6
-  color: {r: 0, g: 0, b: 0, a: 0}
+  color: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &114039258816733736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6081,29 +6077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transparentDistance: 10.06
   opaqueDistance: 6.63
-  color: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &114095080060103986
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1130302777690260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd28a42556ea784ea8cf73d5206656d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolPoints: []
-  willPatrol: 0
-  moveSpd: 6
-  hangtime: 1
-  willCycle: 0
-  currPatrolPoint: 0
-  prevPatrolPoint: 0
-  freeze: 0
-  hangcount: 0
-  goingForward: 1
-  t: 0
+  color: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &114251417640718600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6151,7 +6125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transparentDistance: 8.96
   opaqueDistance: 6
-  color: {r: 0, g: 0, b: 0, a: 0}
+  color: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &114434895539680442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6179,28 +6153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37ef4b3848261c458c337e9050a82da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114527790080449540
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1063402110295366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd28a42556ea784ea8cf73d5206656d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolPoints: []
-  willPatrol: 0
-  moveSpd: 6
-  hangtime: 1
-  willCycle: 0
-  currPatrolPoint: 0
-  prevPatrolPoint: 0
-  freeze: 0
-  hangcount: 0
-  goingForward: 1
-  t: 0
 --- !u!114 &114547644833387440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6224,28 +6176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 95225290655665126}
---- !u!114 &114623429582679638
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1043272276388276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd28a42556ea784ea8cf73d5206656d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolPoints: []
-  willPatrol: 0
-  moveSpd: 6
-  hangtime: 1
-  willCycle: 0
-  currPatrolPoint: 0
-  prevPatrolPoint: 0
-  freeze: 0
-  hangcount: 0
-  goingForward: 1
-  t: 0
 --- !u!114 &114634205021741456
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6259,7 +6189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transparentDistance: 8.62
   opaqueDistance: 6.46
-  color: {r: 0, g: 0, b: 0, a: 0}
+  color: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &114661016073577026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6271,28 +6201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37ef4b3848261c458c337e9050a82da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114671719372656160
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1297573101005972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fd28a42556ea784ea8cf73d5206656d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolPoints: []
-  willPatrol: 0
-  moveSpd: 6
-  hangtime: 1
-  willCycle: 0
-  currPatrolPoint: 0
-  prevPatrolPoint: 0
-  freeze: 0
-  hangcount: 0
-  goingForward: 1
-  t: 0
 --- !u!114 &114828846222346860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11947,7 +11855,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1d869c4279b9cb84d9dbf145ca9edfc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
