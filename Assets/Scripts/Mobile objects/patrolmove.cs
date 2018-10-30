@@ -67,7 +67,7 @@ public class patrolmove : MonoBehaviour
     {
         if (!Utils.gamePaused)
         {
-            if(freeze)
+            if (freeze)
             {
                 countdown();
             }
@@ -80,32 +80,32 @@ public class patrolmove : MonoBehaviour
 
     private void patrol()
     {
-        // reached our current node
-        if (t >= 1.0f)
-        {
-            //need it to pause here for a short delay
-
-            freeze = true;
-
-            hangcount = hangtime;
-        }
-
-        //move to next position
+        // lerp between previous and next patrol point
         float distance = Vector3.Distance(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position);
 
         t += 1.0f / (distance / moveSpd) * Time.fixedDeltaTime;
 
         transform.position = Vector3.Lerp(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position, InOutQuadBlend(t));
+
+        // reached the current patrol point
+        if (t >= 1.0f)
+        {
+            // need it to pause here for a short delay
+            freeze = true;
+            hangcount = hangtime;
+        }
     }
 
     private void countdown()
     {
-        hangcount -= Time.fixedDeltaTime;
+        hangcount = Mathf.Max(0.0f, hangcount - Time.fixedDeltaTime);
+
         if (hangcount <= 0)
         {
             freeze = false;
-            t = 0;
             findNextNode();
+            hangcount = hangtime;
+            t = 0;
         }
     }
 
