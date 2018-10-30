@@ -19,18 +19,47 @@ public class WispController : MonoBehaviour
     private float activationDist = 3.0f;
 
     [SerializeField]
+    private float lootRadius;
+
+    [SerializeField]
+    private bool lootActive;
+
+    [SerializeField]
     private bool isActive = false;
 
     [HideInInspector]
     public bool hasPlayed = false;
 
+    [SerializeField]
+    private GameObject Loot;
 
+
+ 
 
     public void Update()
     {
         if(Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(activationDist, 2.0f))
         {
             isActive = true;
+        }
+
+        if (Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(lootRadius, 2.0f))
+        {
+            lootActive = true;
+        }
+
+        if (Loot != null)
+        {
+            
+            if (lootActive)
+            {
+                Loot.SetActive(true);
+            }
+            else
+            {
+                Loot.SetActive(false);
+            }
+
         }
     }
 
