@@ -14,7 +14,7 @@ public class GameFinishDetector : MonoBehaviour
 
             if (instance.hasTimeAbility && instance.hasInkAbility)
             {
-                Utils.endstate = true;
+                Utils.loadScene("Ending");
             }
         }
     }
