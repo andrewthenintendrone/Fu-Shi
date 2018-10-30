@@ -4937,7 +4937,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1723947866801080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -44.7, y: 13.90744, z: -8.9}
+  m_LocalPosition: {x: -44.7, y: 13.90744, z: 5}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 4035384425090292}
@@ -5886,7 +5886,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1033518940864582}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -61.85, y: -12.69, z: -26.19999}
+  m_LocalPosition: {x: -61.85, y: -12.69, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4035384425090292}
@@ -7615,6 +7615,10 @@ MonoBehaviour:
   willCycle: 1
   currPatrolPoint: 3
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114042291548150896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7692,6 +7696,10 @@ MonoBehaviour:
   willCycle: 1
   currPatrolPoint: 1
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114279163043768828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7738,6 +7746,10 @@ MonoBehaviour:
   willCycle: 1
   currPatrolPoint: 2
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114429013587362004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7796,6 +7808,10 @@ MonoBehaviour:
   willCycle: 1
   currPatrolPoint: 0
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114553907105472568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7900,6 +7916,10 @@ MonoBehaviour:
   willCycle: 1
   currPatrolPoint: 1
   prevPatrolPoint: 0
+  freeze: 0
+  hangcount: 0
+  goingForward: 1
+  t: 0
 --- !u!114 &114969735544400758
 MonoBehaviour:
   m_ObjectHideFlags: 1

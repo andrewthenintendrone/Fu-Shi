@@ -8,10 +8,6 @@ public class patrolmove : MonoBehaviour
     private Transform[] patrolPoints = new Transform[0];
 
     [SerializeField]
-    [Tooltip("wether the unit will patrol or not")]
-    public bool willPatrol = false;
-
-    [SerializeField]
     [Tooltip("speed of the unit as it moves on patrol")]
     private float moveSpd;
 
@@ -57,17 +53,13 @@ public class patrolmove : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        hangcount = hangtime;
-        if (willPatrol == true && patrolPoints.Length < 2)
+        if (patrolPoints.Length < 2)
         {
-            Debug.Log(this.gameObject.name + " this object wants to move but has not enough patrol points");
-            willPatrol = false;
+            Destroy(this);
         }
 
-        if (willPatrol)
-        {
-            findNextNode();
-        }
+        hangcount = hangtime;
+        findNextNode();
     }
 
     // Update is called once per frame
@@ -75,14 +67,13 @@ public class patrolmove : MonoBehaviour
     {
         if (!Utils.gamePaused)
         {
-            if (willPatrol)
-            {
-                patrol();
-            }
-
             if(freeze)
             {
                 countdown();
+            }
+            else
+            {
+                patrol();
             }
         }
     }
@@ -92,25 +83,19 @@ public class patrolmove : MonoBehaviour
         // reached our current node
         if (t >= 1.0f)
         {
-            if(!freeze)
-            {
-                //need it to pause here for a short delay
+            //need it to pause here for a short delay
 
-                freeze = true;
+            freeze = true;
 
-                hangcount = hangtime;
-            }
+            hangcount = hangtime;
         }
 
         //move to next position
-        if (!freeze)
-        {
-            float distance = Vector3.Distance(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position);
+        float distance = Vector3.Distance(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position);
 
-            t += 1.0f / (distance / moveSpd) * Time.fixedDeltaTime;
+        t += 1.0f / (distance / moveSpd) * Time.fixedDeltaTime;
 
-            transform.position = Vector3.Lerp(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position, InOutQuadBlend(t));
-        }
+        transform.position = Vector3.Lerp(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position, InOutQuadBlend(t));
     }
 
     private void countdown()
@@ -133,9 +118,10 @@ public class patrolmove : MonoBehaviour
 
             goingForward = !goingForward;
 
-            findNextNode();
-
-            t = 1.0f - t;
+            if(!freeze)
+            {
+                t = 1.0f - t;
+            }
 
             flash(Color.blue);
         }
@@ -143,12 +129,19 @@ public class patrolmove : MonoBehaviour
         {
             foreach (Transform Child in transform.parent)
             {
-                if (Child.gameObject.GetComponent<patrolmove>() != null && Child.gameObject.GetComponent<patrolmove>().willPatrol)
+                if (Child.gameObject.GetComponent<patrolmove>() != null)
                 {
                     patrolmove currScript = Child.gameObject.GetComponent<patrolmove>();
-                    currScript.hangcount = currScript.hangtime - currScript.hangcount;
                     currScript.goingForward = !currScript.goingForward;
-                    currScript.findNextNode();
+
+                    if(!currScript.freeze)
+                    {
+                        currScript.findNextNode();
+                    }
+                    else
+                    {
+                        currScript.hangcount = currScript.hangtime - currScript.hangcount;
+                    }
 
                     currScript.t = 1.0f - currScript.t;
 
@@ -272,7 +265,7 @@ public class patrolmove : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
 
-        if (patrolPoints.Length > 1 && willPatrol)
+        if (patrolPoints.Length > 1)
         {
             for (int i = 1; i < patrolPoints.Length; i++)
             {
