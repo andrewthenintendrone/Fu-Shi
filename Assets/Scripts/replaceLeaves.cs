@@ -8,16 +8,12 @@ public class replaceLeaves : MonoBehaviour
 
     private List<GameObject> leaves = new List<GameObject>();
 
-    private Vector3 offset;
-
 	void Start ()
     {
-        offset = new Vector3(-0.91f, 1.99f, 0);
-
         // find all the leaves
 		foreach(inkableSurface i in FindObjectsOfType<inkableSurface>())
         {
-            leaves.Add(i.gameObject.transform.parent.gameObject);
+            leaves.Add(i.gameObject.transform.parent.parent.gameObject);
         }
 
         foreach(GameObject currentLeaf in leaves)
@@ -27,7 +23,7 @@ public class replaceLeaves : MonoBehaviour
 
             // copy transform
             newLeaf.transform.eulerAngles = currentLeaf.transform.eulerAngles;
-            newLeaf.transform.position = currentLeaf.transform.position + new Vector3(offset.x * currentLeaf.transform.localScale.x, offset.y * currentLeaf.transform.localScale.y, 0);
+            newLeaf.transform.position = currentLeaf.transform.position;
             newLeaf.transform.localScale = currentLeaf.transform.localScale;
 
             // copy inked status
@@ -36,5 +32,18 @@ public class replaceLeaves : MonoBehaviour
             // delete old leaf
             Destroy(currentLeaf);
         }
+
+        foreach(patrolmove pm in FindObjectsOfType<patrolmove>())
+        {
+            if(pm.willPatrol)
+            {
+                Debug.Log(pm.gameObject.name);
+            }
+        }
 	}
+
+    private void OnDrawGizmos()
+    {
+        
+    }
 }

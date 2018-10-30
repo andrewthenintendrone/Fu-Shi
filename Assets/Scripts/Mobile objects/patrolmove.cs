@@ -9,7 +9,7 @@ public class patrolmove : MonoBehaviour
 
     [SerializeField]
     [Tooltip("wether the unit will patrol or not")]
-    private bool willPatrol = false;
+    public bool willPatrol = false;
 
     [SerializeField]
     [Tooltip("speed of the unit as it moves on patrol")]
@@ -30,12 +30,18 @@ public class patrolmove : MonoBehaviour
     [SerializeField]
     private int prevPatrolPoint;
 
-    //what point is the platform trying to reach
-    //private int endpoint;
+    // platform is frozen waiting to move
+    [SerializeField]
     private bool freeze = false;
+
+    // current time left until unfreeze
+    [SerializeField]
     private float hangcount;
+    [SerializeField]
     private bool goingForward = true;
 
+    [SerializeField]
+    // current ratio between points
     private float t = 0.0f;
 
     float InOutQuadBlend(float t)
@@ -74,31 +80,27 @@ public class patrolmove : MonoBehaviour
                 patrol();
             }
 
-
-            countdown();
+            if(freeze)
+            {
+                countdown();
+            }
         }
     }
 
     private void patrol()
     {
-
-        //check distance to nearest patrol point
+        // reached our current node
         if (t >= 1.0f)
         {
+            if(!freeze)
+            {
+                //need it to pause here for a short delay
 
-            //need it to pause here for a short delay
+                freeze = true;
 
-            freeze = true;
-
-
-            // update target to next position
-
-            findNextNode();
-
-            t = 0;
+                hangcount = hangtime;
+            }
         }
-
-
 
         //move to next position
         if (!freeze)
@@ -109,26 +111,20 @@ public class patrolmove : MonoBehaviour
 
             transform.position = Vector3.Lerp(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position, InOutQuadBlend(t));
         }
-
-
-
     }
 
     private void countdown()
     {
-        if (freeze)
-        {
-            hangcount -= Time.fixedDeltaTime;
-        }
+        hangcount -= Time.fixedDeltaTime;
         if (hangcount <= 0)
         {
             freeze = false;
-            hangcount = hangtime;
+            t = 0;
+            findNextNode();
         }
     }
 
     [ContextMenu("reverse")]
-
     public void reverse()
     {
         if (transform.parent == null)
@@ -154,9 +150,10 @@ public class patrolmove : MonoBehaviour
                     currScript.goingForward = !currScript.goingForward;
                     currScript.findNextNode();
 
+                    currScript.t = 1.0f - currScript.t;
+
                     currScript.flash(Color.blue);
                 }
-
             }
         }
     }
