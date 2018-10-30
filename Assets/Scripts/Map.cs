@@ -16,11 +16,17 @@ public class Map : MonoBehaviour
     [Tooltip("map camera orthographic scale for this room. (zoom)")]
     private float cameraOrthoScale;
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerStay2D(Collider2D collider)
     {
         if(collider.tag == "Player")
         {
-            GetComponent<SpriteRenderer>().enabled = true;
+            foreach (Transform child in GetComponentsInChildren<Transform>())
+            {
+                if(child != transform)
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
             GameObject.Find("MapCam").transform.position = new Vector3(transform.position.x + cameraPosition.x, transform.position.y + cameraPosition.y, -10);
             GameObject.Find("MapCam").GetComponent<Camera>().orthographicSize = Mathf.Floor(cameraOrthoScale) / 2;
         }
@@ -30,7 +36,13 @@ public class Map : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            GetComponent<SpriteRenderer>().enabled = false;
+            foreach (Transform child in GetComponentsInChildren<Transform>())
+            {
+                if (child != transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
         }
     }
 
