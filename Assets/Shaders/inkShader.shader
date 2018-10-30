@@ -5,10 +5,11 @@
 		_MainTex("Ink Texture", 2D) = "white" {}
 		_PerlinTex("Perlin Noise Texture", 2D) = "white" {}
 		_Cutoff("Cutoff", Range(0, 1)) = 0
+		_Color("Color", Color) = (0, 0, 0, 1)
 	}
 	SubShader
 	{
-		Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
+		Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" "PreviewType" = "Plane" }
 		LOD 100
 
 		ZWrite Off
@@ -41,6 +42,7 @@
 			sampler2D _PerlinTex;
 			float4 _PerlinTex_ST;
 			float _Cutoff;
+			float4 _Color;
 			
 			v2f vert (appdata v)
 			{
@@ -64,6 +66,9 @@
 				{
 					finalColor.a = 0;
 				}
+
+				// change the color
+				finalColor = fixed4(_Color.x, _Color.y, _Color.z, finalColor.a);
 
 				return finalColor;
 			}
