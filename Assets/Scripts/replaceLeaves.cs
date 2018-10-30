@@ -32,14 +32,6 @@ public class replaceLeaves : MonoBehaviour
             // delete old leaf
             Destroy(currentLeaf);
         }
-
-        foreach(patrolmove pm in FindObjectsOfType<patrolmove>())
-        {
-            if(pm.willPatrol)
-            {
-                Debug.Log(pm.gameObject.name);
-            }
-        }
 	}
 
     private void OnDrawGizmos()
