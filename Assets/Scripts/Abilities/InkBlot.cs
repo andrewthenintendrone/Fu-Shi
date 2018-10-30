@@ -106,8 +106,6 @@ public class InkBlot : MonoBehaviour
         // set the players velocity to the launch force
         player.GetComponent<Player>().velocity = direction * launchForce;
 
-        player.GetComponent<Player>().currentJumps = 1;
-
         player.GetComponent<Player>().jumpHeld = true;
 
         // play the animation on the leaf (if it is a leaf)

@@ -102,6 +102,7 @@ public class Player : MonoBehaviour
     {
         character = GetComponent<CharacterController2D>();
         animator = GetComponent<Animator>();
+        character.onControllerCollidedEvent += collisionFunction;
         character.onTriggerEnterEvent += triggerEnterFunction;
         character.onTriggerStayEvent += triggerStayFunction;
         character.onTriggerExitEvent += triggerExitFunction;
@@ -285,6 +286,8 @@ public class Player : MonoBehaviour
     void cancelLaunch()
     {
         isLaunching = false;
+
+        currentJumps = 1;
     }
 
     void enableCanTurnIntoInkBlot()
@@ -292,15 +295,15 @@ public class Player : MonoBehaviour
         canTurnIntoInkBlot = true;
     }
 
-    public void OnCollisionEnter2D(Collision2D hitInfo)
+    public void collisionFunction(RaycastHit2D ray)
     {
-        if(!Utils.gamePaused && Utils.Health > 0)
+        if (!Utils.gamePaused && Utils.Health > 0)
         {
             // inkable surface
-            if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
+            if (ray.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
             {
                 // inked
-                if (hitInfo.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
+                if (ray.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
                 {
                     if (canTurnIntoInkBlot)
                     {
@@ -310,7 +313,7 @@ public class Player : MonoBehaviour
                             GameObject newInkBlot = Instantiate(InkBlotPrefab);
                             newInkBlot.name = "inkblot";
                             newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
-                            newInkBlot.transform.parent = hitInfo.transform;
+                            newInkBlot.transform.parent = ray.transform;
                             newInkBlot.GetComponent<InkBlot>().player = gameObject;
                             newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
 
