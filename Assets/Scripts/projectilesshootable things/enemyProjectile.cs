@@ -16,9 +16,10 @@ public class enemyProjectile : MonoBehaviour
 
 	void Start ()
     {
-        InvokeRepeating("Flip", lifetime / 10.0f, lifetime / 10.0f);
+        //InvokeRepeating("Flip", lifetime / 10.0f, lifetime / 10.0f);
 
-        Destroy(gameObject, lifetime);
+        Invoke("destroyMe", lifetime);
+       
 	}
 
     void FixedUpdate()
@@ -59,11 +60,18 @@ public class enemyProjectile : MonoBehaviour
         {
             reversed = true;
             direction = -direction;
+            CancelInvoke("destroyMe");
+            Invoke("destroyMe", lifetime);
         }
     }
 
     public void Flip()
     {
         GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+    }
+
+    private void destroyMe()
+    {
+        Destroy(gameObject);
     }
 }
