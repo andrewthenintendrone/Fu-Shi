@@ -201,4 +201,9 @@ public static class Utils
 
         return player;
     }
+
+    public static void showNotification(string messageText, string confirmText)
+    {
+        GameObject.FindObjectOfType<UIController>().showNotification(messageText, confirmText);
+    }
 }

@@ -21,6 +21,14 @@ public class UIController : MonoBehaviour
 
     private GameObject autoSaveIcon;
 
+    // are we currently showing a notification
+    private bool showingNotification = false;
+
+    private GameObject notification = null;
+
+    [SerializeField]
+    private GameObject notificationPrefab;
+
     [SerializeField]
     [Tooltip("how long to show the fake autosave icon for")]
     private float autosaveTime;
@@ -56,7 +64,7 @@ public class UIController : MonoBehaviour
 
     private void SetPauseScreen()
     {
-        if ((int)Input.GetAxisRaw("Pause") != 0)
+        if ((int)Input.GetAxisRaw("Pause") != 0 && !showingNotification)
         {
             if (!pauseAxisHeld)
             {
@@ -161,5 +169,27 @@ public class UIController : MonoBehaviour
     private void hideFakeSaveIcon()
     {
         autoSaveIcon.SetActive(false);
+    }
+
+    public void showNotification(string messageText, string confirmText)
+    {
+        Utils.gamePaused = true;
+        showingNotification = true;
+
+        notification = Instantiate(notificationPrefab, transform);
+
+        notification.GetComponentsInChildren<Text>()[0].text = confirmText;
+        notification.GetComponentsInChildren<Text>()[1].text = messageText;
+
+        notification.GetComponentInChildren<Button>().Select();
+        notification.GetComponentInChildren<Button>().onClick.AddListener(this.exitNotification);
+    }
+
+    public void exitNotification()
+    {
+        Utils.gamePaused = false;
+        showingNotification = false;
+
+        Destroy(notification);
     }
 }
