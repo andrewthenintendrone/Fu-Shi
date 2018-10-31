@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 212507677683841658}
   - component: {fileID: 61858907052480768}
   m_Layer: 9
-  m_Name: Floating_Stone
+  m_Name: Solid_rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -720,21 +720,6 @@ GameObject:
   - component: {fileID: 212346001856418068}
   m_Layer: 11
   m_Name: Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1288553744270538
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4086465419223582}
-  m_Layer: 10
-  m_Name: platforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2158,7 +2143,7 @@ GameObject:
   - component: {fileID: 212121496377837736}
   - component: {fileID: 61622004652019570}
   m_Layer: 9
-  m_Name: Floating_Stone (1)
+  m_Name: Solid_rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2445,21 +2430,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4120412218246194}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4086465419223582
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1288553744270538}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4715399639135848}
-  - {fileID: 4382288879198128}
-  m_Father: {fileID: 4438020006210436}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4086642545547930
 Transform:
@@ -2976,7 +2946,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1910028942584134}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -202.40186, y: 272.26837, z: -0.028550804}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4846982842028394}
@@ -3005,8 +2975,8 @@ Transform:
   m_LocalPosition: {x: -79.8, y: 7.3, z: 0.028550804}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
-  m_Father: {fileID: 4086465419223582}
-  m_RootOrder: 1
+  m_Father: {fileID: 4520388504831800}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4384357383700542
 Transform:
@@ -3122,7 +3092,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4086465419223582}
   - {fileID: 4961042961725040}
   - {fileID: 4662188470549774}
   - {fileID: 4520388504831800}
@@ -3355,8 +3324,10 @@ Transform:
   - {fileID: 4967496378293520}
   - {fileID: 4628926721786906}
   - {fileID: 4527318189024294}
+  - {fileID: 4715399639135848}
+  - {fileID: 4382288879198128}
   m_Father: {fileID: 4438020006210436}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4521474989793436
 Transform:
@@ -3780,7 +3751,7 @@ Transform:
   - {fileID: 4187892039538142}
   - {fileID: 4292953417894998}
   m_Father: {fileID: 4438020006210436}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4681102827733604
 Transform:
@@ -3884,8 +3855,8 @@ Transform:
   m_LocalPosition: {x: -65.273834, y: 6.66, z: 0.028550804}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
-  m_Father: {fileID: 4086465419223582}
-  m_RootOrder: 0
+  m_Father: {fileID: 4520388504831800}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4720786333001980
 Transform:
@@ -4256,7 +4227,7 @@ Transform:
   m_Children:
   - {fileID: 4759811141367078}
   m_Father: {fileID: 4438020006210436}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4967496378293520
 Transform:
@@ -4640,7 +4611,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.37917817, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4651,7 +4622,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.24164367, y: 1}
   m_EdgeRadius: 0
 --- !u!61 &61535356711288942
 BoxCollider2D:
@@ -4940,7 +4911,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.25, y: 1}
+  m_Offset: {x: 0.2741661, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -4951,7 +4922,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.8, y: 2.5}
+  m_Size: {x: 4.7779465, y: 2.5}
   m_EdgeRadius: 0
 --- !u!61 &61947805027685082
 BoxCollider2D:
@@ -10451,8 +10422,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1161622379
-  m_SortingLayer: 4
+  m_SortingLayerID: -888024321
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c86116138d8224b4a8bae71b542cdfe1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10893,7 +10864,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -709236713
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: e5f5341a96ceead4ca301ca39064cdc7, type: 3}
   m_Color: {r: 0.91713995, g: 1, b: 0.6838235, a: 1}
   m_FlipX: 0
