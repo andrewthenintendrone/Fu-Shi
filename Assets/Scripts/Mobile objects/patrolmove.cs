@@ -8,7 +8,7 @@ public class patrolmove : MonoBehaviour
     private Transform[] patrolPoints = new Transform[0];
 
     [SerializeField]
-    [Tooltip("speed of the unit as it moves on patrol")]
+    [Tooltip("speed of the unit as it moves on patrol / time to take between each node (if timeBased is turned on)")]
     private float moveSpd;
 
     [SerializeField]
@@ -23,22 +23,22 @@ public class patrolmove : MonoBehaviour
     [Tooltip("default patrol point that object will move towards on start if moving")]
     private int currPatrolPoint = 0;
 
-    [SerializeField]
     private int prevPatrolPoint;
 
     // platform is frozen waiting to move
-    [SerializeField]
     private bool freeze = false;
 
     // current time left until unfreeze
-    [SerializeField]
     private float hangcount;
     [SerializeField]
     private bool goingForward = true;
 
-    [SerializeField]
     // current ratio between points
     private float t = 0.0f;
+
+    [SerializeField]
+    [Tooltip("make the platform time based instead of speed based")]
+    bool timeBased = false;
 
     float InOutQuadBlend(float t)
     {
@@ -83,7 +83,14 @@ public class patrolmove : MonoBehaviour
         // lerp between previous and next patrol point
         float distance = Vector3.Distance(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position);
 
-        t += 1.0f / (distance / moveSpd) * Time.fixedDeltaTime;
+        if (timeBased)
+        {
+            t += Time.fixedDeltaTime / moveSpd;
+        }
+        else
+        {
+            t += 1.0f / (distance / moveSpd) * Time.fixedDeltaTime;
+        }
 
         transform.position = Vector3.Lerp(patrolPoints[prevPatrolPoint].position, patrolPoints[currPatrolPoint].position, InOutQuadBlend(t));
 
