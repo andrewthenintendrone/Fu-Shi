@@ -312,7 +312,8 @@ public class Player : MonoBehaviour
                         {
                             GameObject newInkBlot = Instantiate(InkBlotPrefab);
                             newInkBlot.name = "inkblot";
-                            newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
+
+                            newInkBlot.transform.position = transform.position;
                             newInkBlot.transform.parent = ray.transform;
                             newInkBlot.GetComponent<InkBlot>().player = gameObject;
                             newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
