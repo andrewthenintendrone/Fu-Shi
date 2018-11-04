@@ -181,11 +181,13 @@ public class Abilityactivator : MonoBehaviour
         {
             hasInkAbility = true;
             Destroy(collision.gameObject);
+            Utils.showNotification("You got the ink ability!", "OK");
         }
         else if (collision.gameObject.name == "timeGiver")
         {
             hasTimeAbility = true;
             Destroy(collision.gameObject);
+            Utils.showNotification("You got the time ability!", "OK");
         }
     }
 }

@@ -25,17 +25,6 @@ public class inkableSurface : MonoBehaviour
     public Material inkedSurface;
     public Material cleanSurface;
 
-    //private void Start()
-    //{
-    //    if(transform.lossyScale == new Vector3(1, 1, 1))
-    //    {
-    //        Vector3 scale = transform.parent.localScale;
-    //        transform.localScale = scale;
-    //        transform.parent.localScale = new Vector3(1, 1, 1);
-    //        transform.parent.gameObject.GetComponent<BoxCollider2D>().size = transform.localScale;
-    //    }
-    //}
-
     void OnValidate()
     {
         Inked = inked;
@@ -44,6 +33,8 @@ public class inkableSurface : MonoBehaviour
     public void updateMaterial()
     {
         Renderer renderer = gameObject.GetComponent<Renderer>();
+
+        transform.parent.gameObject.layer = inked ? LayerMask.NameToLayer("Solid") : LayerMask.NameToLayer("Trigger");
 
         renderer.material = inked ? inkedSurface : cleanSurface;
     }
