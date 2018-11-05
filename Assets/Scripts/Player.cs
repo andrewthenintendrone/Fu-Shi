@@ -397,35 +397,6 @@ public class Player : MonoBehaviour
                     Destroy(col.gameObject);
                 }
             }
-            // inkable surface
-            else if (col.gameObject.GetComponentInChildren<inkableSurface>() != null)
-            {
-                // inked
-                if (col.gameObject.GetComponentInChildren<inkableSurface>().Inked)
-                {
-                    if (canTurnIntoInkBlot)
-                    {
-                        // ensure only one ink blot at a time
-                        if (GameObject.Find("inkblot") == null)
-                        {
-                            GameObject newInkBlot = Instantiate(InkBlotPrefab);
-                            newInkBlot.name = "inkblot";
-
-                            newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
-                            newInkBlot.transform.parent = col.transform;
-                            newInkBlot.GetComponent<InkBlot>().player = gameObject;
-                            newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
-
-                            // disable this gameObject
-                            animator.enabled = false;
-                            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-                            GetComponent<Abilityactivator>().enabled = false;
-                            GetComponent<Collider2D>().enabled = false;
-                            this.enabled = false;
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -434,6 +405,36 @@ public class Player : MonoBehaviour
         if(col.tag == "savepoint")
         {
             col.GetComponent<SavePoint>().nearPlayer = true;
+        }
+
+        // inkable surface
+        if (col.gameObject.GetComponentInChildren<inkableSurface>() != null)
+        {
+            // inked
+            if (col.gameObject.GetComponentInChildren<inkableSurface>().Inked)
+            {
+                if (canTurnIntoInkBlot)
+                {
+                    // ensure only one ink blot at a time
+                    if (GameObject.Find("inkblot") == null)
+                    {
+                        GameObject newInkBlot = Instantiate(InkBlotPrefab);
+                        newInkBlot.name = "inkblot";
+
+                        newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
+                        newInkBlot.transform.parent = col.transform;
+                        newInkBlot.GetComponent<InkBlot>().player = gameObject;
+                        newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+
+                        // disable this gameObject
+                        animator.enabled = false;
+                        GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                        GetComponent<Abilityactivator>().enabled = false;
+                        GetComponent<Collider2D>().enabled = false;
+                        this.enabled = false;
+                    }
+                }
+            }
         }
     }
 
