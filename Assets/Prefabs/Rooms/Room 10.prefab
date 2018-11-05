@@ -2298,6 +2298,7 @@ GameObject:
   - component: {fileID: 61465097095712128}
   - component: {fileID: 114306578489386114}
   - component: {fileID: 212462145844769752}
+  - component: {fileID: 114148854514998268}
   m_Layer: 9
   m_Name: door
   m_TagString: Untagged
@@ -20534,7 +20535,7 @@ Transform:
   m_GameObject: {fileID: 1184748615403852}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -149.5, y: -163.99998, z: 5}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4227148553212194}
   m_RootOrder: 1
@@ -25273,18 +25274,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0665741, y: 0.21621704}
+  m_Offset: {x: 0.04109192, y: 1.260437}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.24, y: 10.24}
+    oldSize: {x: 20.48, y: 20.48}
     newSize: {x: 10.24, y: 10.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.926239, y: 7.022461}
+  m_Size: {x: 5.8940125, y: 15.223633}
   m_EdgeRadius: 0
 --- !u!61 &61465308668290908
 BoxCollider2D:
@@ -27519,6 +27520,22 @@ MonoBehaviour:
   inked: 0
   inkedSurface: {fileID: 2100000, guid: c84fbc33edb85e04d86922deafed1363, type: 2}
   cleanSurface: {fileID: 2100000, guid: f4996301c9ebbcc4da0e44478777910c, type: 2}
+--- !u!114 &114148854514998268
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1184748615403852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83a8a43fb5e77634797ad42926de3781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite1: {fileID: 2800000, guid: 98b19350806cd414b88b9dc82123e92e, type: 3}
+  sprite2: {fileID: 2800000, guid: 8499471c24594af4d9432898dbaae4c2, type: 3}
+  fadeInSpeed: 1
+  fadeOutSpeed: 1
+  nearPlayer: 0
 --- !u!114 &114161478654346480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40877,7 +40894,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 754b218061af7594ca8aeefc83571fa2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40897,7 +40914,7 @@ SpriteRenderer:
   m_SortingLayerID: -888024321
   m_SortingLayer: 2
   m_SortingOrder: -12
-  m_Sprite: {fileID: 21300000, guid: e5f5341a96ceead4ca301ca39064cdc7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98b19350806cd414b88b9dc82123e92e, type: 3}
   m_Color: {r: 0.9044118, g: 0.9723124, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
