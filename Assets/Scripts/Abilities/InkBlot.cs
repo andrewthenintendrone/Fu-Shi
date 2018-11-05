@@ -114,6 +114,13 @@ public class InkBlot : MonoBehaviour
             transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
         }
 
+        // double check we are dead
+        if(Utils.Health <= 0)
+        {
+            GameObject.FindObjectOfType<Fade>().triggerFadeOut();
+            player.GetComponent<Animator>().SetTrigger("death");
+        }
+
         // destroy this gameobject
         Destroy(gameObject);
     }

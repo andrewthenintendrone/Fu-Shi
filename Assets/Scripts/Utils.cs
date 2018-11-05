@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public static class Utils
+public static class Utils 
 {
     //the position to reset the player to when they die
     public static Vector3 resetPos;
@@ -19,7 +19,7 @@ public static class Utils
     private static Image healthImage2;
 
     // current player health value
-    private static int health;
+    private static int health = 1;
 
     // player reference
     private static GameObject player = null;
@@ -76,22 +76,23 @@ public static class Utils
         }
     }
 
-    public static void KillPlayer()
+    public static IEnumerator KillPlayer()
     {
         // make sure the player is a fox not an ink blot
         if (getPlayer().GetComponent<InkBlot>() != null)
         {
             Debug.Log(player.name);
             player.GetComponent<InkBlot>().launch();
+        }
+        else
+        {
+            getPlayer().GetComponent<Animator>().SetTrigger("death");
 
-            player = GameObject.FindObjectOfType<Player>().gameObject;
+            // trigger a fade out
+            GameObject.FindObjectOfType<Fade>().triggerFadeOut();
         }
 
-        // play the death animation
-        player.gameObject.GetComponent<Animator>().SetTrigger("death");
-
-        // trigger a fade out
-        GameObject.FindObjectOfType<Fade>().triggerFadeOut();
+        yield return null;
     }
 
     public static void ResetPlayer()
@@ -179,7 +180,7 @@ public static class Utils
 
             if (Health <= 0)
             {
-                KillPlayer();
+                GameObject.FindObjectOfType<MonoBehaviour>().StartCoroutine(KillPlayer());
             }
         }
     }
@@ -194,9 +195,13 @@ public static class Utils
     public static GameObject getPlayer()
     {
         // find the current player gameobject
-        if(GameObject.FindGameObjectWithTag("Player") != null)
+        if (GameObject.Find("inkblot") != null)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.Find("inkblot");
+        }
+        else if (GameObject.Find("Player") != null)
+        {
+            player = GameObject.Find("Player");
         }
 
         return player;
