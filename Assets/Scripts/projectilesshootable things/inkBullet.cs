@@ -53,5 +53,11 @@ public class inkBullet: MonoBehaviour
             collision.gameObject.GetComponent<Enemy>().health--;
             Destroy(gameObject);
         }
+
+        // check if object has inkable surface
+        if (collision.gameObject.GetComponentInChildren<inkableSurface>() != null)
+        {
+            collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
+        }
     }
 }

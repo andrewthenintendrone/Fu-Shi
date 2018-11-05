@@ -299,35 +299,7 @@ public class Player : MonoBehaviour
     {
         if (!Utils.gamePaused && Utils.Health > 0)
         {
-            // inkable surface
-            if (ray.collider.gameObject.GetComponentInChildren<inkableSurface>() != null)
-            {
-                // inked
-                if (ray.collider.gameObject.GetComponentInChildren<inkableSurface>().Inked)
-                {
-                    if (canTurnIntoInkBlot)
-                    {
-                        // ensure only one ink blot at a time
-                        if (GameObject.Find("inkblot") == null)
-                        {
-                            GameObject newInkBlot = Instantiate(InkBlotPrefab);
-                            newInkBlot.name = "inkblot";
-
-                            newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
-                            newInkBlot.transform.parent = ray.transform;
-                            newInkBlot.GetComponent<InkBlot>().player = gameObject;
-                            newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
-
-                            // disable this gameObject
-                            animator.enabled = false;
-                            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-                            GetComponent<Abilityactivator>().enabled = false;
-                            GetComponent<Collider2D>().enabled = false;
-                            this.enabled = false;
-                        }
-                    }
-                }
-            }
+            
 
             // solid wall that we should not go through
             if(ray.collider.gameObject.GetComponent<Rigidbody2D>() != null && ray.collider.gameObject.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Kinematic)
@@ -423,6 +395,35 @@ public class Player : MonoBehaviour
                 {
                     Utils.Health++;
                     Destroy(col.gameObject);
+                }
+            }
+            // inkable surface
+            else if (col.gameObject.GetComponentInChildren<inkableSurface>() != null)
+            {
+                // inked
+                if (col.gameObject.GetComponentInChildren<inkableSurface>().Inked)
+                {
+                    if (canTurnIntoInkBlot)
+                    {
+                        // ensure only one ink blot at a time
+                        if (GameObject.Find("inkblot") == null)
+                        {
+                            GameObject newInkBlot = Instantiate(InkBlotPrefab);
+                            newInkBlot.name = "inkblot";
+
+                            newInkBlot.transform.position = transform.position + new Vector3(character.boxCollider.offset.x, character.boxCollider.offset.y, 0);
+                            newInkBlot.transform.parent = col.transform;
+                            newInkBlot.GetComponent<InkBlot>().player = gameObject;
+                            newInkBlot.GetComponent<InkBlot>().jumpHeld = jumpHeld;
+
+                            // disable this gameObject
+                            animator.enabled = false;
+                            GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                            GetComponent<Abilityactivator>().enabled = false;
+                            GetComponent<Collider2D>().enabled = false;
+                            this.enabled = false;
+                        }
+                    }
                 }
             }
         }

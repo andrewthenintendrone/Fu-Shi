@@ -34,8 +34,6 @@ public class inkableSurface : MonoBehaviour
     {
         Renderer renderer = gameObject.GetComponent<Renderer>();
 
-        transform.parent.gameObject.layer = inked ? LayerMask.NameToLayer("Solid") : LayerMask.NameToLayer("Trigger");
-
         renderer.material = inked ? inkedSurface : cleanSurface;
     }
 }
