@@ -141,7 +141,13 @@ public class WispController : MonoBehaviour
         // draw detect radius
         UnityEditor.Handles.color = Color.green;
         UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, activationDist);
-        
+
+        if (lootRadius > 0)
+        {
+            UnityEditor.Handles.color = Color.red;
+            UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, lootRadius);
+        }
+
     }
 
 #endif
