@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SavePoint : MonoBehaviour
+public class GlowObject : MonoBehaviour
 {
     [SerializeField]
     private Texture2D sprite1;
