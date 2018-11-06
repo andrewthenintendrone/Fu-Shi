@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class patrolmove : MonoBehaviour
 {
-    [SerializeField]
-    private Transform[] patrolPoints = new Transform[0];
+    public Transform[] patrolPoints = new Transform[0];
 
     [SerializeField]
     [Tooltip("speed of the unit as it moves on patrol / time to take between each node (if timeBased is turned on)")]
@@ -19,9 +18,8 @@ public class patrolmove : MonoBehaviour
     [Tooltip("defines how the platform will return to the start position, reversing or looping")]
     private bool willCycle = false;
 
-    [SerializeField]
     [Tooltip("default patrol point that object will move towards on start if moving")]
-    private int currPatrolPoint = 0;
+    public int currPatrolPoint = 0;
 
     private int prevPatrolPoint;
 
@@ -283,5 +281,10 @@ public class patrolmove : MonoBehaviour
                 Gizmos.DrawLine(patrolPoints[patrolPoints.Length - 1].position, patrolPoints[0].position);
             }
         }
+    }
+
+    public Vector3 getNextPatrolPoint()
+    {
+        return patrolPoints[currPatrolPoint].position;
     }
 }
