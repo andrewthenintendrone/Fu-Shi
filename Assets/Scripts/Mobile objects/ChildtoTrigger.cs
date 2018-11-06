@@ -21,9 +21,25 @@ public class ChildtoTrigger : MonoBehaviour
             insideWall = true;
         }
 
-        if (other.gameObject.tag == "Player" && !insideWall)
+        if (other.gameObject.tag == "Player")
         {
-            other.gameObject.transform.parent = transform;
+            if (!insideWall)
+            {
+                other.gameObject.transform.parent = transform;
+            }
+
+            Vector3 fakeMotion = Vector3.zero;
+
+            if (GetComponentInParent<patrolmove>().getNextPatrolPoint().x > transform.position.x)
+            {
+                fakeMotion.x = Mathf.Epsilon;
+            }
+            else
+            {
+                fakeMotion.x = -Mathf.Epsilon;
+            }
+
+            other.gameObject.GetComponent<CharacterController2D>().move(fakeMotion);
         }
     }
 
