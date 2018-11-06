@@ -433,6 +433,9 @@ public class Player : MonoBehaviour
                             GetComponent<Abilityactivator>().enabled = false;
                             GetComponent<Collider2D>().enabled = false;
                             this.enabled = false;
+
+                            // play sound effect
+                            SoundManager.instance.playLandOnInkPlatform();
                         }
                     }
                 }

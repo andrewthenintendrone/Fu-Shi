@@ -121,6 +121,9 @@ public class InkBlot : MonoBehaviour
             player.GetComponent<Animator>().SetTrigger("death");
         }
 
+        // play sound effect
+        SoundManager.instance.playLaunchFromInkPlatform();
+
         // destroy this gameobject
         Destroy(gameObject);
     }

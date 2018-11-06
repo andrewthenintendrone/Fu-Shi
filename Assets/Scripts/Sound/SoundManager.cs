@@ -30,7 +30,8 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip music;
 
-
+    private AudioClip landOnInkPlatform;
+    private AudioClip launchFromInkPlatform;
 
     public void Awake()
     {
@@ -45,6 +46,9 @@ public class SoundManager : MonoBehaviour
 
         dragonSound = Resources.Load<AudioClip>("Fire");
         enemyDeathSound = Resources.LoadAll<AudioClip>("EnemyDeath");
+
+        landOnInkPlatform = Resources.Load<AudioClip>("LandOnInkPlatform");
+        launchFromInkPlatform = Resources.Load<AudioClip>("LaunchFromInkPlatform");
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
@@ -94,7 +98,15 @@ public class SoundManager : MonoBehaviour
         PlayRandomSFX(enemyDeathSound);
     }
 
-  
+    public void playLandOnInkPlatform()
+    {
+        playSingle(landOnInkPlatform);
+    }
+
+    public void playLaunchFromInkPlatform()
+    {
+        playSingle(launchFromInkPlatform);
+    }
 
     public void Update()
     {
