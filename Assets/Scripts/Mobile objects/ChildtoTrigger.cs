@@ -39,7 +39,10 @@ public class ChildtoTrigger : MonoBehaviour
                 fakeMotion.x = -Mathf.Epsilon;
             }
 
-            other.gameObject.GetComponent<CharacterController2D>().move(fakeMotion);
+            if(other.gameObject.GetComponent<CharacterController2D>() != null)
+            {
+                other.gameObject.GetComponent<CharacterController2D>().move(fakeMotion);
+            }
         }
     }
 

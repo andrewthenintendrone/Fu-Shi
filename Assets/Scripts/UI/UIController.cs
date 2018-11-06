@@ -27,6 +27,9 @@ public class UIController : MonoBehaviour
     private GameObject notification = null;
 
     [SerializeField]
+    private GameObject[] abilityPanels;
+
+    [SerializeField]
     private GameObject notificationPrefab;
 
     [SerializeField]
@@ -76,6 +79,12 @@ public class UIController : MonoBehaviour
                 {
                     eventSystem.SetSelectedGameObject(GameObject.Find("resume button"));
                     GameObject.Find("resume button").GetComponent<Button>().OnSelect(null);
+
+                    if(SaveLoad.saveData != null)
+                    {
+                        abilityPanels[0].SetActive(GameObject.FindObjectOfType<Abilityactivator>().hasInkAbility);
+                        abilityPanels[1].SetActive(GameObject.FindObjectOfType<Abilityactivator>().hasTimeAbility);
+                    }
                 }
                 else
                 {

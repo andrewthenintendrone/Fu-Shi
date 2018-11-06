@@ -129,7 +129,7 @@ public static class SaveLoad
             }
 
             // disable already obtained collectables
-            if(GameObject.Find("collectables") != null)
+            if (GameObject.Find("collectables") != null)
             {
                 Transform[] collectables;
                 collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>(true);
