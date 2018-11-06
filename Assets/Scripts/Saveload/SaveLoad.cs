@@ -15,14 +15,12 @@ public static class SaveLoad
         public bool hasInkAbility;
         public bool hasTimeAbility;
         public bool hasExtraHealth;
-        public List<bool> collectables;
         public List<bool> wisps;
 
         public SaveData()
         {
             xPosition = yPosition = 0;
             hasInkAbility = hasTimeAbility = hasExtraHealth = false;
-            collectables = new List<bool>();
             wisps = new List<bool>();
         }
     }
@@ -60,17 +58,6 @@ public static class SaveLoad
         // store which abilities 
         saveData.hasInkAbility = GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasInkAbility;
         saveData.hasTimeAbility = GameObject.FindGameObjectWithTag("Player").GetComponent<Abilityactivator>().hasTimeAbility;
-
-        // find which collectables are active
-        saveData.collectables.Clear();
-
-        if(GameObject.Find("collectables") != null)
-        {
-            foreach (Transform currentCollectable in GameObject.Find("collectables").GetComponentsInChildren<Transform>(true))
-            {
-                saveData.collectables.Add(currentCollectable.gameObject.activeSelf);
-            }
-        }
 
         // find which wisps are active
         saveData.wisps.Clear();
@@ -129,32 +116,6 @@ public static class SaveLoad
             if (saveData.hasExtraHealth)
             {
                 GameObject.Destroy(GameObject.Find("healthGiver"));
-            }
-
-            // disable already obtained collectables
-            if (GameObject.Find("collectables") != null)
-            {
-                Transform[] collectables;
-                collectables = GameObject.Find("collectables").GetComponentsInChildren<Transform>(true);
-
-                if(collectables.Length != saveData.collectables.Count)
-                {
-                    Debug.Log("loaded the state of " + saveData.collectables.Count.ToString() + " collectables but there are " + collectables.Length.ToString() + " collectables in the scene");
-                }
-                else
-                {
-                    for(int i = 0; i < collectables.Length; i++)
-                    {
-                        collectables[i].gameObject.SetActive(saveData.collectables[i]);
-
-                        if(!saveData.collectables[i])
-                        {
-                            Utils.numberOfCollectables++;
-                        }
-                    }
-                }
-
-                Utils.updateCollectableText();
             }
 
             // disable already seen wisps
