@@ -46,8 +46,6 @@ public class Enemy : MonoBehaviour
 
         float angle = Vector2.SignedAngle(Vector3.right, Utils.getPlayer().transform.position - transform.position);
 
-        Debug.Log(angle);
-
         if(Mathf.Abs(angle) < 30.0f || Mathf.Abs(angle) > 150.0f)
         {
             //flip the sprite to face the player
