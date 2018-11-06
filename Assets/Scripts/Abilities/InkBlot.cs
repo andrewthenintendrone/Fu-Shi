@@ -26,12 +26,18 @@ public class InkBlot : MonoBehaviour
     [HideInInspector]
     public bool jumpHeld;
 
+    [SerializeField]
+    [Tooltip("Ink splatter particles prefab")]
+    private GameObject inkParticlePrefab;
+
     private void Start()
     {
         // get debug line renderer
         lr = GetComponent<LineRenderer>();
 
         transform.parent.GetComponent<AnimationInkBlot>().PlayAnimation();
+
+        Instantiate(inkParticlePrefab, transform.position, Quaternion.identity);
     }
 
     private void Update()
@@ -123,6 +129,9 @@ public class InkBlot : MonoBehaviour
 
         // play sound effect
         SoundManager.instance.playLaunchFromInkPlatform();
+
+        // particles
+        Instantiate(inkParticlePrefab, transform.position, Quaternion.identity);
 
         // destroy this gameobject
         Destroy(gameObject);
