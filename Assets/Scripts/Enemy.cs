@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
                 {
                     gameObject.GetComponent<patrolmove>().enabled = false;
                 }
+                SoundManager.instance.playDeathFX();
                 this.enabled = false;
                 CancelInvoke("checkPlayerDist");
             }
@@ -69,6 +70,7 @@ public class Enemy : MonoBehaviour
 
         projectileInstance.GetComponent<enemyProjectile>().direction = direction;
 
+        SoundManager.instance.playDragonFX();
         float angle = Vector2.SignedAngle(Vector3.right, direction);
 
         if (Mathf.Abs(angle) < 30.0f || Mathf.Abs(angle) > 150.0f)

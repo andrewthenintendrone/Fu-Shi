@@ -5,7 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     [Tooltip("the source for playing effects on the player")]
-    private AudioSource efxSource;   
+    private AudioSource efxSource;
     [Tooltip("the source for playing music")]
     private AudioSource MusicSource;
     [Tooltip("lowest pitch the effects will be modulated to")]
@@ -16,10 +16,16 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance = null;
 
     [SerializeField]
+    private AudioClip dragonSound;
+
+    [SerializeField]
+    private AudioClip[] enemyDeathSound;
+
+    [SerializeField]
     private float highPitchRange = 1.05f;
     [SerializeField]
     private float MusicLoopPoint = 5.142f;
-    
+
     public bool playMusic = false;
 
     public AudioClip music;
@@ -37,7 +43,8 @@ public class SoundManager : MonoBehaviour
             //Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
             Destroy(gameObject);
 
-        
+        dragonSound = Resources.Load<AudioClip>("Fire");
+        enemyDeathSound = Resources.LoadAll<AudioClip>("EnemyDeath");
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
@@ -76,6 +83,18 @@ public class SoundManager : MonoBehaviour
         //Play the clip.
         efxSource.Play();
     }
+
+    public void playDragonFX()
+    {
+        playSingle(dragonSound);
+    }
+
+    public void playDeathFX()
+    {
+        PlayRandomSFX(enemyDeathSound);
+    }
+
+  
 
     public void Update()
     {

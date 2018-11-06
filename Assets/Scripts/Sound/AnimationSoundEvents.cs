@@ -11,19 +11,13 @@ public class AnimationSoundEvents : MonoBehaviour {
     [SerializeField]
     private AudioClip jumpPiece;
 
-    // Use this for initialization
+   
     void Start ()
     {
         walkSounds = Resources.LoadAll<AudioClip>("walk");
         jumpSounds = Resources.LoadAll<AudioClip>("jump");
 	}
 	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
     public void playWalkSound()
     {
         SoundManager.instance.PlayRandomSFX(walkSounds);
