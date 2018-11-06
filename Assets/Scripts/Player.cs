@@ -264,6 +264,11 @@ public class Player : MonoBehaviour
             {
                 GetComponent<Abilityactivator>().hasTimeAbility = !GetComponent<Abilityactivator>().hasTimeAbility;
             }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Utils.maxHealth = 6;
+                Utils.Health = 6;
+            }
 
             changeColor(new Color(UnityEngine.Random.Range(0, 255) / 255.0f, UnityEngine.Random.Range(0, 255) / 255.0f, UnityEngine.Random.Range(0, 255) / 255.0f));
         }

@@ -14,17 +14,16 @@ public static class SaveLoad
         public float xPosition, yPosition;
         public bool hasInkAbility;
         public bool hasTimeAbility;
+        public bool hasExtraHealth;
         public List<bool> collectables;
         public List<bool> wisps;
-        public bool hasExtraHealth;
 
         public SaveData()
         {
             xPosition = yPosition = 0;
-            hasInkAbility = hasTimeAbility = false;
+            hasInkAbility = hasTimeAbility = hasExtraHealth = false;
             collectables = new List<bool>();
             wisps = new List<bool>();
-            hasExtraHealth = false;
         }
     }
 
@@ -126,6 +125,10 @@ public static class SaveLoad
             if (saveData.hasTimeAbility)
             {
                 GameObject.Destroy(GameObject.Find("timeGiver"));
+            }
+            if (saveData.hasExtraHealth)
+            {
+                GameObject.Destroy(GameObject.Find("healthGiver"));
             }
 
             // disable already obtained collectables

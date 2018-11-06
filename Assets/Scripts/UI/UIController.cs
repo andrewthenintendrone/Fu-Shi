@@ -84,6 +84,7 @@ public class UIController : MonoBehaviour
                     {
                         abilityPanels[0].SetActive(GameObject.FindObjectOfType<Abilityactivator>().hasInkAbility);
                         abilityPanels[1].SetActive(GameObject.FindObjectOfType<Abilityactivator>().hasTimeAbility);
+                        abilityPanels[2].SetActive(Utils.maxHealth == 6);
                     }
                 }
                 else
