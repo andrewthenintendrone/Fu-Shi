@@ -99,6 +99,11 @@ public class UIController : MonoBehaviour
         {
             pauseAxisHeld = false;
         }
+
+        if (showingNotification && Input.GetAxisRaw("Back") == 1)
+        {
+            exitNotification();
+        }
     }
 
     void ClosePanels()
@@ -190,9 +195,6 @@ public class UIController : MonoBehaviour
 
         notification.GetComponentsInChildren<Text>()[0].text = confirmText;
         notification.GetComponentsInChildren<Text>()[1].text = messageText;
-
-        notification.GetComponentInChildren<Button>().Select();
-        notification.GetComponentInChildren<Button>().onClick.AddListener(this.exitNotification);
     }
 
     public void exitNotification()

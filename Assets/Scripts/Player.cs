@@ -388,7 +388,7 @@ public class Player : MonoBehaviour
                     Utils.maxHealth = 6;
                     Utils.Health = 6;
                     Destroy(col.gameObject);
-                    Utils.showNotification("You got the extra health ability!", "OK");
+                    Utils.showNotification("You got the extra health ability!", "Press B to continue");
                 }
                 else
                 {
