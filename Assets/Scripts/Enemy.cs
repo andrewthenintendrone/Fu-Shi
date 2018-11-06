@@ -43,7 +43,26 @@ public class Enemy : MonoBehaviour
 	void Update ()
     {
         checkDead();
-	}
+
+        float angle = Vector2.SignedAngle(Vector3.right, Utils.getPlayer().transform.position - transform.position);
+
+        Debug.Log(angle);
+
+        if(Mathf.Abs(angle) < 30.0f || Mathf.Abs(angle) > 150.0f)
+        {
+            //flip the sprite to face the player
+            if (Utils.getPlayer().GetComponent<Collider2D>().bounds.center.x > transform.position.x)
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+                transform.eulerAngles = Vector3.forward * angle;
+            }
+            else
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+                transform.eulerAngles = Vector3.forward * (angle + 180.0f);
+            }
+        }
+    }
 
     public void checkDead()
     {
@@ -81,17 +100,6 @@ public class Enemy : MonoBehaviour
             if (Vector3.SqrMagnitude(direction) <= Mathf.Pow(detectDistance, 2.0f))
             {
                 shootProjectile(direction.normalized);
-
-
-                //flip the sprite to face the player
-                if (Utils.getPlayer().GetComponent<Collider2D>().bounds.center.x > transform.position.x)
-                {
-                    GetComponent<SpriteRenderer>().flipX = true;
-                }
-                else
-                {
-                    GetComponent<SpriteRenderer>().flipX = false;
-                }
             }
         }
     }
