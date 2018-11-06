@@ -383,11 +383,12 @@ public class Player : MonoBehaviour
             // health pickup
             else if(col.tag == "health")
             {
-                if(col.name == "extraHealth")
+                if(col.name == "healthGiver")
                 {
                     Utils.maxHealth = 6;
                     Utils.Health = 6;
                     Destroy(col.gameObject);
+                    Utils.showNotification("You got the extra health ability!", "OK");
                 }
                 else
                 {
