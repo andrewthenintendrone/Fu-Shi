@@ -362,11 +362,6 @@ public class Player : MonoBehaviour
                 // add an extra jump for fairness
                 currentJumps = Mathf.Min(currentJumps + 1, movementSettings.jumpCount);
             }
-            // sets the checkpoint
-            else if (col.tag == "checkpoint")
-            {
-                Utils.updateCheckpoint(col.transform.position);
-            }
             else if (col.tag == "savepoint")
             {
                 Utils.updateCheckpoint(col.transform.position);
@@ -402,9 +397,9 @@ public class Player : MonoBehaviour
     {
         if(!Utils.gamePaused && Utils.Health > 0)
         {
-            if (col.tag == "savepoint")
+            if (col.GetComponent<GlowObject>() != null)
             {
-                col.GetComponent<SavePoint>().nearPlayer = true;
+                col.GetComponent<GlowObject>().nearPlayer = true;
             }
 
             // inkable surface
@@ -441,9 +436,9 @@ public class Player : MonoBehaviour
 
     public void triggerExitFunction(Collider2D col)
     {
-        if (col.tag == "savepoint")
+        if (col.GetComponent<GlowObject>() != null)
         {
-            col.gameObject.GetComponent<SavePoint>().nearPlayer = false;
+            col.gameObject.GetComponent<GlowObject>().nearPlayer = false;
         }
     }
 
