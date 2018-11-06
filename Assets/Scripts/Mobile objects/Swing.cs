@@ -18,7 +18,10 @@ public class Swing : MonoBehaviour
 
 	void FixedUpdate ()
     {
-        transform.eulerAngles = Vector3.forward * Mathf.Sin(Time.fixedTime * swingSpeed) * maxSwingAngle * (flip ? -1 : 1);
+        if(!Utils.gamePaused)
+        {
+            transform.eulerAngles = Vector3.forward * Mathf.Sin(Time.fixedTime * swingSpeed) * maxSwingAngle * (flip ? -1 : 1);
+        }
 	}
 
     private void OnDrawGizmosSelected()
