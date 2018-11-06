@@ -30,7 +30,7 @@ public class ChildtoTrigger : MonoBehaviour
 
             Vector3 fakeMotion = Vector3.zero;
 
-            if (GetComponentInParent<patrolmove>().getNextPatrolPoint().x > transform.position.x)
+            if (GetComponentInParent<patrolmove>() != null && GetComponentInParent<patrolmove>().getNextPatrolPoint().x > transform.position.x)
             {
                 fakeMotion.x = Mathf.Epsilon;
             }

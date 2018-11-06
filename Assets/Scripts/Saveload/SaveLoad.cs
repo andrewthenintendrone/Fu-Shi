@@ -40,6 +40,11 @@ public static class SaveLoad
             currentEnemy.enabled = true;
             currentEnemy.gameObject.GetComponent<Renderer>().enabled = true;
             currentEnemy.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            if(currentEnemy.GetComponent<patrolmove>() != null)
+            {
+                currentEnemy.GetComponent<patrolmove>().enabled = true;
+            }
+
             currentEnemy.health = currentEnemy.GetComponent<Enemy>().maxHealth;
 
             if(currentEnemy.shoot)

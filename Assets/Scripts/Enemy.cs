@@ -53,6 +53,10 @@ public class Enemy : MonoBehaviour
             {
                 gameObject.GetComponent<Renderer>().enabled = false;
                 gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                if(GetComponent<patrolmove>() != null)
+                {
+                    gameObject.GetComponent<patrolmove>().enabled = false;
+                }
                 this.enabled = false;
                 CancelInvoke("checkPlayerDist");
             }
