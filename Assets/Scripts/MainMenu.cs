@@ -13,7 +13,6 @@ public class MainMenu : MonoBehaviour
 
     private EventSystem eventSystem;
 
-
     private void Start()
     {
         eventSystem = GameObject.FindObjectOfType<EventSystem>();
