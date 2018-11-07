@@ -11,8 +11,6 @@ public class UIController : MonoBehaviour
     private EventSystem eventSystem;
 
     [SerializeField]
-    private GameObject endScreen;
-    [SerializeField]
     private GameObject pauseScreen;
     [SerializeField]
     private GameObject confirmationScreen;
@@ -48,7 +46,6 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        endScreen.SetActive(false);
         pauseScreen.SetActive(false);
         confirmationScreen.SetActive(false);
         controlsPanel.SetActive(false);
@@ -58,10 +55,6 @@ public class UIController : MonoBehaviour
 
     void Update ()
     {
-        if (Utils.endstate)
-        {
-            showEndstate();
-        }
         SetPauseScreen();
 	}
 
@@ -110,11 +103,6 @@ public class UIController : MonoBehaviour
     {
         controlsPanel.SetActive(false);
         confirmationScreen.SetActive(false);
-    }
-
-    private void showEndstate()
-    {
-        endScreen.SetActive(true);
     }
 
     public void Resume()
