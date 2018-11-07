@@ -11,6 +11,10 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     // current health
     public int health;
+    
+    [SerializeField]
+    [Tooltip("the particle effect that appears on death")]
+    private GameObject deathParticles;
 
     [Tooltip("prefab of the projectile or bullet to shoot at the player goes here")]
     public GameObject EnemyProjectile;
@@ -58,6 +62,7 @@ public class Enemy : MonoBehaviour
                     gameObject.GetComponent<patrolmove>().enabled = false;
                 }
                 SoundManager.instance.playDeathFX();
+
                 this.enabled = false;
                 CancelInvoke("checkPlayerDist");
             }
