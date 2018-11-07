@@ -44,6 +44,12 @@ public class UIController : MonoBehaviour
 
     EXITTYPE currentExitType = EXITTYPE.MENU;
 
+    [SerializeField]
+    private AudioClip selectSound;
+
+    [SerializeField]
+    private AudioClip confirmSound;
+
     private void Start()
     {
         pauseScreen.SetActive(false);
@@ -107,6 +113,8 @@ public class UIController : MonoBehaviour
 
     public void Resume()
     {
+        PlayConfirmSound();
+
         Utils.gamePaused = false;
 
         ClosePanels();
@@ -116,6 +124,7 @@ public class UIController : MonoBehaviour
 
     public void showControls()
     {
+        PlayConfirmSound();
         controlsPanel.SetActive(true);
         GameObject.Find("controls ok").GetComponent<Button>().Select();
     }
@@ -128,6 +137,7 @@ public class UIController : MonoBehaviour
 
     public void QuitToDesktop()
     {
+        PlayConfirmSound();
         currentExitType = EXITTYPE.DESKTOP;
         confirmationScreen.SetActive(true);
         GameObject.Find("Yes").GetComponent<Button>().Select();
@@ -135,6 +145,7 @@ public class UIController : MonoBehaviour
 
     public void QuitToMenu()
     {
+        PlayConfirmSound();
         currentExitType = EXITTYPE.MENU;
         confirmationScreen.SetActive(true);
         GameObject.Find("Yes").GetComponent<Button>().Select();
@@ -142,6 +153,7 @@ public class UIController : MonoBehaviour
 
     public void ConfirmExit()
     {
+        PlayConfirmSound();
         switch (currentExitType)
         {
             case EXITTYPE.MENU:
@@ -159,6 +171,7 @@ public class UIController : MonoBehaviour
 
     public void cancelExit()
     {
+        PlayConfirmSound();
         GameObject.Find("resume button").GetComponent<Button>().Select();
         confirmationScreen.SetActive(false);
     }
@@ -187,9 +200,20 @@ public class UIController : MonoBehaviour
 
     public void exitNotification()
     {
+        PlayConfirmSound();
         Utils.gamePaused = false;
         showingNotification = false;
 
         Destroy(notification);
+    }
+
+    public void PlaySelectSound()
+    {
+        FindObjectOfType<AudioSource>().PlayOneShot(selectSound);
+    }
+
+    public void PlayConfirmSound()
+    {
+        FindObjectOfType<AudioSource>().PlayOneShot(confirmSound);
     }
 }
