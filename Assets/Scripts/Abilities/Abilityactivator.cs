@@ -109,8 +109,7 @@ public class Abilityactivator : MonoBehaviour
             canUseInkAbility = false;
 
             //create a gameobject InkWave
-            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity);
-
+            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity,transform);
             //if player has R stick input use it
             //else use player facing
             Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
