@@ -163,7 +163,7 @@ public class Abilityactivator : MonoBehaviour
             // spawn time ability object prefab
             GameObject timeAbilityObject = Instantiate(timeAbilityPrefab, transform);
             timeAbilityObject.transform.position = GetComponent<Collider2D>().bounds.center;
-
+            SoundManager.instance.playReverseFX();
             canUseTimeAbility = false;
             Invoke("enableTimeAbility", timeAbilityCooldown);
         }

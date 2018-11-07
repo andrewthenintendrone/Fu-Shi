@@ -32,6 +32,7 @@ public class SoundManager : MonoBehaviour
 
     private AudioClip landOnInkPlatform;
     private AudioClip launchFromInkPlatform;
+    private AudioClip[] TimeReverse;
 
     public void Awake()
     {
@@ -50,6 +51,8 @@ public class SoundManager : MonoBehaviour
         landOnInkPlatform = Resources.Load<AudioClip>("LandOnInkPlatform");
         launchFromInkPlatform = Resources.Load<AudioClip>("LaunchFromInkPlatform");
 
+        TimeReverse = Resources.LoadAll<AudioClip>("Reverse");
+
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
 
@@ -64,9 +67,8 @@ public class SoundManager : MonoBehaviour
     //play one audioclip at normal pitch once
     public void playSingle(AudioClip clip)
     {
-        efxSource.clip = clip;
-
-        efxSource.Play();
+        
+        efxSource.PlayOneShot(clip);
     }
 
     public void PlayRandomSFX(AudioClip[] clips)
@@ -82,10 +84,11 @@ public class SoundManager : MonoBehaviour
         efxSource.pitch = randomPitch;
 
         //Set the clip to the clip at our randomly chosen index.
-        efxSource.clip = clips[randomIndex];
+        //efxSource.clip = clips[randomIndex];
 
         //Play the clip.
-        efxSource.Play();
+        efxSource.PlayOneShot(clips[randomIndex]);
+        efxSource.pitch = 1;
     }
 
     public void playDragonFX()
@@ -107,6 +110,12 @@ public class SoundManager : MonoBehaviour
     {
         playSingle(launchFromInkPlatform);
     }
+
+    public void playReverseFX()
+    {
+        PlayRandomSFX(TimeReverse);
+    }
+
 
     public void Update()
     {
