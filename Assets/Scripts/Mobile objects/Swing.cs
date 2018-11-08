@@ -16,11 +16,14 @@ public class Swing : MonoBehaviour
     [Tooltip("maximum angle to swing")]
     private float maxSwingAngle;
 
+    private float actualTime = 0;
+
 	void FixedUpdate ()
     {
         if(!Utils.gamePaused)
         {
-            transform.eulerAngles = Vector3.forward * Mathf.Sin(Time.fixedTime * swingSpeed) * maxSwingAngle * (flip ? -1 : 1);
+            actualTime += Time.fixedDeltaTime;
+            transform.eulerAngles = Vector3.forward * Mathf.Sin(actualTime * swingSpeed) * maxSwingAngle * (flip ? -1 : 1);
         }
 	}
 
