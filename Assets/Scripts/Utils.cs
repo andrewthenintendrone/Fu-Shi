@@ -62,7 +62,7 @@ public static class Utils
         }
 
         // load the health sprites
-        healthImages = Resources.LoadAll<Sprite>("newHealthUI");
+        healthImages = Resources.LoadAll<Sprite>("HealthUI");
 
         // maximum health is determined y how many health sprites there are
         maxHealth = healthImages.Length - 1;
