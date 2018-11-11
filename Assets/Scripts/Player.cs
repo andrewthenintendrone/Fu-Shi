@@ -239,6 +239,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
+
         // toggle devmode
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -276,6 +278,8 @@ public class Player : MonoBehaviour
         {
             changeColor(Color.white);
         }
+
+#endif
     }
 
     void changeColor(Color color)
@@ -372,6 +376,7 @@ public class Player : MonoBehaviour
                 Utils.updateCheckpoint(col.transform.position);
                 Utils.Health = Utils.maxHealth;
                 SaveLoad.Save();
+                SoundManager.instance.PlaySavePointLight();
             }
             // collectable
             else if (col.tag == "collectable")
