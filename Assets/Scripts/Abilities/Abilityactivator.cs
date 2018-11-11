@@ -176,17 +176,38 @@ public class Abilityactivator : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // ink ability
         if (collision.gameObject.name == "inkGiver")
         {
             hasInkAbility = true;
             Destroy(collision.gameObject);
             Utils.showNotification("You got the ink ability!", "Press B to continue");
+            SoundManager.instance.playAbilityPickup();
         }
+        // time ability
         else if (collision.gameObject.name == "timeGiver")
         {
             hasTimeAbility = true;
             Destroy(collision.gameObject);
             Utils.showNotification("You got the time ability!", "Press B to continue");
+            SoundManager.instance.playAbilityPickup();
+        }
+        // extra health
+        else if (collision.tag == "health")
+        {
+            if (collision.name == "healthGiver")
+            {
+                Utils.maxHealth = 6;
+                Utils.Health = 6;
+                Destroy(collision.gameObject);
+                Utils.showNotification("You got the extra health ability!", "Press B to continue");
+                SoundManager.instance.playAbilityPickup();
+            }
+            else
+            {
+                Utils.Health++;
+                Destroy(collision.gameObject);
+            }
         }
     }
 }

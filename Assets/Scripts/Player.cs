@@ -378,29 +378,6 @@ public class Player : MonoBehaviour
                 SaveLoad.Save();
                 SoundManager.instance.PlaySavePointLight();
             }
-            // collectable
-            else if (col.tag == "collectable")
-            {
-                Utils.numberOfCollectables++;
-                Utils.updateCollectableText();
-                col.gameObject.SetActive(false);
-            }
-            // health pickup
-            else if(col.tag == "health")
-            {
-                if(col.name == "healthGiver")
-                {
-                    Utils.maxHealth = 6;
-                    Utils.Health = 6;
-                    Destroy(col.gameObject);
-                    Utils.showNotification("You got the extra health ability!", "Press B to continue");
-                }
-                else
-                {
-                    Utils.Health++;
-                    Destroy(col.gameObject);
-                }
-            }
         }
     }
 

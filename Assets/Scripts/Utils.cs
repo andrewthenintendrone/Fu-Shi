@@ -42,16 +42,9 @@ public static class Utils
         get { return devMode; }
     }
 
-    public static int numberOfCollectables = 0;
-    private static Text collectableText;
-
     // Use this for initialization
     public static void Init()
     {
-        if(GameObject.Find("collectableText") != null)
-        {
-            collectableText = GameObject.Find("collectableText").GetComponent<Text>();
-        }
         if (GameObject.Find("Health1") != null)
         {
             healthImage1 = GameObject.Find("Health1").GetComponent<Image>();
@@ -138,14 +131,6 @@ public static class Utils
     public static void toggleDevMode()
     {
         devMode = !devMode;
-    }
-
-    public static void updateCollectableText()
-    {
-        if(collectableText != null)
-        {
-            collectableText.text = "Collectables: " + numberOfCollectables.ToString();
-        }
     }
 
     private static void updateHealthSprite()

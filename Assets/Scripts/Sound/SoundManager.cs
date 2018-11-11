@@ -36,6 +36,8 @@ public class SoundManager : MonoBehaviour
 
     private AudioClip savePointLight;
 
+    private AudioClip abilityPickup;
+
     public void Awake()
     {
         //Check if there is already an instance of SoundManager
@@ -56,6 +58,8 @@ public class SoundManager : MonoBehaviour
         TimeReverse = Resources.LoadAll<AudioClip>("Reverse");
 
         savePointLight = Resources.Load<AudioClip>("SavePointLight");
+
+        abilityPickup = Resources.Load<AudioClip>("Ability pickup");
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
@@ -145,4 +149,8 @@ public class SoundManager : MonoBehaviour
         playSingle(savePointLight);
     }
 
+    public void playAbilityPickup()
+    {
+        playSingle(abilityPickup);
+    }
 }

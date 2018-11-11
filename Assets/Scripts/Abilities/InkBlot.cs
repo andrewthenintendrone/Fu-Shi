@@ -167,13 +167,6 @@ public class InkBlot : MonoBehaviour
                 Utils.updateCheckpoint(col.transform.position);
                 SaveLoad.Save();
             }
-            else if (col.tag == "collectable")
-            {
-                Utils.Health = Mathf.Min(Utils.Health + 1, Utils.maxHealth);
-                Utils.numberOfCollectables++;
-                Utils.updateCollectableText();
-                col.gameObject.SetActive(false);
-            }
         }
     }
 }
