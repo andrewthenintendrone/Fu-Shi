@@ -9,6 +9,7 @@ public class SinMove : MonoBehaviour {
     [SerializeField]
     private float shakeSpd = 0.5f;
 
+    private float actualTime = 0;
 
     // Use this for initialization
     void Start ()
@@ -21,7 +22,8 @@ public class SinMove : MonoBehaviour {
     {
         if (!Utils.gamePaused)
         {
-            transform.position += Vector3.right * Mathf.Sin(Time.time * shakeSpd) * shakeAmt;
+            actualTime += Time.fixedDeltaTime;
+            transform.position += Vector3.right * Mathf.Sin(actualTime * shakeSpd) * shakeAmt;
         }
         
 	}

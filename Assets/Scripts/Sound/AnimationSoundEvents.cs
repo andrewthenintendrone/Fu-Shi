@@ -16,7 +16,7 @@ public class AnimationSoundEvents : MonoBehaviour {
     {
         walkSounds = Resources.LoadAll<AudioClip>("walk");
         jumpSounds = Resources.LoadAll<AudioClip>("jump");
-        //deathSound = Resources.Load<AudioClip>("");
+        deathSound = Resources.Load<AudioClip>("FoxDeath");
 	}
 	
     public void playWalkSound()
