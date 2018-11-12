@@ -337,8 +337,7 @@ public class Player : MonoBehaviour
                 }
 
                 // rumble
-                GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
-                Invoke("stopRumble", rumbleTime);
+                Rumble();
 
                 // knockback
                 Vector3 directionToEnemy = (col.gameObject.transform.position - transform.position).normalized;
@@ -347,24 +346,6 @@ public class Player : MonoBehaviour
                 {
                     velocity = hitInfo.normal * movementSettings.knockBack;
                 }
-            }
-            else if (col.gameObject.GetComponent<enemyProjectile>() != null)
-            {
-                // damage
-                if (!isInvulnerable)
-                {
-                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
-                    SoundManager.instance.playFoxDamage();
-                    isInvulnerable = true;
-                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
-                }
-
-                // rumble
-                GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
-                Invoke("stopRumble", rumbleTime);
-
-                // destroy the projectile
-                Destroy(col.gameObject);
             }
             else if (col.tag == "spikes")
             {
@@ -488,6 +469,13 @@ public class Player : MonoBehaviour
     private void becomeVulnerable()
     {
         isInvulnerable = false;
+    }
+
+    public void Rumble()
+    {
+        GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+
+        Invoke("stopRumble", rumbleTime);
     }
 
     private void stopRumble()
