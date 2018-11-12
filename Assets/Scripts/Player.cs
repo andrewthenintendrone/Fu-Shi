@@ -322,6 +322,7 @@ public class Player : MonoBehaviour
         {
             if (col.tag == "reset")
             {
+                SoundManager.instance.playFoxDamage();
                 Utils.ResetPlayer();
             }
             else if (col.tag == "enemy")
@@ -330,6 +331,7 @@ public class Player : MonoBehaviour
                 if (!isInvulnerable)
                 {
                     Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    SoundManager.instance.playFoxDamage();
                     isInvulnerable = true;
                     Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
                 }
@@ -346,12 +348,31 @@ public class Player : MonoBehaviour
                     velocity = hitInfo.normal * movementSettings.knockBack;
                 }
             }
+            else if (col.gameObject.GetComponent<enemyProjectile>() != null)
+            {
+                // damage
+                if (!isInvulnerable)
+                {
+                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    SoundManager.instance.playFoxDamage();
+                    isInvulnerable = true;
+                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+                }
+
+                // rumble
+                GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+                Invoke("stopRumble", rumbleTime);
+
+                // destroy the projectile
+                Destroy(col.gameObject);
+            }
             else if (col.tag == "spikes")
             {
                 // damage
                 if(!isInvulnerable)
                 {
                     Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    SoundManager.instance.playFoxDamage();
                     isInvulnerable = true;
                     Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
                 }
