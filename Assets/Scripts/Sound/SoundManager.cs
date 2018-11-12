@@ -38,6 +38,8 @@ public class SoundManager : MonoBehaviour
 
     private AudioClip abilityPickup;
 
+    private AudioClip foxDamage;
+
     public void Awake()
     {
         //Check if there is already an instance of SoundManager
@@ -60,6 +62,8 @@ public class SoundManager : MonoBehaviour
         savePointLight = Resources.Load<AudioClip>("SavePointLight");
 
         abilityPickup = Resources.Load<AudioClip>("Ability pickup");
+
+        foxDamage = Resources.Load<AudioClip>("FoxDamage");
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
@@ -152,5 +156,10 @@ public class SoundManager : MonoBehaviour
     public void playAbilityPickup()
     {
         playSingle(abilityPickup);
+    }
+
+    public void playFoxDamage()
+    {
+        playSingle(foxDamage);
     }
 }
