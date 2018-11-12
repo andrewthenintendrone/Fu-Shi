@@ -58,7 +58,17 @@ public class Door : MonoBehaviour
 
                     if(isMoving())
                     {
+
                         transform.position += Vector3.right * Mathf.Sin(Time.time * shakeSpd) * shakeAmt;
+
+                        if(!GetComponent<AudioSource>().isPlaying)
+                        {
+                            GetComponent<AudioSource>().Play();
+                        }
+                    }
+                    else
+                    {
+                        GetComponent<AudioSource>().Stop();
                     }
                 }
                 // closing
@@ -69,6 +79,15 @@ public class Door : MonoBehaviour
                     if (isMoving())
                     {
                         transform.position += Vector3.right * Mathf.Sin(Time.time * shakeSpd) * shakeAmt;
+
+                        if (!GetComponent<AudioSource>().isPlaying)
+                        {
+                            GetComponent<AudioSource>().Play();
+                        }
+                    }
+                    else
+                    {
+                        GetComponent<AudioSource>().Stop();
                     }
                 }
 

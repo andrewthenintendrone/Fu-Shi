@@ -31,7 +31,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip music;
 
     private AudioClip landOnInkPlatform;
+
     private AudioClip launchFromInkPlatform;
+
     private AudioClip[] TimeReverse;
 
     private AudioClip savePointLight;
@@ -39,6 +41,7 @@ public class SoundManager : MonoBehaviour
     private AudioClip abilityPickup;
 
     private AudioClip foxDamage;
+
 
     public void Awake()
     {
@@ -64,6 +67,7 @@ public class SoundManager : MonoBehaviour
         abilityPickup = Resources.Load<AudioClip>("Ability pickup");
 
         foxDamage = Resources.Load<AudioClip>("FoxDamage");
+
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
@@ -95,7 +99,7 @@ public class SoundManager : MonoBehaviour
         efxSource.pitch = randomPitch;
 
         //Set the clip to the clip at our randomly chosen index.
-        //efxSource.clip = clips[randomIndex];
+        
 
         //Play the clip.
         efxSource.PlayOneShot(clips[randomIndex]);
@@ -162,4 +166,6 @@ public class SoundManager : MonoBehaviour
     {
         playSingle(foxDamage);
     }
+
+
 }
