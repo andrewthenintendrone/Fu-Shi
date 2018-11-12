@@ -107,7 +107,7 @@ public static class Utils
 
     public static void updateCheckpoint(Vector3 position)
     {
-        resetPos = position;
+        resetPos = new Vector3(position.x, position.y, 0);
     }
 
     public static void Exit()
