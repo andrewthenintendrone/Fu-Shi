@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public static class Utils 
 {
     //the position to reset the player to when they die
-    public static Vector3 resetPos;
+    public static Vector2 resetPos;
 
     public static bool endstate;
 
@@ -105,9 +105,9 @@ public static class Utils
         GameObject.FindObjectOfType<Fade>().triggerFadeIn();
     }
 
-    public static void updateCheckpoint(Vector3 position)
+    public static void updateCheckpoint(Vector2 position)
     {
-        resetPos = new Vector3(position.x, position.y, 0);
+        resetPos = position;
     }
 
     public static void Exit()
