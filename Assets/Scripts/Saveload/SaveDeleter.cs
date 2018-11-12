@@ -51,7 +51,7 @@ public class EverythingDeleter : EditorWindow
         GUILayout.Space(70);
         if (GUILayout.Button("Yes"))
         {
-            var processInfo = new ProcessStartInfo("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", "https://www.youtube.com/watch?v=oHg5SJYRHA0");
+            var processInfo = new ProcessStartInfo("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", "https://youtu.be/6n3pFFPSlW4");
             processInfo.CreateNoWindow = true;
             processInfo.UseShellExecute = false;
 
