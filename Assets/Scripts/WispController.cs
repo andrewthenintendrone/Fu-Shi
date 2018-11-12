@@ -36,6 +36,15 @@ public class WispController : MonoBehaviour
     [SerializeField]
     private float distanceCutoff;
 
+    [SerializeField]
+    [Tooltip("the particle effect that appears on death")]
+    private GameObject deathParticles;
+
+
+    private void Start()
+    {
+        deathParticles = Resources.Load<GameObject>("Deathpuff");
+    }
 
 
     public void Update()
@@ -101,26 +110,28 @@ public class WispController : MonoBehaviour
         
 
         //move to next position
-            if (isActive)
-            {
-                float step = moveSpd * Time.fixedDeltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, target, step);
-            }
+        if (isActive)
+        {
+            float step = moveSpd * Time.fixedDeltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
+        }
         
     }
 
     
     void findNextNode()
-    {
-            if (currPatrolPoint == patrolPoints.Length - 1)
-            {
-                hasPlayed = true;
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                currPatrolPoint++;
-            }
+    {       
+            //run to the end of it's path
+        if (currPatrolPoint == patrolPoints.Length - 1)
+        {
+            hasPlayed = true;
+            Instantiate(deathParticles);
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            currPatrolPoint++;
+        }
     }
 
 
