@@ -45,6 +45,21 @@ public class Abilityactivator : MonoBehaviour
 
     private AudioClip inkSound;
 
+    [SerializeField]
+    private string InkText;
+    [SerializeField]
+    private string InkText2;
+
+    [SerializeField]
+    private string TimeText;
+    [SerializeField]
+    private string TimeText2;
+
+    [SerializeField]
+    private string HealthText;
+    [SerializeField]
+    private string HealthText2;
+
     void Start()
     {
         inkSound = Resources.Load<AudioClip>("Spray");
@@ -181,7 +196,7 @@ public class Abilityactivator : MonoBehaviour
         {
             hasInkAbility = true;
             Destroy(collision.gameObject);
-            Utils.showNotification("You got the ink ability!", "Press B to continue");
+            Utils.showNotification(InkText, InkText2);
             SoundManager.instance.playAbilityPickup();
         }
         // time ability
@@ -189,7 +204,7 @@ public class Abilityactivator : MonoBehaviour
         {
             hasTimeAbility = true;
             Destroy(collision.gameObject);
-            Utils.showNotification("You got the time ability!", "Press B to continue");
+            Utils.showNotification(TimeText, TimeText2);
             SoundManager.instance.playAbilityPickup();
         }
         // extra health
@@ -200,7 +215,7 @@ public class Abilityactivator : MonoBehaviour
                 Utils.maxHealth = 6;
                 Utils.Health = 6;
                 Destroy(collision.gameObject);
-                Utils.showNotification("You got the extra health ability!", "Press B to continue");
+                Utils.showNotification(HealthText, HealthText2);
                 SoundManager.instance.playAbilityPickup();
             }
             else
