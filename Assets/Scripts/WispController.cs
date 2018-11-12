@@ -33,8 +33,10 @@ public class WispController : MonoBehaviour
     [SerializeField]
     private GameObject Loot;
 
+    [SerializeField]
+    private float distanceCutoff;
 
- 
+
 
     public void Update()
     {
@@ -45,6 +47,11 @@ public class WispController : MonoBehaviour
 
         if (Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(lootRadius, 2.0f))
         {
+            if (!lootActive)
+            {
+                Utils.showNotification("I have your soul!", "Press B to Continue");
+            }
+
             lootActive = true;
         }
 
@@ -76,7 +83,6 @@ public class WispController : MonoBehaviour
     {
 
         Vector3 target;
-        float distanceCutoff = 0.05f;
 
         target = patrolPoints[currPatrolPoint].position;
 
