@@ -40,7 +40,9 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         if(shoot)
         {
-            InvokeRepeating("checkPlayerDist", shootInterval, shootInterval);
+            float randomStart;
+            randomStart = Random.Range(0.0f, 2.0f);
+            InvokeRepeating("checkPlayerDist", randomStart, shootInterval);
         }
 	}
 	
