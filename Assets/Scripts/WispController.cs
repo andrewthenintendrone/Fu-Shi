@@ -51,8 +51,13 @@ public class WispController : MonoBehaviour
     {
         if(Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(activationDist, 2.0f))
         {
-            isActive = true;
-            SoundManager.instance.playwispLaugh();
+            if (!isActive)
+            {
+                isActive = true;
+                SoundManager.instance.playwispLaugh();
+            }
+            
+            
         }
 
         if (Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(lootRadius, 2.0f))
