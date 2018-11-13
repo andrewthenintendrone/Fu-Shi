@@ -132,7 +132,7 @@ public class Abilityactivator : MonoBehaviour
             canUseInkAbility = false;
 
             //create a gameobject InkWave
-            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity, transform);
+            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f, -5.0f), Quaternion.identity, transform);
             CurrentInkwave.name = "inkSlash";
 
             //if player has R stick input use it

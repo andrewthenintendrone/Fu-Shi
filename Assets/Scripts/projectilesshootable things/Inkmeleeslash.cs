@@ -17,8 +17,8 @@ public class Inkmeleeslash : MonoBehaviour
     //spawn the smaller inkprojectiles here
     void Start ()
     {
-        float rotation = Vector2.SignedAngle(Vector2.left, direction);
-        transform.eulerAngles = -Vector3.forward * rotation;
+        float rotation = Vector2.SignedAngle(Vector2.up, direction);
+        transform.eulerAngles = Vector3.forward * rotation;
 
         if (direction.x < 0)
         {
