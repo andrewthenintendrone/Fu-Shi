@@ -16,11 +16,27 @@ public class TriggerAppear : MonoBehaviour
     private float opaqueDistance;
 
     [SerializeField]
+    [Tooltip("time it takes to switch between images")]
+    private float changeTime;
+
+    [SerializeField]
+    [Tooltip("sprites to change between")]
+    private List<Sprite> images;
+
+    [SerializeField]
     private Color color;
+
+    // used to cycle through images
+    private int currentImageIndex = 0;
 
     private void Start()
     {
         color = GetComponent<Renderer>().material.color;
+
+        if (images.Count > 0)
+        {
+            InvokeRepeating("changeImage", changeTime, changeTime);
+        }
     }
 
     private void Update()
@@ -30,6 +46,12 @@ public class TriggerAppear : MonoBehaviour
         color.a = 1 - Mathf.Clamp01((distToPlayer - opaqueDistance) / (transparentDistance - opaqueDistance));
 
         GetComponent<Renderer>().material.color = color;
+    }
+
+    private void changeImage()
+    {
+        currentImageIndex = (currentImageIndex + 1) % images.Count;
+        GetComponent<SpriteRenderer>().sprite = images[currentImageIndex];
     }
 
 #if UNITY_EDITOR
