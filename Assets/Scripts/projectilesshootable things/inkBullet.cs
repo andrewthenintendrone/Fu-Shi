@@ -11,6 +11,9 @@ public class inkBullet: MonoBehaviour
 
     public float lifetime;
 
+    [SerializeField]
+    private GameObject drip;
+
     private void Start()
     {
         float rotation = Vector2.SignedAngle(Vector2.left, direction);
@@ -35,13 +38,17 @@ public class inkBullet: MonoBehaviour
         if (collision.gameObject.GetComponentInChildren<inkableSurface>() != null)
         {
             collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
+            Instantiate(drip, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
 
         if (collision.gameObject.GetComponent<enemyProjectile>() == null && collision.gameObject.GetComponent<inkBullet>() == null && collision.gameObject.GetComponent<Player>() == null
             && collision.gameObject.GetComponent<Inkmeleeslash>() == null)
         {
-        
-         Destroy(gameObject);
+
+            Instantiate(drip, transform.position, Quaternion.identity);
+
+            Destroy(gameObject);
           
         }
     }
@@ -51,6 +58,7 @@ public class inkBullet: MonoBehaviour
         if (collision.gameObject.GetComponent<Enemy>() != null)
         {
             collision.gameObject.GetComponent<Enemy>().health--;
+            Instantiate(drip, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 
@@ -58,6 +66,8 @@ public class inkBullet: MonoBehaviour
         if (collision.gameObject.GetComponentInChildren<inkableSurface>() != null)
         {
             collision.gameObject.GetComponentInChildren<inkableSurface>().Inked = true;
+            Instantiate(drip, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 }
