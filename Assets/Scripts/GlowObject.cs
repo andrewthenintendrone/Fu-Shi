@@ -23,20 +23,25 @@ public class GlowObject : MonoBehaviour
     [HideInInspector]
     public bool nearPlayer = false;
 
-    private ParticleSystem Particles;
+    private ParticleSystem Particles = null;
 
     private void Start()
     {
         GetComponent<SpriteRenderer>().material.SetTexture("_MainTex", sprite1);
         GetComponent<SpriteRenderer>().material.SetTexture("_MainTex2", sprite2);
-        Particles = GetComponent<ParticleSystem>();
+        if (GetComponent<ParticleSystem>() != null)
+        {
+            Particles = GetComponent<ParticleSystem>();
+        }
+        
     }
 
     private void Update()
     {
         if(nearPlayer)
         {
-            if (!Particles.isPlaying)
+ 
+            if (Particles != null && !Particles.isPlaying)
             {
                 Particles.Play();
             }

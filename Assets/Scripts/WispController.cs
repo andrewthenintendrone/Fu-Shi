@@ -52,6 +52,7 @@ public class WispController : MonoBehaviour
         if(Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(activationDist, 2.0f))
         {
             isActive = true;
+            SoundManager.instance.playwispLaugh();
         }
 
         if (Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(lootRadius, 2.0f))
@@ -59,6 +60,7 @@ public class WispController : MonoBehaviour
             if (!lootActive)
             {
                 Utils.showNotification("I have your soul!", "Press B to Continue");
+                SoundManager.instance.playwispLaugh();
             }
 
             lootActive = true;
