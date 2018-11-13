@@ -13,6 +13,12 @@ public class EndingMenu : MonoBehaviour
 
     private EventSystem eventSystem;
 
+    [SerializeField]
+    private AudioClip selectSound;
+
+    [SerializeField]
+    private AudioClip confirmSound;
+
 
     private void Start()
     {
@@ -22,23 +28,37 @@ public class EndingMenu : MonoBehaviour
 
     public void BackToMenu()
     {
+        PlayConfirmSound();
         SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
     {
+        PlayConfirmSound();
         confirmPanel.SetActive(true);
         eventSystem.SetSelectedGameObject(GameObject.Find("Yes"));
     }
 
+    public void CancelQuit()
+    {
+        PlayConfirmSound();
+        confirmPanel.SetActive(false);
+        eventSystem.SetSelectedGameObject(GameObject.Find("BackToMenuButton"));
+    }
+
     public void ConfirmQuit()
     {
+        PlayConfirmSound();
         Application.Quit();
     }
 
-    public void CancelQuit()
+    public void PlaySelectSound()
     {
-        confirmPanel.SetActive(false);
-        eventSystem.SetSelectedGameObject(GameObject.Find("BackToMenuButton"));
+        GetComponent<AudioSource>().PlayOneShot(selectSound);
+    }
+
+    public void PlayConfirmSound()
+    {
+        GetComponent<AudioSource>().PlayOneShot(confirmSound);
     }
 }
