@@ -42,7 +42,7 @@ public class SoundManager : MonoBehaviour
 
     private AudioClip foxDamage;
 
-    private AudioClip wispGiggle;
+    private AudioClip[] wispGiggle;
 
 
     public void Awake()
@@ -70,7 +70,7 @@ public class SoundManager : MonoBehaviour
 
         foxDamage = Resources.Load<AudioClip>("FoxDamage");
 
-        wispGiggle = Resources.Load<AudioClip>("WispCackle");
+        wispGiggle = Resources.LoadAll<AudioClip>("WispCackle");
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
@@ -172,7 +172,7 @@ public class SoundManager : MonoBehaviour
 
     public void playwispLaugh()
     {
-        playSingle(wispGiggle);
+        PlayRandomSFX(wispGiggle);
     }
 
 }
