@@ -416,6 +416,7 @@ public class Player : MonoBehaviour
                             GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
                             GetComponent<Abilityactivator>().enabled = false;
                             GetComponent<Collider2D>().enabled = false;
+                            GetComponentInChildren<LineRenderer>().enabled = false;
                             this.enabled = false;
 
                             // play sound effect
