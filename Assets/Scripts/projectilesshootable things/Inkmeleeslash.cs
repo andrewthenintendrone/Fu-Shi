@@ -18,12 +18,11 @@ public class Inkmeleeslash : MonoBehaviour
     void Start ()
     {
         float rotation = Vector2.SignedAngle(Vector2.left, direction);
-        transform.eulerAngles = Vector3.forward * rotation;
+        transform.eulerAngles = -Vector3.forward * rotation;
 
         if (direction.x < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
-            //GetComponent<rotateObject>().rotationRate *= -1;
         }
 
         GameObject inkbullet1 = Instantiate(inkbulletprefab, transform.position, transform.rotation);
