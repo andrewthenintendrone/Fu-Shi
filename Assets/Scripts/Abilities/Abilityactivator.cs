@@ -120,11 +120,19 @@ public class Abilityactivator : MonoBehaviour
         // to use the ink ability the player must have unlocked it
         if (hasInkAbility && canUseInkAbility)
         {
+            // remove any old ink abilities
+            if(GameObject.Find("inkSlash"))
+            {
+                Destroy(GameObject.Find("inkSlash"));
+            }
+
             // player can no longer ink until they touch the ground
             canUseInkAbility = false;
 
             //create a gameobject InkWave
-            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity,transform);
+            GameObject CurrentInkwave = Instantiate(inkSlashPrefab, transform.position + new Vector3(0, 0.7f), Quaternion.identity, transform);
+            CurrentInkwave.name = "inkSlash";
+
             //if player has R stick input use it
             //else use player facing
             Vector2 RstickDir = new Vector2(Input.GetAxis("RstickX"), Input.GetAxis("RstickY")).normalized;
