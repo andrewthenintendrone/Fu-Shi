@@ -424,6 +424,23 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+
+            // spikes
+            if (col.tag == "spikes")
+            {
+                // damage
+                if (!isInvulnerable)
+                {
+                    Utils.Health = Mathf.Max(Utils.Health - 1, 0);
+                    SoundManager.instance.playFoxDamage();
+                    isInvulnerable = true;
+                    Invoke("becomeVulnerable", movementSettings.invulnerabilityTime);
+                }
+
+                // rumble
+                GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+                Invoke("stopRumble", rumbleTime);
+            }
         }
     }
 
