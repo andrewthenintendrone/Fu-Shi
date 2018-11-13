@@ -209,11 +209,11 @@ public class UIController : MonoBehaviour
 
     public void PlaySelectSound()
     {
-        FindObjectOfType<AudioSource>().PlayOneShot(selectSound);
+        GetComponent<AudioSource>().PlayOneShot(selectSound);
     }
 
     public void PlayConfirmSound()
     {
-        FindObjectOfType<AudioSource>().PlayOneShot(confirmSound);
+        GetComponent<AudioSource>().PlayOneShot(confirmSound);
     }
 }
