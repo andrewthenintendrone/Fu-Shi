@@ -11,21 +11,27 @@ public class Test : MonoBehaviour
     private float distance;
 
     [SerializeField]
+    private float detail;
+
+    [SerializeField]
     private GameObject prefab;
 
     private void Start()
     {
         if(texture != null)
         {
-            for(int x = 0; x < texture.width; x++)
+            for(int x = 0; x < texture.width / detail; x++)
             {
-                for (int y = 0; y < texture.height; y++)
+                for (int y = 0; y < texture.height / detail; y++)
                 {
-                    GameObject currentObject = Instantiate(prefab, new Vector3(x * distance, y * distance, 0), Quaternion.identity, transform);
-                    currentObject.name = prefab.name + "_" + x.ToString() + "_" + y.ToString() + ")";
+                    if(texture.GetPixel(x * (int)detail, y * (int)detail).a > 0.5f)
+                    {
+                        GameObject currentObject = Instantiate(prefab, new Vector3(x * distance, y * distance, 0), Quaternion.identity, transform);
+                        currentObject.name = prefab.name + "_" + x.ToString() + "_" + y.ToString() + ")";
 
-                    // set color
-                    currentObject.GetComponentInChildren<SpriteRenderer>().color = texture.GetPixel(x, y);
+                        // set color
+                        currentObject.GetComponentInChildren<SpriteRenderer>().color = texture.GetPixel(x * (int)detail, y * (int)detail);
+                    }
                 }
             }
         }

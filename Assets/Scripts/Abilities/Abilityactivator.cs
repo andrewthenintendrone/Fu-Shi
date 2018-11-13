@@ -73,6 +73,8 @@ public class Abilityactivator : MonoBehaviour
             float inkAxis = Input.GetAxis("Ink");
             float timeAxis = Input.GetAxis("Time");
 
+            DrawAimDirection();
+
             // the player can always use ink when on the ground
             if (gameObject.GetComponent<CharacterController2D>().isGrounded)
             {
@@ -231,6 +233,35 @@ public class Abilityactivator : MonoBehaviour
                 Utils.Health++;
                 Destroy(collision.gameObject);
             }
+        }
+    }
+
+    // draw the aim direction
+    void DrawAimDirection()
+    {
+        float RstickX = Input.GetAxis("RstickX");
+        float RstickY = Input.GetAxis("RstickY");
+
+        // get normalized launch direction
+        Vector3 direction = (Vector3.right * RstickX + Vector3.up * RstickY).normalized;
+
+        // if there is right stick input draw it
+        if (hasInkAbility && canUseInkAbility && (RstickX != 0 || RstickY != 0))
+        {
+            LineRenderer lr = GetComponentInChildren<LineRenderer>();
+
+            lr.enabled = true;
+
+            // reset line points and draw direction line
+            lr.positionCount = 2;
+            lr.SetPosition(0, GetComponent<BoxCollider2D>().bounds.center);
+            lr.SetPosition(1, GetComponent<BoxCollider2D>().bounds.center + direction * 3);
+            Debug.DrawLine(transform.position, transform.position + direction, Color.red);
+        }
+        // otherwise disable the arrow
+        else
+        {
+            GetComponentInChildren<LineRenderer>().enabled = false;
         }
     }
 }
