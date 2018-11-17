@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WispController : MonoBehaviour
 {
+    #region variables
+
     [SerializeField]
     private Transform[] patrolPoints = new Transform[0];
 
@@ -40,55 +42,41 @@ public class WispController : MonoBehaviour
     [Tooltip("the particle effect that appears on death")]
     private GameObject deathParticles;
 
+    #endregion
 
     private void Start()
     {
         deathParticles = Resources.Load<GameObject>("Deathpuff");
     }
 
-
     public void Update()
     {
-        if(Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(activationDist, 2.0f))
+        float sqrDistToPlayer = Vector2.SqrMagnitude(Utils.getPlayer().transform.position - transform.position);
+
+        if(sqrDistToPlayer <= Mathf.Pow(activationDist, 2.0f))
         {
             if (!isActive)
             {
                 isActive = true;
                 SoundManager.instance.playwispLaugh();
             }
-            
-            
         }
 
-        if (Vector3.SqrMagnitude(Utils.getPlayer().transform.position - transform.position) <= Mathf.Pow(lootRadius, 2.0f))
+        if (sqrDistToPlayer <= Mathf.Pow(lootRadius, 2.0f))
         {
             if (!lootActive)
             {
                 Utils.showNotification("I have your soul!", "Press B to Continue");
                 SoundManager.instance.playwispLaugh();
+                lootActive = true;
             }
-
-            lootActive = true;
         }
 
         if (Loot != null)
         {
-            
-            if (lootActive)
-            {
-                Loot.SetActive(true);
-            }
-            else
-            {
-                Loot.SetActive(false);
-            }
-
+            Loot.SetActive(lootActive);
         }
-    }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
         if (!Utils.gamePaused)
         {
             patrol();
@@ -97,38 +85,29 @@ public class WispController : MonoBehaviour
 
     private void patrol()
     {
-
-        Vector3 target;
-
-        target = patrolPoints[currPatrolPoint].position;
-
-
-
-        //check distance to nearest patrol point
-        float distCheck = (transform.position - target).magnitude;
-        if (distCheck <= distanceCutoff)
-        {
-            
-            // update target to next position
-
-            findNextNode();
-
-        }
-        
-
-        //move to next position
         if (isActive)
         {
+            Vector3 target = patrolPoints[currPatrolPoint].position;
+
+            // check distance to nearest patrol point
+            float distCheck = Vector2.SqrMagnitude(transform.position - target);
+
+            if (distCheck <= Mathf.Pow(distanceCutoff, 2.0f))
+            {
+                // update target to next position
+                findNextNode();
+            }
+
+            // move to next position
             float step = moveSpd * Time.fixedDeltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
         }
-        
     }
 
     
     void findNextNode()
     {       
-            //run to the end of it's path
+        // run to the end of its path
         if (currPatrolPoint == patrolPoints.Length - 1)
         {
             hasPlayed = true;
@@ -152,7 +131,6 @@ public class WispController : MonoBehaviour
             {
                 Gizmos.DrawLine(patrolPoints[i - 1].position, patrolPoints[i].position);
             }
-           
         }
     }
 
@@ -160,8 +138,6 @@ public class WispController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        
-        
         // draw detect radius
         UnityEditor.Handles.color = Color.green;
         UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, activationDist);
@@ -171,7 +147,6 @@ public class WispController : MonoBehaviour
             UnityEditor.Handles.color = Color.red;
             UnityEditor.Handles.DrawWireDisc(gameObject.transform.position, Vector3.forward, lootRadius);
         }
-
     }
 
 #endif

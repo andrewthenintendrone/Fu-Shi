@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class patrolmove : MonoBehaviour
 {
-    public Transform[] patrolPoints = new Transform[0];
+    #region variables
+
+    [SerializeField]
+    [Tooltip("list of patrols points")]
+    private Transform[] patrolPoints = new Transform[0];
 
     [SerializeField]
     [Tooltip("speed of the unit as it moves on patrol / time to take between each node (if timeBased is turned on)")]
@@ -18,9 +22,11 @@ public class patrolmove : MonoBehaviour
     [Tooltip("defines how the platform will return to the start position, reversing or looping")]
     private bool willCycle = false;
 
+    [SerializeField]
     [Tooltip("default patrol point that object will move towards on start if moving")]
-    public int currPatrolPoint = 0;
+    private int currPatrolPoint = 0;
 
+    // keep track of the previous patrol point for leping
     private int prevPatrolPoint;
 
     // platform is frozen waiting to move
@@ -28,7 +34,9 @@ public class patrolmove : MonoBehaviour
 
     // current time left until unfreeze
     private float hangcount;
+
     [SerializeField]
+    [Tooltip("is the platform traveling forward")]
     private bool goingForward = true;
 
     // current ratio between points
@@ -37,6 +45,8 @@ public class patrolmove : MonoBehaviour
     [SerializeField]
     [Tooltip("make the platform time based instead of speed based")]
     bool timeBased = false;
+
+    #endregion
 
     float InOutQuadBlend(float t)
     {
@@ -51,6 +61,7 @@ public class patrolmove : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // just destroy this script if there aren't at least 2 patrol points
         if (patrolPoints.Length < 2)
         {
             Destroy(this);

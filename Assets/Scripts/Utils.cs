@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 public static class Utils 
 {
+    #region variables
+
     //the position to reset the player to when they die
     public static Vector2 resetPos;
-
-    public static bool endstate;
 
     // is the game paused
     public static bool gamePaused = false;
@@ -20,9 +20,6 @@ public static class Utils
 
     // current player health value
     private static int health = 1;
-
-    // player reference
-    private static GameObject player = null;
 
     public static int Health
     {
@@ -36,11 +33,17 @@ public static class Utils
 
     private static Sprite[] healthImages = new Sprite[9];
 
+    // player reference
+    private static GameObject player = null;
+
+    // dev mode bool
     private static bool devMode = false;
     public static bool DEVMODE
     {
         get { return devMode; }
     }
+
+    #endregion
 
     // Use this for initialization
     public static void Init()
@@ -88,6 +91,7 @@ public static class Utils
         yield return null;
     }
 
+    // returns the player to the last checkpoint immediately
     public static void ResetPlayer()
     {
         // reset the players position and velocity to the last checkpoint
@@ -105,6 +109,7 @@ public static class Utils
         GameObject.FindObjectOfType<Fade>().triggerFadeIn();
     }
 
+    // updates the checkpoint to the specified position
     public static void updateCheckpoint(Vector2 position)
     {
         resetPos = position;
@@ -113,19 +118,6 @@ public static class Utils
     public static void Exit()
     {
         Application.Quit();
-    }
-
-    public static T GetSafeComponent<T>(this GameObject obj)
-    {
-        T component = obj.GetComponent<T>();
-
-        if (component == null)
-        {
-            Debug.LogError("Expected to find component of type "
-               + typeof(T) + " but found none", obj);
-        }
-
-        return component;
     }
 
     public static void toggleDevMode()
@@ -192,6 +184,7 @@ public static class Utils
         return player;
     }
 
+    // shows a notification box with the specified strings
     public static void showNotification(string messageText, string confirmText)
     {
         GameObject.FindObjectOfType<UIController>().showNotification(messageText, confirmText);

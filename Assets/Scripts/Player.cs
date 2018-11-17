@@ -45,6 +45,8 @@ public struct MovementSettings
 
 public class Player : MonoBehaviour
 {
+    #region variables
+
     [HideInInspector]
     public CharacterController2D character;
 
@@ -57,13 +59,9 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool jumpHeld = false;
 
-    // current x axis value
+    // current x, y, and jump axis values
     private float xAxis;
-
-    // current y axis value
     private float yAxis;
-
-    // current jump axis value
     private int jumpAxis;
 
     [Tooltip("settings related to character movement")]
@@ -72,19 +70,17 @@ public class Player : MonoBehaviour
     [Tooltip("ink blot prefab")]
     public GameObject InkBlotPrefab;
 
-    [HideInInspector]
     // is the player launching
+    [HideInInspector]
     public bool isLaunching = false;
 
     // can the player turn into an ink blot
     [HideInInspector]
     public bool canTurnIntoInkBlot = true;
 
-    // which way the player is facing
+    // which way the player is facing (easy to get at for other scripts)
     [HideInInspector]
     public bool facingRight = true;
-
-    private Animator animator;
 
     // is the player invulnerable
     private bool isInvulnerable;
@@ -97,6 +93,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("how long to rumble for when taking damage")]
     private float rumbleTime = 0.2f;
+
+    // animator component reference
+    private Animator animator;
+
+    #endregion
+
+    #region monobehavior
 
     private void Start()
     {
@@ -282,6 +285,10 @@ public class Player : MonoBehaviour
 #endif
     }
 
+    #endregion
+
+    #region small functions
+
     void changeColor(Color color)
     {
         GetComponentInChildren<SkinnedMeshRenderer>().material.color = color;
@@ -303,6 +310,27 @@ public class Player : MonoBehaviour
     {
         canTurnIntoInkBlot = true;
     }
+
+    private void becomeVulnerable()
+    {
+        isInvulnerable = false;
+    }
+
+    public void Rumble()
+    {
+        GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
+
+        Invoke("stopRumble", rumbleTime);
+    }
+
+    private void stopRumble()
+    {
+        GamePad.SetVibration(PlayerIndex.One, 0, 0);
+    }
+
+    #endregion
+
+    #region collision/trigger events
 
     public void collisionFunction(RaycastHit2D ray)
     {
@@ -453,11 +481,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    #endregion
+
     public void UpdateAppearance()
     {
         if(gameObject.activeSelf)
         {
-            // rotate to match slope
+            // rotate the JOINTS object to match the angle of a slopethat we are standing on
             GameObject joints = GameObject.Find("JOINTS");
             RaycastHit2D slopeHitInfo = Physics2D.Raycast(transform.position, Vector2.down, 1.0f, character.platformMask);
             if (slopeHitInfo && character.isGrounded)
@@ -470,6 +500,7 @@ public class Player : MonoBehaviour
                 joints.transform.localEulerAngles = Vector3.zero;
             }
 
+            // set variables in the animator component
             animator.SetBool("isGrounded", character.isGrounded);
             animator.SetFloat("absoluteXVelocity", Mathf.Abs(velocity.x));
             animator.SetFloat("yVelocity", velocity.y);
@@ -482,22 +513,5 @@ public class Player : MonoBehaviour
             facingRight = velocity.x > 0;
             transform.localScale = (facingRight ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1));
         }
-    }
-
-    private void becomeVulnerable()
-    {
-        isInvulnerable = false;
-    }
-
-    public void Rumble()
-    {
-        GamePad.SetVibration(PlayerIndex.One, rumblePower, rumblePower);
-
-        Invoke("stopRumble", rumbleTime);
-    }
-
-    private void stopRumble()
-    {
-        GamePad.SetVibration(PlayerIndex.One, 0, 0);
     }
 }

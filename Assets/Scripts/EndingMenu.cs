@@ -8,10 +8,10 @@ using UnityEngine.EventSystems;
 
 public class EndingMenu : MonoBehaviour
 {
+    #region variables
+
     [SerializeField]
     private GameObject confirmPanel;
-
-    private EventSystem eventSystem;
 
     [SerializeField]
     private AudioClip selectSound;
@@ -19,6 +19,11 @@ public class EndingMenu : MonoBehaviour
     [SerializeField]
     private AudioClip confirmSound;
 
+    private EventSystem eventSystem;
+
+    #endregion
+
+    #region monobehavior
 
     private void Start()
     {
@@ -61,4 +66,6 @@ public class EndingMenu : MonoBehaviour
     {
         GetComponent<AudioSource>().PlayOneShot(confirmSound);
     }
+
+    #endregion
 }

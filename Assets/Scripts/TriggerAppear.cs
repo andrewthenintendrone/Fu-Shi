@@ -7,6 +7,8 @@ using UnityEditor;
 
 public class TriggerAppear : MonoBehaviour
 {
+    #region variables
+
     [SerializeField]
     [Tooltip("distance to be completely invisible")]
     private float transparentDistance;
@@ -29,6 +31,10 @@ public class TriggerAppear : MonoBehaviour
     // used to cycle through images
     private int currentImageIndex = 0;
 
+    #endregion
+
+    #region monobehavior
+
     private void Start()
     {
         color = GetComponent<Renderer>().material.color;
@@ -47,6 +53,8 @@ public class TriggerAppear : MonoBehaviour
 
         GetComponent<Renderer>().material.color = color;
     }
+
+    #endregion
 
     private void changeImage()
     {

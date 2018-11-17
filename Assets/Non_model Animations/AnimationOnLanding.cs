@@ -6,7 +6,7 @@ public class AnimationOnLanding : MonoBehaviour
 {
     private Animator animator;
 
-    private void OnAwake()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
