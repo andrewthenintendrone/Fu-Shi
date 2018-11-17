@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class AnimationOnLanding : MonoBehaviour
 {
-
-    [SerializeField]
     private Animator animator;
 
+    private void OnAwake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

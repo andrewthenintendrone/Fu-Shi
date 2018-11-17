@@ -7,18 +7,16 @@ using UnityEditor;
 
 public class Abilityactivator : MonoBehaviour
 {
-    [Tooltip("ink wave prefab gameobject")]
     [SerializeField]
+    [Tooltip("ink wave prefab gameobject")]
     private GameObject inkSlashPrefab;
 
-    [Tooltip("time ability prefab gameobject")]
     [SerializeField]
+    [Tooltip("time ability prefab gameobject")]
     private GameObject timeAbilityPrefab;
 
-    // is the ink axis held
+    // are the ink and time axis held
     private bool inkHeld = false;
-
-    // is the time axis held
     private bool timeHeld = false;
 
     [Tooltip("this is the switch determining whether the player can use the ink spray ability")]
@@ -31,6 +29,10 @@ public class Abilityactivator : MonoBehaviour
     [HideInInspector]
     public bool canUseInkAbility = true;
 
+    // can the player use the time ability (cooldown)
+    [HideInInspector]
+    public bool canUseTimeAbility = true;
+
     [SerializeField]
     [Tooltip("extra height gained by using ink ability in the air")]
     private float extraHeightFromInk;
@@ -38,12 +40,6 @@ public class Abilityactivator : MonoBehaviour
     [SerializeField]
     [Tooltip("how long after using the time ability before it can be used again")]
     private float timeAbilityCooldown;
-
-    // can the player use the time ability (cooldown)
-    [HideInInspector]
-    private bool canUseTimeAbility = true;
-
-    private AudioClip inkSound;
 
     [SerializeField]
     private string InkText;
@@ -59,11 +55,6 @@ public class Abilityactivator : MonoBehaviour
     private string HealthText;
     [SerializeField]
     private string HealthText2;
-
-    void Start()
-    {
-        inkSound = Resources.Load<AudioClip>("Spray");
-    }
 
 	void Update ()
     {
@@ -144,17 +135,8 @@ public class Abilityactivator : MonoBehaviour
             {
                 if (LstickDir.sqrMagnitude == 0)
                 {
-                    if (gameObject.GetComponent<Player>().facingRight)
-                    {
-                        CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.right;
-                    }
-                    else
-                    {
-                        CurrentInkwave.GetComponent<Inkmeleeslash>().direction = Vector2.left;
-                    }
-
-                    // ternary
-                    // CurrentInkwave.GetComponent<Inkmeleeslash>().direction = (gameObject.GetComponent<Player>().facingRight ? Vector2.right : Vector2.left);
+                    // there is no stick input so just face the way the player is
+                    CurrentInkwave.GetComponent<Inkmeleeslash>().direction = (GetComponent<Player>().facingRight ? Vector2.right : Vector2.left);
                 }
                 else
                 {
@@ -173,7 +155,7 @@ public class Abilityactivator : MonoBehaviour
             }
 
             // play sound effect
-            SoundManager.instance.playSingle(inkSound);
+            SoundManager.instance.playInkSpray();
 
             // play animation
             GetComponent<Animator>().SetTrigger("inkSpray");
@@ -218,21 +200,13 @@ public class Abilityactivator : MonoBehaviour
             SoundManager.instance.playAbilityPickup();
         }
         // extra health
-        else if (collision.tag == "health")
+        if (collision.name == "healthGiver")
         {
-            if (collision.name == "healthGiver")
-            {
-                Utils.maxHealth = 6;
-                Utils.Health = 6;
-                Destroy(collision.gameObject);
-                Utils.showNotification(HealthText, HealthText2);
-                SoundManager.instance.playAbilityPickup();
-            }
-            else
-            {
-                Utils.Health++;
-                Destroy(collision.gameObject);
-            }
+            Utils.maxHealth = 6;
+            Utils.Health = 6;
+            Destroy(collision.gameObject);
+            Utils.showNotification(HealthText, HealthText2);
+            SoundManager.instance.playAbilityPickup();
         }
     }
 

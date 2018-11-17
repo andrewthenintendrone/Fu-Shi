@@ -44,6 +44,8 @@ public class SoundManager : MonoBehaviour
 
     private AudioClip[] wispGiggle;
 
+    private AudioClip inkSpray;
+
 
     public void Awake()
     {
@@ -74,6 +76,8 @@ public class SoundManager : MonoBehaviour
 
         efxSource = gameObject.GetComponents<AudioSource>()[0];
         MusicSource = gameObject.GetComponents<AudioSource>()[1];
+
+        inkSpray = Resources.Load<AudioClip>("Spray");
 
         if (!MusicSource.isPlaying && playMusic)
         {
@@ -137,7 +141,6 @@ public class SoundManager : MonoBehaviour
 
     public void Update()
     {
-
         if(!MusicSource.isPlaying && playMusic)
         {
             MusicSource.time = MusicLoopPoint;
@@ -175,4 +178,8 @@ public class SoundManager : MonoBehaviour
         PlayRandomSFX(wispGiggle);
     }
 
+    public void playInkSpray()
+    {
+        playSingle(inkSpray);
+    }
 }

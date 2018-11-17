@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationInkBlot : MonoBehaviour {
-
- 
+public class AnimationInkBlot : MonoBehaviour
+{
     private Animator animator;
 
     private void Start()
@@ -16,5 +15,4 @@ public class AnimationInkBlot : MonoBehaviour {
     {
         animator.SetTrigger("Leaf");
     }
-
 }
