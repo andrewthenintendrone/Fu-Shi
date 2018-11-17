@@ -7,11 +7,10 @@ public class DualForwardFocusCamera : MonoBehaviour
     #region variables
 
     // camera component
-    [System.NonSerialized]
     [HideInInspector]
     public Camera cam;
 
-    // collider to track to
+    // collider to track to (the player)
     private Collider2D targetCollider;
 
     [Tooltip("width of the inner box for camera motion")]
@@ -33,7 +32,6 @@ public class DualForwardFocusCamera : MonoBehaviour
     public float YThresholdExtents = 10f;
 
     public float normalizedClampedDistance;
-
 
     // which side is being focused on
     private RectTransform.Edge currentFocus = RectTransform.Edge.Left;
@@ -59,6 +57,7 @@ public class DualForwardFocusCamera : MonoBehaviour
     // called every physics step
     void FixedUpdate()
     {
+        // don't move the camera while the game is paused
         if(!Utils.gamePaused)
         {
             Bounds targetBounds = targetCollider.bounds;
@@ -143,7 +142,7 @@ public class DualForwardFocusCamera : MonoBehaviour
         }
     }
 
-    // teleports to the player when it dies
+    // teleports directly to the player (used to start at the players position)
     public void TeleportToPlayer()
     {
         transform.position = targetCollider.transform.position;
@@ -174,12 +173,12 @@ public class DualForwardFocusCamera : MonoBehaviour
         // expand inner bounds to get outer bounds
         bounds.Expand(new Vector3(XThresholdExtents, YThresholdExtents));
 
-        // draw outer bounds x axis lines
+        // draw outer bounds x axis lines in blue
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(bounds.min, bounds.min + Vector3.up * bounds.size.y);
         Gizmos.DrawLine(bounds.max, bounds.max + Vector3.down * bounds.size.y);
 
-        // draw outer bounds y axis lines
+        // draw outer bounds y axis lines in red
         Gizmos.color = Color.red;
         Gizmos.DrawLine(bounds.min + Vector3.up * bounds.size.y, bounds.max);
         Gizmos.DrawLine(bounds.max + Vector3.down * bounds.size.y, bounds.min);
