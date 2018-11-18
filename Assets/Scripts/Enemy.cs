@@ -35,12 +35,14 @@ public class Enemy : MonoBehaviour
     [Tooltip("how far away from the enemy the projectile starts at")]
     private float projectileStartDistance;
 
+    [HideInInspector]
+    public float randomStart;
+
     void Start ()
     {
         health = maxHealth;
         if(shoot)
         {
-            float randomStart;
             randomStart = Random.Range(0.0f, 2.0f);
             InvokeRepeating("checkPlayerDist", randomStart, shootInterval);
         }

@@ -47,7 +47,7 @@ public static class SaveLoad
             if(currentEnemy.shoot)
             {
                 currentEnemy.CancelInvoke("checkPlayerDist");
-                currentEnemy.InvokeRepeating("checkPlayerDist", currentEnemy.shootInterval, currentEnemy.shootInterval);
+                currentEnemy.InvokeRepeating("checkPlayerDist", currentEnemy.randomStart, currentEnemy.shootInterval);
             }
         }
 
