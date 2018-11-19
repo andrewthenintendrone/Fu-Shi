@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
                 {
                     gameObject.GetComponent<patrolmove>().enabled = false;
                 }
-                Instantiate(deathParticles, transform.position, Quaternion.identity, transform);
+                Instantiate(deathParticles, transform.position, Quaternion.identity);
                 SoundManager.instance.playDeathFX();
                 
                 this.enabled = false;

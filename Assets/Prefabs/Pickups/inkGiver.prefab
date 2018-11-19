@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4361656529942520}
   - component: {fileID: 212316694380252756}
-  - component: {fileID: 61515990806194320}
+  - component: {fileID: 58785947254961288}
   m_Layer: 10
   m_Name: inkGiver
   m_TagString: Untagged
@@ -97,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1442995478825508}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -44.34, y: -16.880005, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4327322396581796}
@@ -132,8 +132,8 @@ Transform:
   m_Father: {fileID: 4361656529942520}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61515990806194320
-BoxCollider2D:
+--- !u!58 &58785947254961288
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -144,19 +144,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.33554196}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 5.12, y: 5.12}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0.5}
   serializedVersion: 2
-  m_Size: {x: 5.12, y: 4.448916}
-  m_EdgeRadius: 0
+  m_Radius: 2
 --- !u!198 &198751876778981388
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -217,7 +207,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1705817882
+  randomSeed: 1662383860
   InitialModule:
     serializedVersion: 3
     enabled: 1

@@ -25,6 +25,7 @@ public class inkableSurface : MonoBehaviour
     public Material inkedSurface;
     public Material cleanSurface;
 
+    // this makes it so that it will work properly with the unity inspector
     void OnValidate()
     {
         Inked = inked;
