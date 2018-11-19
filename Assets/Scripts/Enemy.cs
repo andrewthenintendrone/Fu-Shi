@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour
                 this.enabled = false;
                 CancelInvoke("checkPlayerDist");
 
-                if (GetComponentsInChildren<Transform>().Length > 0)
+                if (GetComponentsInChildren<Transform>().Length > 1)
                 {
                     gameObject.SetActive(false);
                 }
