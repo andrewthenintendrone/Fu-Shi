@@ -44,11 +44,6 @@ public class WispController : MonoBehaviour
 
     #endregion
 
-    private void Start()
-    {
-        deathParticles = Resources.Load<GameObject>("Deathpuff");
-    }
-
     public void Update()
     {
         float sqrDistToPlayer = Vector2.SqrMagnitude(Utils.getPlayer().transform.position - transform.position);
@@ -111,7 +106,7 @@ public class WispController : MonoBehaviour
         if (currPatrolPoint == patrolPoints.Length - 1)
         {
             hasPlayed = true;
-            Instantiate(deathParticles);
+            Instantiate(deathParticles, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
         else
