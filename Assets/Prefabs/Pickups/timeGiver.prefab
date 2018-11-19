@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4820276719966744}
   - component: {fileID: 212146389935749792}
   m_Layer: 10
-  m_Name: clouds
+  m_Name: Clouds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 199778129998272130}
   - component: {fileID: 198628685526023720}
   m_Layer: 10
-  m_Name: particles
+  m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4292631754582648}
   - component: {fileID: 212636488964016056}
-  - component: {fileID: 61139781312637962}
+  - component: {fileID: 58276496619956330}
   m_Layer: 10
   m_Name: timeGiver
   m_TagString: Untagged
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 4084109797972536}
   - component: {fileID: 212691975527173504}
   m_Layer: 10
-  m_Name: symbol
+  m_Name: Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,8 +97,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1326471632933366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.399994, y: 5.59, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4357017742268658}
   - {fileID: 4820276719966744}
@@ -132,8 +132,8 @@ Transform:
   m_Father: {fileID: 4292631754582648}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61139781312637962
-BoxCollider2D:
+--- !u!58 &58276496619956330
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -144,19 +144,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 5.12, y: 5.12}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0.5}
   serializedVersion: 2
-  m_Size: {x: 5.12, y: 5.12}
-  m_EdgeRadius: 0
+  m_Radius: 2
 --- !u!198 &198628685526023720
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3647,9 +3637,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1373225473
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: -888024321
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0efeab9a486c70a459cead3ed58fff47, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
