@@ -242,6 +242,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        // update discord rich presence
+        Utils.UpdateDiscordPresence();
+
 #if UNITY_EDITOR
 
         // toggle devmode

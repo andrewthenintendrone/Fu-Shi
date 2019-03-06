@@ -28,6 +28,9 @@ public static class Utils
         set { health = Mathf.Min(value, maxHealth); updateHealthSprite(); }
     }
 
+    // time that the game was started
+    public static int startTime = 0;
+
     // maximum player health
     public static int maxHealth;
 
@@ -117,6 +120,7 @@ public static class Utils
 
     public static void Exit()
     {
+        DiscordRpc.Shutdown();
         Application.Quit();
     }
 
@@ -188,5 +192,54 @@ public static class Utils
     public static void showNotification(string messageText, string confirmText)
     {
         GameObject.FindObjectOfType<UIController>().showNotification(messageText, confirmText);
+    }
+
+    // update discord rich presence
+    public static void UpdateDiscordPresence()
+    {
+        DiscordRpc.RichPresence discordPresence = new DiscordRpc.RichPresence();
+        discordPresence.startTimestamp = startTime;
+        discordPresence.largeImageKey = "fox";
+        
+        // figure out image key and message
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            discordPresence.smallImageKey = "menu";
+            discordPresence.details = "Is on the menu";
+        }
+        else if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            if (Utils.maxHealth == 6)
+            {
+                discordPresence.smallImageKey = "health";
+                discordPresence.details = "Has obtained Inari's vitality";
+                discordPresence.state = "Currently has " + health.ToString() + " health";
+            }
+            else if (player.GetComponent<Abilityactivator>().hasTimeAbility)
+            {
+                discordPresence.smallImageKey = "time";
+                discordPresence.details = "Has obtained Daikokuten's drum";
+                discordPresence.state = "Currently has " + health.ToString() + " health";
+            }
+            else if (player.GetComponent<Abilityactivator>().hasInkAbility)
+            {
+                discordPresence.smallImageKey = "ink";
+                discordPresence.details = "Has obtained Jurojin's brush";
+                discordPresence.state = "Currently has " + health.ToString() + " health";
+            }
+            else
+            {
+                discordPresence.smallImageKey = "";
+                discordPresence.details = "Has had soul stolen";
+                discordPresence.state = "Currently has " + health.ToString() + " health";
+            }
+        }
+        else if(SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            discordPresence.smallImageKey = "ending";
+            discordPresence.details = "Has completed the game";
+        }
+
+        DiscordRpc.UpdatePresence(discordPresence);
     }
 }

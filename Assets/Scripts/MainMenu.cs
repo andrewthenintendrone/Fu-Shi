@@ -23,6 +23,22 @@ public class MainMenu : MonoBehaviour
     {
         eventSystem = GameObject.FindObjectOfType<EventSystem>();
         confirmPanel.SetActive(false);
+        InitDiscord();
+    }
+
+    // starts discord rich presence
+    void InitDiscord()
+    {
+        if(Utils.startTime == 0)
+        {
+            System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+            Utils.startTime = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
+        }
+
+        DiscordRpc.EventHandlers handlers = new DiscordRpc.EventHandlers();
+        DiscordRpc.Initialize("529846377602351112", ref handlers, true, "");
+
+        Utils.UpdateDiscordPresence();
     }
 
     public void NewGame()
@@ -40,6 +56,8 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        DiscordRpc.Shutdown();
+        Utils.UpdateDiscordPresence();
         PlayConfirmSound();
         confirmPanel.SetActive(true);
         eventSystem.SetSelectedGameObject(GameObject.Find("Yes"));

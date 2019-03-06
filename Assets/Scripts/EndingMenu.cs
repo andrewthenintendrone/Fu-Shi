@@ -29,6 +29,7 @@ public class EndingMenu : MonoBehaviour
     {
         eventSystem = GameObject.FindObjectOfType<EventSystem>();
         confirmPanel.SetActive(false);
+        Utils.UpdateDiscordPresence();
     }
 
     public void BackToMenu()
